@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PageFlows>
+    <PageFlow>
+        <PreLoad>True</PreLoad>  
+        <Id>MainPageFlow</Id>
+        <Class>PageFlow</Class>
+        <X>0</X>
+        <Y>0</Y>
+        <H>100%</H>
+        <W>100%</W>
+        <StartPage>MainPage</StartPage>
+        <Widgets>
+            <Widget>
+                <Include>config/app/mainpage.xml</Include>
+            </Widget>
+        </Widgets>
+    </PageFlow>
+</PageFlows>

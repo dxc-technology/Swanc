@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget> <!-- AT THIS LEVEL MUST BE WIDGET -->
+    <Id>MainPage</Id>
+    <Class>Page</Class>
+    <PreLoad>True</PreLoad>  <!-- THIS PAGE IS PRELOADED WHEN PAGE FLOW PRELOADED -->
+    <X>0</X>
+    <Y>0</Y>
+    <H>100%</H>
+    <W>100%</W>
+    <Widgets>
+        <Widget>
+            <Class>MessageText</Class>
+        </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#FFFFFF</Colour>
+    </Style>
+</Widget>
+            
