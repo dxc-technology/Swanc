@@ -1,4 +1,4 @@
 Flax
 ====
 
-Flax HTML5 Canvas Framework - Pure
+Flax is a framework that makes it possible to create mobile applications quickly using MVC.
