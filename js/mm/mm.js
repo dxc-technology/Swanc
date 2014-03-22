@@ -1,10 +1,27 @@
-// OS TYPE/PHONE TYPE
-var DEVICE_WP8 = 6;
-var DEVICE_FIREFOX = 5;
-var DEVICE_ANDROID = 2;
-var DEVICE_BLACKBERRY = 3;
-var DEVICE_OTHER = 4;
-var DEVICE_IOS = 1;
+//**************************************************************
+//* GLOBAL CONSTANTS AND VARIABLES
+//**************************************************************
+     
+// Constants used to specify the OS Type or Phone Type
+var DEVICE_WP8 = 6;    // Microsoft Windows Phone 8.
+var DEVICE_FIREFOX = 5;  // Firefox phone.
+var DEVICE_ANDROID = 2;   // Google Android Phones.
+var DEVICE_BLACKBERRY = 3;  // Blackberry BB10 OS or PlayBook OS.
+var DEVICE_OTHER = 4;    // Any other OS, normally a browser.
+var DEVICE_IOS = 1;  // Apple iOS including iPhone and iPad.
+
+// This is set to true when the keyboard is active.  The keyboard can be active on an Input widget being edited.
+var keyboardActive = false;
+// This stores a list of positions and sizes where a keyboard is active and the associated Input widget is being edited. 
+var keyboardActiveList = new Array();  // Array of KeyboardPos class.
+
+//**************************************************************
+//* END GLOBAL CONSTANTS AND VARIABLES
+//**************************************************************
+
+//**************************************************************
+//* GLOBAL FUNCTIONS
+//**************************************************************
 
 // Array Remove - OVERIDE
 // USED IN A FEW PLACES, CAN PROBABLY ADD THIS TO mm.FW module TODO
@@ -18,51 +35,127 @@ Array.prototype.remove = function(fromIn, toIn) {
     return this.push.apply(this, rest);
 };
 
-var keyboardActive = false;
-var keyboardActiveList = new Array();
-
-// THIS IS USEFUL and USED EVERYWHERE!
+/*
+++
+This function tests for null values in JavaScript.
+JavaScript does not automatically default a value to null, but to undefined,
+so this tests for both conditions.  This can be used anywhere and is useful.
+*/
 function isNull(testIn) {
     return testIn == undefined || testIn == null;
 }
 
+//**************************************************************
+//* END GLOBAL FUNCTIONS
+//**************************************************************
+
+//**************************************************************
+//* mm is the main package for Flax
+//**************************************************************
 mm = (function() {
 
     var module = {
 
-        // MOVEMENT TYPES
+        //**************************************************************
+		//* MOVEMENT TYPES
+		//* Movement types are used by the drag and drop functionality,
+		//* they define what happens to a widget when an onDrop occurs.
+		//* A widget is dragged from one container widget to another
+		//* container widget.
+		//**************************************************************
+		
+		/*
+		++
+		When a onDrop occurs nothing happends.
+		*/
         NOTHING: function() {
             return "NOTHING";
         },
+		
+		/*
+		++
+		When a onDrop occurs the widget is copied, so we will have 2 widgets.
+		The original widget stays in the original container widget and a new widget with
+		the same values is added to the container widget under the drop.
+		*/
         COPY: function() {
             return "COPY";
         },
+		
+		/*
+		++
+		When a onDrop occurs the widget is moved.
+		The widget is moved from the original container widget to the container widget under the drop.
+		*/
         MOVE: function() {
             return "MOVE";
         },
+		
+		/*
+		TODO
+		*/
         STICK: function() {
             return "STICK";
         },
-				
-        // POSITION TYPE
+		//**************************************************************
+		//* END MOVEMENT TYPES
+		//**************************************************************
+        		
+        //**************************************************************
+		//* POSITION TYPES
+		//* This are used to align the widget on the screen or within
+		//* a container widget.
+		//**************************************************************
+		
+		/*
+		++
+		Align the widget's bottom to its parent widget's bottom.
+		*/
         BOTTOM: function() {
             return "BOTTOM";
         },
+		
+		/*
+		++
+		Align the widget's top to its parent widget's top. 
+		*/
         TOP: function() {
             return "TOP";
         },
+		
+		/*
+		++
+		Align the widget's left side to its parent widget's left side. 
+		*/
         LEFT: function() {
             return "LEFT";
         },
+		
+		/*
+		++
+		Align the widget's right side to its parent widget's right side. 
+		*/
         RIGHT: function() {
             return "RIGHT";
         },
+		
+		/*
+		++
+		Align the widget in the center of its parent widget.
+		*/
         CENTER: function() {
             return "CENTER";
         },
+		//**************************************************************
+		//* END POSITION TYPES
+		//**************************************************************
 			
-        // This shows the move target action.  This is when a widget is
-        // dragged on top of another widget.
+		/*
+		++
+		
+		TODO
+		
+		*/
         MoveOver: function() {
 				         
             var self = {
@@ -70,7 +163,7 @@ mm = (function() {
                 moveDropAction: null,  // move drop action (ctx, x, y, widget source, widget target, movementType)
                 moveOverAction: null,  // USE STANDARD IF this null standardOverAction
                 moveOutOverAction: null,  // USE STANDARD IF this null standardOutOverAction
-                movementType: mm.NOTHING()  // "NOTHING", "COPY", "MOVE", "STICK" (STANDARD ON_DROP, THINK ABOUT)
+                movementType: mm.NOTHING()  // "NOTHING", "COPY", "MOVE", "STICK" 
             };
 						 
             return self;
@@ -103,52 +196,86 @@ mm = (function() {
         //**************************************************************
         //* Collision Detection, used by the Animation widget.
         //**************************************************************
+		
+		/*
+		++
+		This is a collision circle zone.
+		It is common to use a number of circle overlays on a sprite to
+		represent the collision zone for that sprite.  Any widget can be
+		considered a sprite.
+		This is a circle collision overlay. 
+ 		*/
         CollisionCircleZone: function(xIn, yIn, radiusIn) {
             var self = {
-                x: xIn,
-                y: yIn,
-                radius: radiusIn
+                x: xIn,  // The x position in px, relative to the widget.
+                y: yIn,  // The y position in px, relative to the widget.
+                radius: radiusIn  // The radius of the circle.
             };
 						
             return self;
         },
-				  
+				
+		/*
+		++
+		This is a collision rectangle zone.
+		It is common to use a number of rectangle overlays on a sprite to
+		represent the collision zone for that sprite.  Any widget can be
+		considered a sprite.
+		This is a rectangle collision overlay. 
+ 		*/
         CollisionRectangleZone: function(xIn, yIn, widthIn, heightIn) {
             var self = {
-                x: xIn,
-                y: yIn,
-                w: widthIn,
-                h: heightIn
+                x: xIn,  // The x position in px, relative to the widget.
+                y: yIn,  // The y position in px, relative to the widget.
+                w: widthIn,  // This is the width in px of the collision rectangle.
+                h: heightIn  // This is the height in px of the collision rectangle.
             };
 						
             return self;
         },
 				  
+		/*
+		++
+		This is the collision type.
+		Stores an array of either CollisionRectangleZone or CollisionCircleZone,
+		cannot have a mix of CollisionRectangleZone and CollisionCircleZone for the same CollisionType.
+		However, a sprite (widget) can have any number of CollisionType objects.
+		*/
         CollisionType: function(typeIn, shapeTypeIn, collisionZonesIn) {
             var self = {
-                type: typeIn,
-                shapeType: shapeTypeIn,  // CAN BE RECTANGLE or CIRCLE
-                collisionZones: collisionZonesIn, // ARRAY OF RECTANGLE OR CIRCLE ZONE
-                id: null  // THIS IS ONLY USED, WHEN THE COLLISION TYPE IS LOADED FROM XML AND NOT JAVASCRIPT
+                type: typeIn,  // Type
+                shapeType: shapeTypeIn,  // This can be either "RECTANGLE" or "CIRCLE".
+                collisionZones: collisionZonesIn, // Array of CollisionRectangleZone or CollisionCircleZone.
+                id: null  // This is only used when the collision type is loaded from XML and not from JavaScript.
             };
 						
             return self;
         },
-				  
+	
+		/*
+		++
+		This sets up what setup what happends when a collision is detected between
+		two CollisionTypes.
+		*/
         Collision: function(collisionTypeAIn, collisionTypeBIn, collisionActionIn) {
             var self = {
-                collisionTypeA: collisionTypeAIn,
-                collisionTypeB: collisionTypeBIn,
-                collisionAction: collisionActionIn
+                collisionTypeA: collisionTypeAIn,  // CollisionType A  
+                collisionTypeB: collisionTypeBIn,  // CollisionType B
+                collisionAction: collisionActionIn  // Function called when collision detected.  Signature:  function(animationWidget, widgetA, widgetsB)
             };
 						
             return self;
         },
       
+		/*
+		++
+		This is used by each Animation widget.
+		It stores all the CollisionType and Collision that can happen within this Animation.
+		*/
         CollisionDetection: function() {
             var self = {
-                collisionTypes: null,  // ARRAY OF COLLISION TYPE
-                collisions: null    // ARRAY OF COLLISION
+                collisionTypes: null,  // Array of CollisionType.
+                collisions: null    // Array of Collision.
             };
       
             return self;
@@ -232,32 +359,38 @@ mm = (function() {
             return self;
         },
       
+		/*
+		++
+		This is used to store a Input widget that is being edited,
+		and the position of the screen the keyboard is being used.
+		*/
         KeyboardPos: function(inputIn, xIn, yIn, wIn, hIn) {
       
             var self = {
-                input: inputIn,
-                x: xIn,
-                y: yIn,
-                w: wIn,
-                h: hIn
+                input: inputIn,  // Input widget
+                x: xIn,  // x position in px on the screen the Input widget is being edited by the keyboard.
+                y: yIn,  // y position in px on the screen the Input widget is being edited by the keyboard.
+                w: wIn,  // width in px on the screen the Input widget is being edited by the keyboard.
+                h: hIn   // height in px on the screen the Input widget is being edited by the keyboard.
             };
       
             return self;
         },
       
         /*
+		++
         WidgetStages are used in conjunction with page flows.
-        This allows an external function to be called at different life cycle stages of the widget.
+        This allows an external function to be called at different page life cycle stages of the widget.
         */
         WidgetStages: function() {
       
            var self = {
-                init: null,  // CALLED WHEN WIDGET IS FIRST CREATED.
-                openPage: null,  // CALLED WHEN JUST BEFORE THE PAGE IS OPENED, NOT CALLED ON EVERY REDRAW
-                redraw: null,  // CALLED ON EVERY REDRAW, STILL DO NOT KNOW WHY THIS WOULD BE USED!!!
-                afterOpen: null, // CALLED ONCE AFTER THE PAGE HAS BEEN SHOWN
-                close: null,  // CALLED ONCE JUST BEFORE PAGE BEING CLOSED
-                afterClose: null  // CALLED AFTER PAGE IS FULLY CLOSED
+                init: null,  // Function called when the widget is first created.  Signature: function(widgetIn)
+                openPage: null,  // Function called just before a page is opened, not called on every redraw.  Signature: function(widgetIn)
+                redraw: null,  //  Function called on each redraw of the widget.  Signature: function(widgetIn)
+                afterOpen: null, // Function called after the page has been shown.  Signature: function(widgetIn)
+                close: null,  // Function called once just before the page is being closed:  Signature: function(widgetIn)
+                afterClose: null  // Function called after page is fully closed.
             };
       
             return self;
@@ -335,62 +468,69 @@ mm = (function() {
             return self;
         },
 				  
+		/*
+		++
+		This is the main widget class.
+		
+		All widgets have an association to this widget class in the attribute "m"
+		This holds the values that are used within all widgets.  Association is used
+		as inheritance is not supported or overly complicated with JavaScript.
+		*/
         Widget: function(idIn, typeNameIn, classNameIn, xIn, yIn, widthIn, heightIn, layerIn) {
 
             var self = {
-                id: idIn,
-                type: typeNameIn,  // COULD BE FACE BUTTON, etc What ever the user wants to invent.
-                className: classNameIn, // INTERNAL CLASS NAME i.e Fragment
-                parent: null,   // PARENT WIDGET, IF NO PARENT THAN THIS IS NULL
-                x: xIn,
-                y: yIn,
-                w: widthIn,
-                h: heightIn,
-                area: null,  // WHAT IS THIS FOR?
-                l: layerIn,
-                stages: null,
+                id: idIn,  // String: this is ID of the widget
+                type: typeNameIn,  // This is a type the developer can associate to any widget. This can help group widgets that are of the same class.
+                className: classNameIn, // Internal use.  This is the className of the widget i.e Fragment, Text, Circle, Input etc.
+                parent: null,   // Internal use.  All widgets except for the Screen widget belong to a parent widget.  This points to that parent widget.
+                x: xIn,  // This is the x position of the widget within its parent.  This can be a px or % value.
+                y: yIn,  // This is the y position of the widget within its parent.  This can be a px or % value.
+                w: widthIn,  // This is the width of the widget.  It can be a px or % value.  If it is a % value it is the percentage of the width of its parent.
+                h: heightIn,  // This is the height of the widget.  It can be a px or % value.  If it is a % value it is the percentage of the height of its parent.
+                area: null,  // TODO
+                l: layerIn,  // An integer value of the layer of the widget.  A widget with a higher layer number is drawn over a widget with a lower layer number.
+                stages: null,  // WidgetStages class.
                 moveOver: null,  // array of move over sources for move over and drop over...
-                clickable: false,
-                enabled: true,  // if enabled false then the click action is not excecuted
-                holdable: false,
-                holdAction: null,  // Called when the object is held.
-                unholdAction: null,  // Called when the object is unheld.
-                holdMovingAction: null, // Called when object is held and being moved.
-                clearHoldingAction: null,  // Called when mouse down, to guarentee move mouse is cancelled.  Not always performed.
+                clickable: false,  // If this is set to true the widget is clickable by the user, on a click it will call the function clickAction on the widget.
+                enabled: true,  // If enabled is set to false then the click action, even if clickable is set to true will not excecuted
+                holdable: false,  // If this is set to true, a widget is holdable.  Holdable widgets are used for drag and drop and for other features such as lists.
+                holdAction: null,  // Called when the widget is being held and holdAction = true.
+                unholdAction: null,  // Called when the widget is unheld and holdAction = true.
+                holdMovingAction: null, // Called when widget is held and being moved and holdAction = true.
+                clearHoldingAction: null,  // Called when mouse down, to guarentee the move mouse is cancelled.  Not always performed.
                 movable: false,  // Set if movable.
-                move: null,  // Links to Movable object, if this is movable
-                isStandardMoveover: false,
+                move: null,  // Links to Movable object, if this is movable.
+                isStandardMoveover: false,  
                 standardMoveOver: null, // CALLED WHEN STANDARDMoveOver is true.   (Called when target over). PARAMS (ctx, xIn, yIn, movingWidgetIn, targetIn)
                 standardMoveOutOver: null,  // CALLED WHEN STANDARDMoveOver is true. (Called when target not over). PARAMS (ctx, xIn, yIn, movingWidgetIn, targetIn)
                 selectableArea: null,
-                container: false,  // True or false. This shows if this is widgets within widgets.
-                widgets: null,  // Only set if container == true, stores the children widgets of parent.
+                container: false,  // True or false. This shows if this has widgets.  Container widgets can have child widgets.  For example a Fragment widget can have child widgets.
+                widgets: null,  // Only set if container == true, stores the child widgets of this widget.
                 calculateWidgetsPosFromScreen: false, // If true calculates the widgets position from the screen and not from the parent widget
                 center: null, // function that calculates the center pass in x, y.  If not selected then standard function used.
                 widgetsUnder: null,
-                hidden: false,  // IF THIS IS HIDDEN THAN IT IS NOT SHOWN
-                copy: null,  // IF AVAILABLE RUNS A DEEP COPY ON WIDGET RETURNING A NEW COPY OF THAT WIDGET. PARAM (idIn, imageIn)
-                realX: 0,  // STORES THE REAL X VALUE From the parent widget so actual pos is realX + x
-                realY: 0,  // STORES THE REAL Y VALUE From the parent widget so actual pos is realY + y
-                associatedObject: null, // CAN BE USED ONLY BY CLIENT PROGRAMMER TO STORE OBJECT THIS IS LINK TO FOR EASY ACCESS SUCH AS A DTO, Database Row etc.
+                hidden: false,  // If hidden is set to true, then the widget will not be visible on the screen.
+                copy: null,  // If available runs a deep copy on a widget returning a new copy of that widget. param (idIn, widgetIn)
+                realX: 0,  // Stores the real x value in px from the parent widget so actual pos is realX + x
+                realY: 0,  // Stores the real y value in px from the parent widget so actual pos is realY + y
+                associatedObject: null, // Can be used by the developer to attach an object/function to this widget.  This could be a data transfer object, a database row or an id etc.
                 other: null,  // May be necessary by some widgets, no specific use.
-                onHoldMovingRedrawPartial: false, // TRUE/FALSE WHEN AN OBJECT IS ON HOLD MOVING PARTIAL REDRAW THAT WIDGET NO OTHER WIDGET.  IF OTHER WIDGETS ARE BEING MOVED AND THEY HAVE PARTIAL REDRAW SET TO FALSE THE WHOLE SCREEN WILL BE REDRAWN.
-                onActionRedrawPartial: false, // TRUE/FALSE on action if redraw all
-                beingHeld: false, // TRUE if widget is being held.  Even not holdable widgets can flag as being held.  Used for menu lists.
+                onHoldMovingRedrawPartial: false, // When set to true will only draw this widget that is on hold moving, otherwise will redraw all widgets.
+                onActionRedrawPartial: false, // When set to true on action only draws this widget, if set to false will redraw all
+                beingHeld: false, // If set to true then this widget is being held.  Even not holdable widgets can flag as being held.  Used for menu lists.
                 drawOrder: 0,  // Integer draw order, as an integer value.  The lowest value is drawn first.  The highest value is drawn last.
                 propogateClick: false,  // If propogate click is true, then the click will be sent to widgets that are under this widget on the screen.  If set to false only the top click is accepted, others below are ignored.
                 propogateHold: true, // If propogate hold is true, then the hold under this widget is propogated.
                 propogateOnDrop: true,  // IF propgate on drop is true, then the drop will propogate down
                 isKineticScrolling: false, // Sets true/false if this is a kinetic scrolling widget
-                invisible: false,  // #A2 This makes the widget invisible but it still is 100% functional.  At the moment only used for buttons but could work across different widgets.
-                shown: false, // #A17 - ONLY USED BY ListWidget (IF TRUE THIS IS BEING SHOWN ON THE SCREEN)
-                //transparent: -1
-                texts: null,  // TEXTS HERE, BECAUSE ANY WIDGET CAN HAVE TEXTS
-                alignVert: null,   // TOP, BOTTOM, CENTRE
-                alignHoz: null,   // LEFT, RIGHT, CENTRE
-                alignSpacingVert: 0,
-                alignSpacingHoz: 0,
-                alignIn: true  // IF true, text is drawn inside corresponding widget.  If false text is drawn outside widget.
+                invisible: false,  // This makes the widget invisible but it still is 100% functional.  At the moment only used for buttons but could work across different widgets.
+                shown: false, // Currently only used by ListWidget (If true this is being shown on the screen)
+                texts: null,  // List of text widgets, any widget can have one or more text widgets.
+                alignVert: null,   // TOP, BOTTOM, CENTER : This aligns the widget vertically based on its parent.  This will overide the y value.
+                alignHoz: null,   // LEFT, RIGHT, CENTER : This aligns the widget horizontally based on its parent.  This will overide the x value.
+                alignSpacingVert: 0,  // Spacing in px, to adjust alignVert.
+                alignSpacingHoz: 0,  // Spacing in px, to adjust alignHoz.
+                alignIn: true  // IF true, widget is drawn inside parent widget.  If false widget is drawn outside parent widget.
                 
             };
 
@@ -545,7 +685,7 @@ mm = (function() {
                 redrawAll: false,  // When true the whole screen is drawn on the animation (no just animation area.)
                 animationLoop: null,  // This is called on each animation loop, on checks for collisions etc.  (This is generally used only for internal use).
                 timeOutRunning: null,  // Stores the animate time out.  (Internal use only)
-                collisions: null // Stores the possible collisions within the application
+                collisions: null // CollisionDetection class: Stores the possible collisions within this animation.
             };
             return self;
         },
@@ -579,7 +719,7 @@ mm = (function() {
                 password: false,  // TRUE/FALSE - IF PASSWORD is set this is a password field (Shows * instead of characters)               
                 passwordText: null, // FOR SCROLL ON HOLD IS IMPORTANT + MOVE (LIKE LISTS)
                 kineticScrollingEnabled: true, // Sets if kinetic scrolling enabled true or false
-                calculateHeightAuto: false, // #A15 - AUTOMATICALLY CALCULATE THE HEIGHT OF THE TEXT ENTRY BOX (ALWAYS THE HEIGHT OF THE TEXT)
+                calculateHeightAuto: false, // If set to true this will automatically calculate the height of the input
                 closeEditOnEnter: true,
                 editMode: false // WHEN True, the INPUT IS CURRENTLY BEING EDITED
              };
@@ -638,12 +778,10 @@ mm = (function() {
                 partialShownX: null,  // SHOW PARTIAL PART OF PAGE
                 partialShownY: null,
                 partialNowShown: false,  // INTERNAL USE ONLY
-                // SWIPE ++
                 swipeLeftAction: null,
                 swipeRightAction: null,
                 swipeDownAction: null,
                 swipeUpAction: null
-                // END SWIPE ++
             };
             return self;
         },
@@ -689,7 +827,10 @@ mm = (function() {
             return self;
         },
 		
-        // USED TO SAVE THE WIDGETS STATE
+        /*
+		This class is used to save the current state of the widgets.
+		Once a state is saved, it is possible to then reload the widgets state to exactly how it was previously.
+		*/
         SavedState: function(idIn, widgetsIn) {
             var self = {
                 id: idIn,
@@ -1922,11 +2063,11 @@ mm = (function() {
                                     // DO I ALSO NEED TO CALL ON MOVE?
                                    
                                     // CODE HERE TO ANIMATE AFTER PUSH FOR SCROLL LIST ETC...
-                                    mm.FW.onUpKineticScrollingOrSwipe(xIn, yIn, widgetsOverList);  // +/- SWIPE
+                                    mm.FW.onUpKineticScrollingOrSwipe(xIn, yIn, widgetsOverList);  
                                 }
                             } else if (widgetsOverList != null) { // PERFORM NORMAL CLICK PROCESSING
                                 // CHECK THAT IT IS NOT A MOVE PRESS
-                                if (!(Math.abs(downX - xIn) > MIN_MOVE_RATE || Math.abs(downY - yIn) > MIN_MOVE_RATE)) { // #A13
+                                if (!(Math.abs(downX - xIn) > MIN_MOVE_RATE || Math.abs(downY - yIn) > MIN_MOVE_RATE)) { 
                                 var found = false;
                                 var foundComp = null;
                                 // CALL ACTION
@@ -1984,7 +2125,7 @@ mm = (function() {
                         } else {
               
                             // CODE HERE TO ANIMATE AFTER PUSH FOR SCROLL LIST ETC...
-                            mm.FW.onUpKineticScrollingOrSwipe(xIn, yIn, widgetsOverList);  // +/- SWIPE
+                            mm.FW.onUpKineticScrollingOrSwipe(xIn, yIn, widgetsOverList);  
                         
                             //mm.FW.unHoldHeldWidgets(xIn, yIn);
                         }
@@ -2113,7 +2254,6 @@ mm = (function() {
                                 // PERFORM ACTUAL ANIMATION
                                 mm.FW.animateKinetic();
                             } else {
-                                // SWIPE ++
                                 // NO HELD WIDGETS WHICH ARE KINETIC SCROLLING, SO THIS COULD BE A SWIPE
                                 // CHECK IF CURRENT PAGE IS LINKED TO SWIPE ACTIVITY
                                 var beingHeld = false;
@@ -2127,7 +2267,6 @@ mm = (function() {
                                 if (beingHeld == false) {
                                     mm.FW.swipeAction(xIn, yIn, widgetsUnderIn);
                                 }
-                                // END SWIPE++
              
                                 mm.FW.unHoldHeldWidgets(xIn, yIn);
                             }
@@ -3365,7 +3504,7 @@ mm = (function() {
                 draw: function(ctx, xIn, yIn) {
                 
                     ctx.fillStyle = this.s.colour;
-                    ctx.font = this.fontType + " " + this.fontSize + "px " + this.font;  // #A14 ++
+                    ctx.font = this.fontType + " " + this.fontSize + "px " + this.font; 
                     ctx.textBaseline = this.textBaseLine;
                 
                     if (mm.FW.getGlobalAlpha() != -1) {
@@ -3655,14 +3794,13 @@ mm = (function() {
                     if (inputIn.multiline == true) {
                         textArea = "<div id='" + inputIn.m.id + "' style='position:absolute;top:"+ y +"px;left:"+ x +"px;'><textarea id='textareaEditNote" + inputIn.m.id + "' style='width:" + width + "px;height:" + height + "px;font-family:" + inputIn.text.font + ";font-size:" + Math.round((inputIn.text.fontSize) * 72/mm.FW.getDPI()) + "pt'></textarea></div>";
                     } else {
-                        //textArea = "<div id='" + inputIn.m.id + "' style='position:absolute;top:"+ y +"px;left:"+ x +"px;'><input id='textareaEditNote' type='text'  style='width:" + width +"px;height:" + inputIn.m.h + "px;font-family:" + inputIn.text.font + ";font-size:" + Math.round((inputIn.text.fontSize) * 72/mm.FW.getDPI()) + "pt'></input></div>";
                         textArea = "<div style='position:absolute;top:"+ y + "px;left:" + x + "px;'><input id='textareaEditNote" + inputIn.m.id + "' type=" + inputType + " style='width:" + width +"px;height:" + height + "px;font-family:" + inputIn.text.font + ";font-size:" + Math.round((inputIn.text.fontSize) * 72/mm.FW.getDPI()) + "pt'></input></div>";
-                    
                     }
                  
                     // ADD THIS TEXT AREA TO BEING EDITED
                     editingInputs['textareaEditNote' + inputIn.m.id] = inputIn;
                  
+					// STORES THE KEYBOARD POSITION WHEN INPUT TEXT BEING EDITED
                     var keyboardPos = new mm.KeyboardPos(inputIn, x, y, width, height);
                     keyboardActiveList.push(keyboardPos);
                  
@@ -3936,7 +4074,7 @@ mm = (function() {
                                 var y = gap;
 						
                                 ctx.fillStyle = this.text.s.colour;
-                                ctx.font = this.text.fontType + " " + this.text.fontSize + "px " + this.text.font;  // #A14 ++
+                                ctx.font = this.text.fontType + " " + this.text.fontSize + "px " + this.text.font;  
                                 ctx.textBaseline = this.text.textBaseLine;
                                 var i=0;
                                 outside = false;
@@ -3959,7 +4097,7 @@ mm = (function() {
                                     var y = gap;
                     
                                     ctx.fillStyle = this.label.style;
-                                    ctx.font = this.label.fontType + " " + this.label.fontSize + "px " + this.label.font;  // #A14 ++
+                                    ctx.font = this.label.fontType + " " + this.label.fontSize + "px " + this.label.font; 
                                     ctx.textBaseline = this.label.textBaseLine;
                                     var i=0;
                                     outside = false;
@@ -5506,9 +5644,9 @@ mm = (function() {
                                 var tempWidgets = listIn.m.widgets[eachWidget].m.widgetsUnder(xIn, yIn, listIn.m.x + offsetXIn, listIn.m.y + offsetYIn, listIn.m.widgets[eachWidget]);
                                 if (tempWidgets != null) {
                                     for(var i = 0; i< tempWidgets.length; i++) {
-                                        if (tempWidgets[i].m.shown == true) {  // #A17 ++
+                                        if (tempWidgets[i].m.shown == true) {  
                                             widgetsUnderPointerList.push(tempWidgets[i]);
-                                        } // #A17 ++
+                                        } 
                                     }
                                 }
                             }
@@ -6385,7 +6523,6 @@ mm = (function() {
                     // Display Image
                     //alert(ctx + " : " + xIn);
                     if (imageIn.complete) {
-                        // #Page1 ++
                         if (mm.FW.getGlobalAlpha() != -1) {
                             var trans = mm.FW.getGlobalAlpha();
                             if (trans > 255) {
@@ -6397,14 +6534,12 @@ mm = (function() {
                             ctx.drawImage(imageIn, xIn, yIn, widthIn, heightIn);
                             ctx.restore();
                         } else {
-                                // END #Page1 ++
                                 ctx.drawImage(imageIn, xIn, yIn, widthIn, heightIn);
-                        }  // #Page1 ++
+                        }  
                     } else {
                         if (imageIn.complete == false || imageIn.complete == null || imageIn.complete == "null" || imageIn.complete == undefined || imageIn.complete == "undefined") { 
-                            //imageIn = new Image();
+                            
                             imageIn.onload = function() {
-                                // #Page1 ++
                                 if (mm.FW.getGlobalAlpha() != -1) {
                                     var trans = mm.FW.getGlobalAlpha();
                                     if (trans > 255) {
@@ -6416,9 +6551,8 @@ mm = (function() {
                                     ctx.drawImage(imageIn, xIn, yIn, widthIn, heightIn);
                                     ctx.restore();
                                 } else {
-                                    // END #Page1 ++
                                     ctx.drawImage(imageIn, xIn, yIn, widthIn, heightIn);
-                                }  // #Page1 ++
+                                }  
                                 callbackIn();
                             }
                             imageIn.src = imageSrcIn;
@@ -6442,9 +6576,7 @@ mm = (function() {
                     }
 					
                     // Display Image
-                    //alert(ctx + " : " + xIn);
                     if (imageIn.complete) {
-                        // #Page1 ++
                         if (mm.FW.getGlobalAlpha() != -1) {
                             var trans = mm.FW.getGlobalAlpha();
                             if (trans > 255) {
@@ -6456,14 +6588,11 @@ mm = (function() {
                             ctx.drawImage(imageIn, xIn, yIn, widthIn, heightIn);
                             ctx.restore();
                         } else {
-                                // END #Page1 ++
                                 ctx.drawImage(imageIn, xIn, yIn, widthIn, heightIn);
-                        }  // #Page1 ++
+                        }  
                     } else {
                         if (imageIn.complete == false || imageIn.complete == null || imageIn.complete == "null" || imageIn.complete == undefined || imageIn.complete == "undefined") { 
-                            //imageIn = new Image();
                             imageIn.onload = function() {
-                                // #Page1 ++
                                 if (mm.FW.getGlobalAlpha() != -1) {
                                     var trans = mm.FW.getGlobalAlpha();
                                     if (trans > 255) {
@@ -6475,9 +6604,8 @@ mm = (function() {
                                     ctx.drawImage(imageIn, xIn, yIn, widthIn, heightIn);
                                     ctx.restore();
                                 } else {
-                                    // END #Page1 ++
                                     ctx.drawImage(imageIn, xIn, yIn, widthIn, heightIn);
-                                }  // #Page1 ++
+                                }  
                             }
                             imageIn.src = imageSrcIn;
                         }
@@ -6487,7 +6615,6 @@ mm = (function() {
                  
                     return imageIn;
                 },
-                // #A1 ++
                 isImageComplete: function(imageIn) {
                     return !(imageIn.complete == false || imageIn.complete == null || imageIn.complete == "null" || imageIn.complete == undefined || imageIn.complete == "undefined");
                 },
@@ -6581,13 +6708,10 @@ mm = (function() {
                     }
                 
                 }
-                // END #A1 ++
             };
     
         })(),
 
-      
-        // #Page1 ++
         Pages: (function() {
             
               
@@ -6618,7 +6742,6 @@ mm = (function() {
                         page.pageFlowController = mm.Pages.getPageFlowController(transformationName, timeout, amount);
                     }
                 
-                    // SWIPE ++
                     var swipeRightAction = mm.XML.getClass(widgetClassIn, "SwipeRight");
                     if (swipeRightAction != null) {
                         page.swipeRightAction = swipeRightAction;
@@ -6635,7 +6758,6 @@ mm = (function() {
                     if (swipeDownAction != null) {
                         page.swipeDownAction = swipeDownAction;
                     }
-                    // END SWIPE ++
                 
                     return page;
                 
@@ -6996,14 +7118,8 @@ mm = (function() {
                     if (newPageIn.partialShownX != null || newPageIn.partialShownY != null) {
                         newPageIn.partialNowShown = true;
                     }
-                
-                    // #PAGE23 ++
-                    /*if (newPageIn.afterOpenAction != null) {
-                        newPageIn.afterOpenAction(pageFlowIn, previousPage, newPageIn, null);
-                    }*/
                     mm.Pages.callAfterOpenPageFunction(newPageIn);
-                    // END #PAGE23 ++
-
+                    
                     mm.App.repaint();
                 },
                 closePage: function(currentPageIn, pageFlowControllerIn) {
@@ -7033,7 +7149,6 @@ mm = (function() {
                     pageFlowControllerIn.closePage(pageFlowIn, previousPage, currentPageIn);
                 
                 },
-                // #PAGE22 ++
                 closePageOther: function(currentPageIn, previousPageIn, pageFlowControllerIn) {
                 
                      if (isNull(pageFlowControllerIn)) {
@@ -7075,16 +7190,14 @@ mm = (function() {
                             var removeI = -1;
                             var i = 0;
                             while (removeI == -1 && i < pageFlowIn.pageFlow.length) {
-                                // #PAGE 22 -- if (currentPageIn.m.id == pageFlowIn.pageFlow[i].m.id) {
-                                if (previousPageIn.m.id == pageFlowIn.pageFlow[i].m.id) { // #PAGE22 +/-
+                                if (previousPageIn.m.id == pageFlowIn.pageFlow[i].m.id) { 
                                       removeI = i;
                                 }
                                 i = i + 1;
                             }
                             if (removeI != i) {
                                 var endI = pageFlowIn.pageFlow.length - 1;
-                                // #PAGE 22 -- for (var x = endI; x >= removeI; x--) {
-                                for (var x = endI; x > removeI; x--) {  // #PAGE22 +/-
+                                for (var x = endI; x > removeI; x--) {  
                                     pageFlowIn.pageFlow[x].m.x =  pageFlowIn.pageFlow[x].shownX;
                                     pageFlowIn.pageFlow[x].m.y = pageFlowIn.pageFlow[x].shownY;
             
@@ -7458,7 +7571,6 @@ mm = (function() {
                 
                 return pageFadeIn;
              },
-             // SWIPE ++
              swipeRight: function(pageIn) {
                 mm.Pages.swipe(pageIn, pageIn.swipeRightAction);
              },
@@ -9441,3 +9553,6 @@ mm = (function() {
     return module;
         
 })();
+//**************************************************************
+//* END mm is the main package for Flax
+//**************************************************************
