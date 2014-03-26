@@ -682,46 +682,47 @@ mm = (function() {
                 animationTimeout: 33,  // This sets the amimation interval, in miliseconds (Integer).  Set as default to 33 miliseconds, standard to trick eye for smooth animation.  This is only a reference, if each screen takes longer than 33 miliseconds to draw than the value will actually be higher.
                 s: null,  // Links to WidgetStyle that specifies the style of this animation.  If this is set to null, no background rectangle is drawn.
                 clickAction: null,  // Links to WidgetClick, this is called when the animation is clicked/tapped.
-                redrawAll: false,  // When true the whole screen is drawn on the animation (no just animation area.)
-                animationLoop: null,  // This is called on each animation loop, on checks for collisions etc.  (This is generally used only for internal use).
+                redrawAll: false,  // When true the whole screen is drawn on the animation (not just animation area.)
+                animationLoop: null,  // This is called on each animation loop, checks for collisions etc.  (This is generally used only for internal use).
                 timeOutRunning: null,  // Stores the animate time out.  (Internal use only)
                 collisions: null // CollisionDetection class: Stores the possible collisions within this animation.
             };
             return self;
         },
       
+	    /*
+		++
+		This is the input widget.  This allows the user to enter text on
+		the screen.
+		*/
         Input: function(widgetIn, textIn, drawIn, multilineIn, divIn) {
 				 
             var self = {
-                m: widgetIn, // THE X and Y could be relative to the widget, need to calculate the width and height based on font etc.
-                text: textIn,  // This is the text widget.
-                draw: drawIn,
-                multiline: multilineIn,
-                div: divIn,
-                numberCharacterLimit: null,  // If null, no limit exists.
-                clickAction: null,  // Called when the object is clicked.  (SHOULD OPEN THE KEYBOARD.)
-                action: null,  // Action called on enter.
-                validation: null,  // Validation called on enter.  Could be different types of validation.
-                edit: null,  // Edit called on enter.
-                scrollLeftRight: false,  // If true it is possible to scroll left/right
-                scrollUpDown: true, // If true it is possible to scroll up/down
-                maxWidth: 0,  // If scroll left right true, set max width  // If this is 0 then width same as comp.width
-                //maximize: false,  // ON maximize the text entry part takes up specified screen size.
-                //maximizeComp: null, // If maximize is true then this is Composite of maximize....
-                //maximizeButton: null,  // Links to widget such as Button, on press maximizes text box.
-                //minimizeButton: null,  // Links to widget such as Button, on press minimizes text box.
-                s: null, // STYLE
-                textArray: null,  // holds text for multiline.
-                offsetX: 0,
-                offsetY: 0,
-                label: null,  // ADD LABEL TO TEXT ENTRY BOX (LIKE TEXT) CONTAINS FONT.  HIDES WHEN CLICKED TO BE EDITED.
-				editable: true,  // TRUE/FALSE - IF SET TO TRUE THE TEXT ENTRY BOX IS EDITABLE, ELSE IS NOT EDITIABLE.		
-                password: false,  // TRUE/FALSE - IF PASSWORD is set this is a password field (Shows * instead of characters)               
-                passwordText: null, // FOR SCROLL ON HOLD IS IMPORTANT + MOVE (LIKE LISTS)
-                kineticScrollingEnabled: true, // Sets if kinetic scrolling enabled true or false
-                calculateHeightAuto: false, // If set to true this will automatically calculate the height of the input
-                closeEditOnEnter: true,
-                editMode: false // WHEN True, the INPUT IS CURRENTLY BEING EDITED
+                m: widgetIn, 
+                text: textIn,  // This is the text widget.  This contains the font and the actual text.
+                draw: drawIn,  // function that is responsible for drawing the input widget. (Internal use only).
+                multiline: multilineIn,  // If set to true the text input is multiline input, otherwise it is single line input.
+                div: divIn,  // This is the div id that has to be specified on the html5 page as "<div id="main" style="top: 0px, left: 0px"/>".  In this case set to "main".
+                numberCharacterLimit: null,  // If null, no limit exists.  Maximum number of characters that are allowed in the input.
+                clickAction: null,  // A function that is called when the object is clicked.  (Internal Use: Opens the keyboard)
+                action: null,  // Function that is called when the user selects enter.  (Signature: funtion(Input Widget, textValue)
+                validation: null,  // Function called on enter to perform text validations.  TODO: NOT YET IMPLEMENTED
+                edit: null,  // Function called on enter to perform text edits.  TODO: NOT YET IMPLEMENTED
+                scrollLeftRight: false,  // If true it is possible to scroll the text left/right
+                scrollUpDown: true, // If true it is possible to scroll the text up/down
+                maxWidth: 0,  // If scroll left right true, set max width.  If this is 0 then width same as m.w
+                s: null, // Links to WidgetStyle that specifies the style of this Input.
+                textArray: null,  // holds text for multiline input.
+                offsetX: 0,  // Internal use only.  Stores the x offset in px of the text.
+                offsetY: 0,  // Internal use only.  Stores the y offset in px of the text.
+                label: null,  // This is the text widget and adds a label to the input widget.  This is hidden when clicked to be edited.
+				editable: true,  // If this is set to true, then the Input widget is editable otherwiser it is not editable.		
+                password: false,  // If this is set to true then this is password input field (Shows * instead of characters)               
+                passwordText: null, // Stores the actual text of the password.  The text attribute will contain *****.
+                kineticScrollingEnabled: true, // Sets to true if kinetic scrolling is enabled.
+                calculateHeightAuto: false, // If set to true this will automatically calculate the height of the input text.
+                closeEditOnEnter: true,  // If set to true, the edit will be closed on enter.
+                editMode: false // When set to true, the input is currently being edited by the user.
              };
 					  
             return self;
@@ -729,6 +730,7 @@ mm = (function() {
       
       
         /*
+		++
         WidgetList is used to draw lists to the screen.
         A list can be vertical or horizontal.
         It is possible to mix any other widget with a list widget.
@@ -737,20 +739,20 @@ mm = (function() {
                          
             var self = {
                 m: widgetIn,
-                draw: drawIn, // FUNCTION RESPONSIBLE FOR DRAWING THE WIDGET
+                draw: drawIn, // function that is responsible for drawing the widgetlist widget. (Internal use only).
                 widgetsCanBeMoved: false,  // If true the user can move the objects within this list.
                 vertical: true, // Specifies if this is a vertical list or horizontal list.  false = horizontal
                 showOutOfArea: false,  // Still shows the widgets if out of x,y area of the list.  for example if on border shows them half on screen.
                 gapWidget: null,  // Set the gap marker that is widget such as an image, is shown when mouse passed over it.  If nothing uses standard gap widget.  
                 gapSize: null,	// Set the gap between the widgets
                 currentOffset: 0,  // This stores the offset of the widget list for drawing
-                s: null, // STYLE
-                newOffset: 0,  // STORES THE NEW OFFSET OF THW WIDGET LIST
-                numberOfPixelsMovedToDraw: 1, // USED WHEN LIST IS BEING SCROLLED.  ONLY REDRAWS AFTER SO MANY PIXEL MOVES.  IMPROVES PERFORMANCE.  SO WHEN = 1, 1 pixel move = 1 redraw.  when 2 only every 2 pixel moves = redraw
-                pixelsMoved: 1,  // NUMBER OF PIXELS MOVED FOR EACH 1 PIXEL MOVE (SPEED UP LISTS)
-                kineticScrollingEnabled: true, // Sets if kinetic scrolling enabled true or false
-                widgetSize: 0,  // Used temporary for on hold
-                listPositionMarker: null // Connects to any listPositionMarker to show list position
+                s: null, // Links to WidgetStyle that specifies the style of this List.
+                newOffset: 0,  // Stores the offset in px of the list.
+                numberOfPixelsMovedToDraw: 1, //  Specifies how many pixels need to move for the list to be redrawn. Can improve performance on low end devices.  When == 1, 1 pixel move == 1 redraw.  When 2 only every 2 pixel moves == redraw.
+                pixelsMoved: 1,  // Specifies how many pixels move for each 1 pixel move by the user.  This can make the lists scroll quicker.
+                kineticScrollingEnabled: true, // Sets if kinetic scrolling enabled true or false.
+                widgetSize: 0,  // Used for onHold
+                listPositionMarker: null // Connects to any listPositionMarker to show list position.  TODO. To be implemented in this version.
             };
             return self;
         },
@@ -758,6 +760,7 @@ mm = (function() {
   
 
         /*
+		++
         Page is widget that is a rectangle that refers to a single page.
         The Page can be the size of the screen, or just a partial size of the screen.
         Page is assigned within a PageFlow so it can have page transformations associated to it.
@@ -765,28 +768,29 @@ mm = (function() {
         Page: function(widgetIn, drawIn) {
             var self = {
                 m: widgetIn,
-                draw: drawIn,
-                s: null,  // STYLE
-                shownX: 0,
-                shownY: 0,
-                fullPageX: null,
-                fullPageY: null,
-                previousPage: null,
-                pageFullyOpen: false,
-                transparency: -1,  // SET TRANSPARENCY, USED INTERNALLY FOR FADE IN, FADE OUT.  255 is max transparency.
-                pageFlowController: null,  // ON OPEN STORES THE IPageFlowController, so it can be stored for close.
-                partialShownX: null,  // SHOW PARTIAL PART OF PAGE
-                partialShownY: null,
-                partialNowShown: false,  // INTERNAL USE ONLY
-                swipeLeftAction: null,
-                swipeRightAction: null,
-                swipeDownAction: null,
-                swipeUpAction: null
+                draw: drawIn,  // function that is responsible for drawing the page widget. (Internal use only).
+                s: null,  // Links to WidgetStyle that specifies the style of this Page.
+                shownX: 0,  // Internal use, to store page shown x position.
+                shownY: 0,  // Internal use, to store page shown y position.
+                fullPageX: null,  // Internal use.
+                fullPageY: null,  // Internal use.
+                previousPage: null,  // Stores a link to the previous page, to be used by the page flow.
+                pageFullyOpen: false,  // Set to true when the page is full open.
+                transparency: -1,  // Sets the transparency, used for fade in and fade out.  255 is max transparency.
+                pageFlowController: null,  // On open page stores the IPageFlowController, so it can be stored.  If this is null, then this is stored at PageFlow level and the page flow is the same for all pages.
+                partialShownX: null,  // Show partial page x position.
+                partialShownY: null,  // Show partial page y position.
+                partialNowShown: false,  // Internal use only.
+                swipeLeftAction: null,  // function called when a swipe left by the user is detected.  (Signature: function(page))
+                swipeRightAction: null,  // function called when a swipe right by the user is detected.  (Signature: function(page))
+                swipeDownAction: null,  // function called when a swipe down by the user is detected.  (Signature: function(page))
+                swipeUpAction: null  // function called when a swipe up by the user is detected.  (Signature: function(page))
             };
             return self;
         },
       
         /*
+		++
         PageFlow stores the pages that are shown to the user.
         It handles the page transformation between pages, and records the navigation so it is possible to use the back button.
         Many of the features of PageFlow are controlled here, making page transformation easier for the developer.
@@ -795,9 +799,9 @@ mm = (function() {
             var self = {
                 m: widgetIn,
                 draw: drawIn,
-                currentShownPage: null,  // THIS IS THE PAGE THAT IS BEIGN SHOWN TO THE USER, CURRENT PAGE A TOP OF STACK
-                pageFlow: null,
-                pageFlowController: null  // THIS STORES THE IPageFlowController, if it is not stored at page level.  
+                currentShownPage: null,  // This is the page that is currently being shown to the user.  On top of the stack.
+                pageFlow: null,  // Array of Page widget.  
+                pageFlowController: null  // This stores the IPageFlowController, if it is not stored at page level.  
             };
             return self;
 	
@@ -809,12 +813,28 @@ mm = (function() {
       
       
       
-        
+        /*
+		++
+		Used by the Page functionality to open and close the pages.  Controls the page flow transformation.
+		Generally used for internal use only.  The page flow controllers have been predefined in these modules:
+			- PageFlowJump
+			- PageFlowUp
+			- PageFlowDown
+			- PageFlowLeft
+			- PageFlowRight
+			- PageSlideUp
+			- PageSlideDown
+			- PageSlideRight
+			- PageSlideLeft
+			- PageFadeIn
+		It is possible to create different page flow transformation as long as they keep to this interface.
+			
+		*/
         IPageFlowController: function(openPageIn, closePageIn) {
         
             var self = {
-                openPage: openPageIn,
-                closePage: closePageIn
+                openPage: openPageIn,  // function called when page is opened.  (Signature: function(pageFlowIn, previousPageIn, newPageIn))
+                closePage: closePageIn  // function called when page is closed.  (Signature: function(pageFlowIn, previousPageIn, currentPageIn))
             };
             return self;
         },
@@ -828,8 +848,10 @@ mm = (function() {
         },
 		
         /*
+		++
 		This class is used to save the current state of the widgets.
 		Once a state is saved, it is possible to then reload the widgets state to exactly how it was previously.
+		
 		*/
         SavedState: function(idIn, widgetsIn) {
             var self = {
@@ -868,9 +890,9 @@ mm = (function() {
             var realScreenPosX = 0;
             var realScreenPosY = 0;
             
-            // Saves the current state of the Screen.  (CHECK IF IT STILL WORKS!)
+            // Saves the current state of the Screen.  
             var savedStates = new Array();  // THIS WILL STORE ALL OF THE SAVED CANVAS, FOR QUICK REUSE IN SAME STATE Array of widgets array.
-            // FOR THIS TO PROPERLY WORK NEED DEEP COPY!!!
+            // FOR THIS TO PROPERLY WORK NEED DEEP COPY WORKING!!!
             
             return {
                 /*
@@ -1998,18 +2020,6 @@ mm = (function() {
                     }
                 },
                 /*
-                TODO: NOT USED, REMOVE
-                */
-                /*sortByLayersReverse: function(mAIn, mBIn) {
-                    if (mAIn.m.l > mBIn.m.l) {
-                        return -1;
-                    } else if (mAIn.m.l < mBIn.m.l) {
-                        return 1;
-                    } else {  // MUST BE THE SAME LAYER
-                        return 0;
-                    }
-                },*/
-                /*
                 Sorts the widgets by their draw order.
                 */
                 sortByDrawOrder: function(mAIn, mBIn) {
@@ -2088,20 +2098,16 @@ mm = (function() {
                                         // CALL THE ACTION
                                         if (widgetsOverList[eachWidget].m.enabled == true) {  // ONLY CALLED IF WIDGET IS NOT DISABLED
               
-                                            // MWM NEW -- widgetsOverList[eachWidget].clickAction(widgetsOverList[eachWidget], xIn, yIn);
-                                            // MWM NEW ++
                                             if (widgetsOverList[eachWidget].clickAction != null && widgetsOverList[eachWidget].clickAction.action != null) {
                                                 var clickAction = mm.App.getFunction(widgetsOverList[eachWidget].clickAction.action);
-                                                // MWM NEW --widgetsOverList[eachWidget].clickAction(widgetsOverList[eachWidget], xIn, yIn); // MWM NEW ++
                                                 if (clickAction != null) {
-                                                    clickAction(widgetsOverList[eachWidget], xIn, yIn); // MWM NEW ++
+                                                    clickAction(widgetsOverList[eachWidget], xIn, yIn); 
                                                 }
                                             }
               
                                              // AFTER THE CLICK IS PERFORMED, SEE IF WE HAVE TO NAVIGATE TO ANOTHER PAGE
                                             mm.Pages.navigatePageByClickAction(widgetsOverList[eachWidget], widgetsOverList[eachWidget].clickAction);
               
-                                            // END MWM NEW ++
                                             found = true;
                                             if (widgetsOverList[eachWidget].m.onActionRedrawPartial == false) {
                                                 redrawPartial = false;
@@ -2112,7 +2118,7 @@ mm = (function() {
                                     }
                                     eachWidget = eachWidget + 1;
                                 }
-                                // MWM 12/04/2012 : ONLY CLEAR DRAW IF THE CLICK ACTION HAS BEEN CALLED
+                                // ONLY CLEAR DRAW IF THE CLICK ACTION HAS BEEN CALLED
                                  if (found == true) {
                                 	if (redrawPartial == false) {
                                     	mm.App.repaint();
@@ -2810,15 +2816,12 @@ mm = (function() {
                                 if (onMoveTargets[eachWidget].m.moveOver[eachMoveOver].sourceType == movingWidgetIn.m.type) {
 					
                                     if (onMoveTargets[eachWidget].m.moveOver[eachMoveOver].moveOutOverAction != null) {
-                                            // MWM NEW ++
                                             var moveOutOverFunction = mm.App.getFunction(onMoveTargets[eachWidget].m.moveOver[eachMoveOver].moveOutOverAction);
                                            if (moveOutOverFunction != null) {
                                                 moveOutOverFunction(ctx, xIn, yIn, movingWidgetIn, onMoveTargets[eachWidget], onMoveTargets[eachWidget].m.moveOver[eachMoveOver]);
                                             } else {
                                                 console.log("ERROR: moveOutOver Function not found: " + onMoveTargets[eachWidget].m.moveOver[eachMoveOver].moveOutOverAction);
                                             }
-                                            // END MWM NEW ++
-                                            // MWM NEW -- onMoveTargets[eachWidget].m.moveOver[eachMoveOver].moveOutOverAction(ctx, xIn, yIn, movingWidgetIn, onMoveTargets[eachWidget]);
                                     } else {
                                         if (onMoveTargets[eachWidget].m.isStandardMoveover == true) {
                                             onMoveTargets[eachWidget].m.standardMoveOutOver(ctx, xIn, yIn, movingWidgetIn, onMoveTargets[eachWidget]);
@@ -2993,7 +2996,8 @@ mm = (function() {
         })(),
 		
         /*
-        Methods that are specific to container widgets.
+		++
+        Methods that are specific to the container widgets.
         
         Generally used for internal use only.
         */
@@ -4754,12 +4758,18 @@ mm = (function() {
         ++
         This module is specific to the Fragment widget.
         
-        Fragment can be used like a button.
+        Fragment can also be used like a button.
         */
         Fragments: (function() {
             
               
             return {
+				/*
+                ++
+                This converts a WidgetClass to a new instance of the Fragment widget.
+                This is for internal use only.  For external use, please use:
+                mm.App.addWidgetX
+                */
                 addWidgetClass: function(widgetClassIn, widgetsIn) {
                 
                     var id = widgetClassIn.id;
@@ -4782,6 +4792,28 @@ mm = (function() {
                     return fragment;
                 
                 },
+				 /*
+                External Use.
+                If the commons.xml or page.xmls files are not used, or the developer wants to add a Fragment widget
+                using pure JavaScript.
+                This method can be used to add a Fragment widget.
+                Input:
+                    idIn: String: The id for the text widget.  If this is null it will be automatically generated.
+                    typeNameIn: String: The m.type attribute.
+                    xIn: String: Can be a px or percent value of position of widget.
+                    yIn: String: Can be a px or percent value of position of widget.
+					widthIn: String: Can be a px or percent value of the width of widget.
+                    heightIn: String: Can be a px or percent value of height of widget.
+					layerIn: Int: This is layer for the widget.
+					movableIn: Boolean: If this is true then the widget can be moved.
+					actionIn: function: This is the click action when the user presses this widget.
+					widgetsIn: Array of widgets: These are the child widgets that will be drawn within this fragment.
+					selectableWidgetIn: Widget: This can be used with click action or hold, defines a widget that can be used as the selectable point of the fragment.
+					styleIn: WidgetStyle: The style of the fragment background.  Fragments are rectangular.
+				Output:
+                    New Fragment widget instance.
+                
+                */
                 add: function(idIn, typeNameIn, xIn, yIn, widthIn, heightIn, layerIn, movableIn, actionIn, widgetsIn, selectableWidgetIn, styleIn) {
                     
                     var m = mm.Widgets.add(idIn, typeNameIn, "Fragment", xIn, yIn, widthIn, heightIn, layerIn);
@@ -4923,6 +4955,12 @@ mm = (function() {
             
               
             return {
+				/*
+                ++
+                This converts a WidgetClass to a new instance of the Circles widget.
+                This is for internal use only.  For external use, please use:
+                mm.App.addWidgetX
+                */
                 addWidgetClass: function(widgetClassIn, widgetsIn) {
                 
                     var id = widgetClassIn.id;
@@ -4942,6 +4980,27 @@ mm = (function() {
                 
                     return circle;
                 },
+				 /*
+                External Use.
+                If the commons.xml or page.xmls files are not used, or the developer wants to add a Circle widget
+                using pure JavaScript.
+                This method can be used to add a Circle widget.
+                Input:
+                    idIn: String: The id for the text widget.  If this is null it will be automatically generated.
+                    typeNameIn: String: The m.type attribute.
+                    xIn: String: Can be a px or percent value of position of widget.
+                    yIn: String: Can be a px or percent value of position of widget.
+					radiusIn: String: Can be a px or percent value of the radius of widget.
+					layerIn: Int: This is layer for the widget.
+                    movableIn: Boolean: If this is true then the widget can be moved.
+					actionIn: function: This is the click action when the user presses this widget.
+					widgetsIn: Array of widgets: These are the child widgets that will be drawn within this circle.
+					selectableWidgetIn: Widget: This can be used with click action or hold, defines a widget that can be used as the selectable point of the circle.
+					styleIn: WidgetStyle: The style of the circle background.  
+				Output:
+                    New Circle widget instance.
+                
+                */
                 add: function(idIn, typeNameIn, xIn, yIn, radiusIn, layerIn, movableIn, actionIn, widgetsIn, selectableWidgetIn, styleIn) {
 				
                     // RADIUS COULD BE A PERCENTAGE ????  LOOK AT CODE TO SEE WHAT NEEDS TO BE DONE.
@@ -5092,10 +5151,20 @@ mm = (function() {
     
         })(),
       
+	  
+		/*
+        ++
+        This module contains the functions for the Polygon widget.
+        */
         Polygons: (function() {
             
-              
             return {
+				/*
+                ++
+                This converts a WidgetClass to a new instance of the Polygons widget.
+                This is for internal use only.  For external use, please use:
+                mm.App.addWidgetX
+                */
                 addWidgetClass: function(widgetClassIn, widgetsIn) {
                  
                     var id = widgetClassIn.id;
@@ -5117,11 +5186,31 @@ mm = (function() {
                     return polygon;
                 
                 },
+				 /*
+                External Use.
+                If the commons.xml or page.xmls files are not used, or the developer wants to add a Polygon widget
+                using pure JavaScript.
+                This method can be used to add a Polygon widget.
+                Input:
+                    idIn: String: The id for the text widget.  If this is null it will be automatically generated.
+                    typeNameIn: String: The m.type attribute.
+                    polygonIn: String: TODO
+					layerIn: Int: This is layer for the widget.
+                    movableIn: Boolean: If this is true then the widget can be moved.
+					actionIn: function: This is the click action when the user presses this widget.
+					widgetsIn: Array of widgets: These are the child widgets that will be drawn within this circle.
+					selectableWidgetIn: Widget: This can be used with click action or hold, defines a widget that can be used as the selectable point of the circle.
+					styleIn: WidgetStyle: The style of the circle background.  
+					offsetXIn: The adds an x offset in px to each polygon x position.
+					offsetYIn: The adds an y offset in px to each polygon y position.
+				Output:
+                    New Polygon widget instance.
+                
+                */
                 add: function(idIn, typeNameIn, polygonIn, layerIn, movableIn, actionIn, widgetsIn, selectableWidgetIn, styleIn, offsetXIn, offsetYIn) {
                     var width = 0;
                     var height = 0;
                    
-                    // xIN, yIN HERE IS THE OFFSET
                     if (isNull(offsetXIn)) {
                         offsetXIn = 0;
                     }
@@ -6040,7 +6129,12 @@ mm = (function() {
     
         })(),
 		
-        // ALL SHAPE FUNCTIONALITY HERE
+		/*
+        ++
+        This module contains the functions for handling shapes.
+		This is for internal use only.
+		It specifically handles the drawing of shapes to the HTML5 canvas.
+        */
         Shapes: (function() {
 		
             return {
@@ -6187,8 +6281,6 @@ mm = (function() {
                  
                     ctx.lineWidth = lineWidthIn;
                  
-                    
-                 
                     ctx.arc(xIn + radiusIn, yIn + radiusIn, radiusIn, 0, Math.PI*2, false);
                     
                     var transparent = -1;
@@ -6205,7 +6297,6 @@ mm = (function() {
                         ctx.save();
                         ctx.globalAlpha = mm.Shapes.convertTransparentValueToGlobalAlpha(transparent);
                     }
-                    // END POLYGON_BUG_2 ++
                  
                     if (fillIn == true) {
                         if (gradientIn != null) {
@@ -6373,10 +6464,23 @@ mm = (function() {
     
         })(),
 		
-        // ALL IMAGE FUNCTIONALITY HERE
+        /*
+        ++
+        This module contains the functionality used for the Image widget.
+		
+		Images can be png, jpg, gif etc.  
+		
+		An image widget can be used for many different purposes including an image button.
+        */
         Images: (function() {
 		
             return {
+				/*
+                ++
+                This converts a WidgetClass to a new instance of the Image widget.
+                This is for internal use only.  For external use, please use:
+                mm.App.addWidgetX
+                */
                 addWidgetClass: function(widgetClassIn) {
                 
                     var id = widgetClassIn.id;
@@ -6398,7 +6502,28 @@ mm = (function() {
                     return image;
                 
                 },
-                // ADDS AN IMAGE WIDGET
+                 /*
+                External Use.
+                If the commons.xml or page.xmls files are not used, or the developer wants to add a Image widget
+                using pure JavaScript.
+                This method can be used to add a Image widget.
+                Input:
+                    idIn: String: The id for the text widget.  If this is null it will be automatically generated.
+                    typeNameIn: String: The m.type attribute.
+                    xIn: String: Can be a px or percent value of position of widget.
+                    yIn: String: Can be a px or percent value of position of widget.
+                    widthIn: String: Can be a px or percent value of width of widget.
+                    heightIn: String: Can be a px or percent value of height of widget.
+                    layerIn: Int: This is layer for the widget.
+					movableIn: Boolean: If this is true then the widget can be moved.
+					imageSrcIn: String: This is the location of the image file.
+					actionIn: function: This is the click action when the user presses this widget.
+					preLoadImageIn: Boolean: If this is set to true the image is loaded into memory when the application is initialised.
+				
+				Output:
+                    New Image widget instance.
+                
+                */
                 add:  function(idIn, typeNameIn, xIn, yIn, widthIn, heightIn, layerIn, movableIn, imageSrcIn, actionIn, preLoadImageIn) {
                 
                     if (preLoadImageIn == null) {
@@ -6712,10 +6837,23 @@ mm = (function() {
     
         })(),
 
+		
+		/*
+        ++
+        This module contains the functionalities for the Page and PageFlow widget.
+		
+		Most applications will have more than one page.  This handles page transformation and going to previous pages etc.
+		*/
         Pages: (function() {
             
               
             return {
+				/*
+                ++
+                This converts a WidgetClass to a new instance of the Page widget.
+                This is for internal use only.  For external use, please use:
+                mm.App.addWidgetX
+                */
                 addWidgetClass: function(widgetClassIn, widgetsIn) {
                 
                     var id = widgetClassIn.id;
@@ -6762,6 +6900,26 @@ mm = (function() {
                     return page;
                 
                 },
+				/*
+                External Use.
+                If the commons.xml or page.xmls files are not used, or the developer wants to add a Page widget
+                using pure JavaScript.
+                This method can be used to add a Page widget.
+                Input:
+                    idIn: String: The id for the text widget.  If this is null it will be automatically generated.
+                    typeNameIn: String: The m.type attribute.
+                    xIn: String: Can be a px or percent value of position of widget.
+                    yIn: String: Can be a px or percent value of position of widget.
+                    widthIn: String: Can be a px or percent value of width of widget.
+                    heightIn: String: Can be a px or percent value of height of widget.
+                    layerIn: Int: This is layer for the widget.
+					widgetsIn: Array of widgets: These are the child widgets that will be drawn within this page.
+					styleIn: WidgetStyle: The style of the page.  Pages are rectangular.
+					
+				Output:
+                    New Page widget instance.
+                
+                */
                 addPage: function(idIn, typeNameIn, xIn, yIn, widthIn, heightIn, layerIn, widgetsIn, styleIn) {
 
                     var m = mm.Widgets.add(idIn, typeNameIn, "Page", xIn, yIn, widthIn, heightIn, layerIn);
@@ -6811,20 +6969,26 @@ mm = (function() {
                 
 
                 },
-                addPageFlowWidgetClass: function(widgetClassIn, compsIn) {
+				/*
+                ++
+                This converts a WidgetClass to a new instance of the PageFlow widget.
+                This is for internal use only.  For external use, please use:
+                mm.App.addWidgetX
+                */
+                addPageFlowWidgetClass: function(widgetClassIn, widgetsIn) {
                 
-                    // GET THE START PAGE, MUST BE IN THE compsIn
+                    // GET THE START PAGE, MUST BE IN THE widgetsIn
                     var startPage = null;
                     var i=0;
                     var startPageName = mm.XML.getString(widgetClassIn, "StartPage");
-                    while (i<compsIn.length && startPage == null) {
-                        if (startPageName == compsIn[i].m.id) {
-                            startPage = compsIn[i];
+                    while (i<widgetsIn.length && startPage == null) {
+                        if (startPageName == widgetsIn[i].m.id) {
+                            startPage = widgetsIn[i];
                         }
                         i = i + 1;
                     }
                 
-                    var pageFlow = mm.Pages.addPageFlow(widgetClassIn.id, mm.XML.getString(widgetClassIn, "Type"), mm.XML.getString(widgetClassIn, "X"), mm.XML.getString(widgetClassIn, "Y"), mm.XML.getString(widgetClassIn, "W"), mm.XML.getString(widgetClassIn, "H"), mm.XML.getInt(widgetClassIn, "L"), compsIn, startPage);
+                    var pageFlow = mm.Pages.addPageFlow(widgetClassIn.id, mm.XML.getString(widgetClassIn, "Type"), mm.XML.getString(widgetClassIn, "X"), mm.XML.getString(widgetClassIn, "Y"), mm.XML.getString(widgetClassIn, "W"), mm.XML.getString(widgetClassIn, "H"), mm.XML.getInt(widgetClassIn, "L"), widgetsIn, startPage);
                 
                     mm.Widgets.updateWidgetXML(widgetClassIn, pageFlow);
                 
@@ -6837,10 +7001,28 @@ mm = (function() {
                     return pageFlow;
                 
                 },
+				/*
+                External Use.
+                If the commons.xml or page.xmls files are not used, or the developer wants to add a PageFlow widget
+                using pure JavaScript.
+                This method can be used to add a PageFlow widget.
+                Input:
+                    idIn: String: The id for the text widget.  If this is null it will be automatically generated.
+                    typeNameIn: String: The m.type attribute.
+                    xIn: String: Can be a px or percent value of position of widget.
+                    yIn: String: Can be a px or percent value of position of widget.
+                    widthIn: String: Can be a px or percent value of width of widget.
+                    heightIn: String: Can be a px or percent value of height of widget.
+                    layerIn: Int: This is layer for the widget.
+					pagesIn: Array of pages: These are the pages that belong to this pageflow.
+					startPageIn: Page: This is the first page that is shown on the pageflow.
+					
+				Output:
+                    New Page widget instance.
+                
+                */
                 addPageFlow: function(idIn, typeNameIn, xIn, yIn, widthIn, heightIn, layerIn, pagesIn, startPageIn) {
 
-                    // TO THINK IF SELECT WIDGET IS NULL BUT HAVE ACTION AND MOVABLE
-                    // THEN ALL OF THE BOX IS SELECTABLE......
                      var m = mm.Widgets.add(idIn, typeNameIn, "PageFlow", xIn, yIn, widthIn, heightIn, layerIn);
       
                     m.container = true;
@@ -6954,7 +7136,6 @@ mm = (function() {
                     }
                     return page;
                 },
-                // MWM NEW ++
                 openPageByPageId: function(pageFlowIn, pageIdIn, argsIn) {
                 
                     var page = mm.Pages.getPageInPageFlow(pageFlowIn, pageIdIn);
@@ -7050,7 +7231,6 @@ mm = (function() {
                     }
                 
                 },
-                // END MWM NEW ++
                 openPage: function(newPageIn, pageFlowControllerIn, argsIn) {
                 
                     newPageIn.pageFlowController = pageFlowControllerIn;
@@ -7082,25 +7262,18 @@ mm = (function() {
                             pageFlowIn.m.widgets[i].m.l = 1;
                     }
                     newPageIn.m.l = 2;
-
-                    /* MWM OLD if (newPageIn.openAction != null) {
-                        newPageIn.openAction(pageFlowIn, newPageIn.previousPage, newPageIn, argsIn);
-                    }*/
                 
-                    mm.Pages.callOpenPageFunction(newPageIn); // MWM NEW
+                    mm.Pages.callOpenPageFunction(newPageIn); 
                
                     newPageIn.m.enabled = true;
                     newPageIn.m.hidden = false;
 
-                   // if (hasPreviousPage == false) {
-                        pageFlowIn.pageFlow.push(newPageIn);
-                   // }
+                    pageFlowIn.pageFlow.push(newPageIn);
                 
                     newPageIn.pageFullyOpen = true;
  		
                     pageFlowControllerIn.openPage(pageFlowIn, newPageIn.previousPage, newPageIn);
-                
-                
+              
                 },
                 afterOpenPage: function(pageFlowIn, previousPage, newPageIn) {
 
@@ -7144,7 +7317,7 @@ mm = (function() {
 
                     pageFlowIn.currentShownPage.m.enabled = false;
                 
-                    mm.Pages.callClosePageFunction(currentPageIn); // MWM NEW
+                    mm.Pages.callClosePageFunction(currentPageIn); 
 
                     pageFlowControllerIn.closePage(pageFlowIn, previousPage, currentPageIn);
                 
@@ -7169,7 +7342,7 @@ mm = (function() {
                     }
                     pageFlowIn.currentShownPage.m.enabled = false;
                 
-                    mm.Pages.callClosePageFunction(currentPageIn); // MWM NEW
+                    mm.Pages.callClosePageFunction(currentPageIn); 
 		
                     pageFlowControllerIn.closePage(pageFlowIn, previousPage, currentPageIn);
                 
@@ -7181,7 +7354,7 @@ mm = (function() {
                         previousPageIn.m.enabled = true;
                     }
 
-                    mm.Pages.callAfterClosePageFunction(currentPageIn); // MWM NEW
+                    mm.Pages.callAfterClosePageFunction(currentPageIn);
          
                     currentPageIn.pageFullyOpen = false;
                     if (currentPageIn.partialShownX == null && currentPageIn.partialShownY == null) {
@@ -7201,7 +7374,7 @@ mm = (function() {
                                     pageFlowIn.pageFlow[x].m.x =  pageFlowIn.pageFlow[x].shownX;
                                     pageFlowIn.pageFlow[x].m.y = pageFlowIn.pageFlow[x].shownY;
             
-                                    pageFlowIn.pageFlow.remove(x, x+1);  // TO CHECK IF REMOVE WORKS IN JavaScript
+                                    pageFlowIn.pageFlow.remove(x, x+1);  
                                 }
                             }
                         }
@@ -7599,14 +7772,34 @@ mm = (function() {
            };
         })(),
         
+		/*
+		This module implements the IPageFlowController interface.
+		
+		This is used to transition from one page to another page within a page flow.
+		This handles the transition of both opening and closing the page.
+		
+		The page flow jump, opens and closes the pages with no animation effects.  The new
+		page is just instantly drawn on top of the old page.
+		
+		*/
         PageFlowJump: (function() {
 		            
               
             return {
+				/*
+				Implements the IPageFlowController.openPage.
+				
+				Responsible for opening the page.
+				*/
                 openPage: function(pageFlowIn, previousPageIn, newPageIn) {
                     mm.App.repaint();
                     mm.Pages.afterOpenPage(pageFlowIn, previousPageIn, newPageIn);
                 },
+				/*
+				Implements the IPageFlowController.closePage.
+				
+				Responsible for closing the page.
+				*/
                 closePage: function(pageFlowIn, previousPageIn, currentPageIn) {
                     mm.App.repaint();
                     mm.Pages.afterClosePage(pageFlowIn, previousPageIn, currentPageIn);
@@ -7614,6 +7807,16 @@ mm = (function() {
             };
         })(),
         
+		/*
+		This module implements the IPageFlowController interface.
+		
+		This is used to transition from one page to another page within a page flow.
+		This handles the transition of both opening and closing the page.
+		
+		The page flow up, opens and closes the pages with a animation that slides the new page up over the previous page.  
+		The reverse happens when closing the page.
+		
+		*/
         PageFlowUp: (function() {
 		
             var animationLoop = null;
@@ -7624,8 +7827,6 @@ mm = (function() {
             var pageFlow = null;
             var previousPage = null;
 
-            
-              
             return {
                  setAnimationTimeout: function(animationTimeoutIn) {
                     animationTimeout = animationTimeoutIn;
@@ -7681,6 +7882,11 @@ mm = (function() {
                         mm.Pages.afterClosePage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				Implements the IPageFlowController.openPage.
+				
+				Responsible for opening the page.
+				*/
                 openPage: function(pageFlowIn, previousPageIn, newPageIn) {
                 
                 
@@ -7693,6 +7899,11 @@ mm = (function() {
                     // START ANIMATION
                     mm.PageFlowUp.animateUp();
                 },
+				/*
+				Implements the IPageFlowController.closePage.
+				
+				Responsible for closing the page.
+				*/
                 closePage: function(pageFlowIn, previousPageIn, currentPageIn) {
                 
                 
@@ -7708,6 +7919,16 @@ mm = (function() {
             };
         })(),
         
+		/*
+		This module implements the IPageFlowController interface.
+		
+		This is used to transition from one page to another page within a page flow.
+		This handles the transition of both opening and closing the page.
+		
+		The page flow down, opens and closes the pages with a animation that slides the new page down over the previous page.  
+		The reverse happens when closing the page.
+		
+		*/
         PageFlowDown: (function() {
 		
             var animationLoop = null;
@@ -7779,6 +8000,11 @@ mm = (function() {
                     }
                     
                 },
+				/*
+				Implements the IPageFlowController.openPage.
+				
+				Responsible for opening the page.
+				*/
                 openPage: function(pageFlowIn, previousPageIn, newPageIn) {
                 
                     newPageIn.m.y = pageFlowIn.m.y - (newPageIn.m.h + 1);
@@ -7790,6 +8016,11 @@ mm = (function() {
                     mm.PageFlowDown.animateDown();
                     
                 },
+				/*
+				Implements the IPageFlowController.closePage.
+				
+				Responsible for closing the page.
+				*/
                 closePage: function(pageFlowIn, previousPageIn, currentPageIn) {
                 
                 
@@ -7804,6 +8035,16 @@ mm = (function() {
             };
         })(),
         
+		/*
+		This module implements the IPageFlowController interface.
+		
+		This is used to transition from one page to another page within a page flow.
+		This handles the transition of both opening and closing the page.
+		
+		The page flow left, opens and closes the pages with a animation that slides the new page left over the previous page.  
+		The reverse happens when closing the page.
+		
+		*/
         PageFlowLeft: (function() {
 		
             var animationLoop = null;
@@ -7873,6 +8114,11 @@ mm = (function() {
                         mm.Pages.afterClosePage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				Implements the IPageFlowController.openPage.
+				
+				Responsible for opening the page.
+				*/
                 openPage: function(pageFlowIn, previousPageIn, newPageIn) {
                 
                     // SET THE NEW PAGE, UNDERNEATH THE CURRENT PAGE
@@ -7884,6 +8130,11 @@ mm = (function() {
                     // START ANIMATION
                     mm.PageFlowLeft.animateLeft();
                 },
+				/*
+				Implements the IPageFlowController.closePage.
+				
+				Responsible for closing the page.
+				*/
                 closePage: function(pageFlowIn, previousPageIn, currentPageIn) {
                     newPage = currentPageIn;
                     pageFlow = pageFlowIn;
@@ -7896,6 +8147,16 @@ mm = (function() {
             };
         })(),
         
+		/*
+		This module implements the IPageFlowController interface.
+		
+		This is used to transition from one page to another page within a page flow.
+		This handles the transition of both opening and closing the page.
+		
+		The page flow right, opens and closes the pages with a animation that slides the new page right over the previous page.  
+		The reverse happens when closing the page.
+		
+		*/
         PageFlowRight: (function() {
 		
             var animationLoop = null;
@@ -7963,6 +8224,11 @@ mm = (function() {
                         mm.Pages.afterOpenPage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				Implements the IPageFlowController.openPage.
+				
+				Responsible for opening the page.
+				*/
                 openPage: function(pageFlowIn, previousPageIn, newPageIn) {
                 
                     // SET THE NEW PAGE, UNDERNEATH THE CURRENT PAGE
@@ -7975,6 +8241,11 @@ mm = (function() {
                     // START ANIMATION
                     mm.PageFlowRight.animateRight();
                 },
+				/*
+				Implements the IPageFlowController.closePage.
+				
+				Responsible for closing the page.
+				*/
                 closePage: function(pageFlowIn, previousPageIn, currentPageIn) {
                     newPage = currentPageIn;
                     pageFlow = pageFlowIn;
@@ -7987,6 +8258,17 @@ mm = (function() {
             };
         })(),
         
+		/*
+		This module implements the IPageFlowController interface.
+		
+		This is used to transition from one page to another page within a page flow.
+		This handles the transition of both opening and closing the page.
+		
+		The page slide up, opens and closes the pages with a animation that slides both the previous page and the new page up.  The
+		new page takes the position of the previous page.
+		The reverse happens when closing the page.
+		
+		*/
         PageSlideUp: (function() {
 		
             var animationLoop = null;
@@ -8060,6 +8342,11 @@ mm = (function() {
                         mm.Pages.afterClosePage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				Implements the IPageFlowController.openPage.
+				
+				Responsible for opening the page.
+				*/
                 openPage: function(pageFlowIn, previousPageIn, newPageIn) {
                     if (newPageIn.partialNowShown == true) {
                         newPageIn.m.y = newPageIn.partialShownY;		
@@ -8075,6 +8362,11 @@ mm = (function() {
                     // START ANIMATION
                     mm.PageSlideUp.animateUp();
                 },
+				/*
+				Implements the IPageFlowController.closePage.
+				
+				Responsible for closing the page.
+				*/
                 closePage: function(pageFlowIn, previousPageIn, currentPageIn) {
                     newPage = currentPageIn;
                     pageFlow = pageFlowIn;
@@ -8087,7 +8379,17 @@ mm = (function() {
             };
         })(),
         
-        
+        /*
+		This module implements the IPageFlowController interface.
+		
+		This is used to transition from one page to another page within a page flow.
+		This handles the transition of both opening and closing the page.
+		
+		The page slide down, opens and closes the pages with a animation that slides both the previous page and the new page down.  The
+		new page takes the position of the previous page.
+		The reverse happens when closing the page.
+		
+		*/
         PageSlideDown: (function() {
 		
             var animationLoop = null;
@@ -8160,6 +8462,11 @@ mm = (function() {
                         mm.Pages.afterOpenPage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				Implements the IPageFlowController.openPage.
+				
+				Responsible for opening the page.
+				*/
                 openPage: function(pageFlowIn, previousPageIn, newPageIn) {
                 
                     // SET THE NEW PAGE, UNDERNEATH THE CURRENT PAGE
@@ -8175,6 +8482,11 @@ mm = (function() {
                     // START ANIMATION
                     mm.PageSlideDown.animateDown();
                 },
+				/*
+				Implements the IPageFlowController.closePage.
+				
+				Responsible for closing the page.
+				*/
                 closePage: function(pageFlowIn, previousPageIn, currentPageIn) {
                 
                     newPage = currentPageIn;
@@ -8188,6 +8500,17 @@ mm = (function() {
             };
         })(),
         
+		/*
+		This module implements the IPageFlowController interface.
+		
+		This is used to transition from one page to another page within a page flow.
+		This handles the transition of both opening and closing the page.
+		
+		The page slide right, opens and closes the pages with a animation that slides both the previous page and the new page right.  The
+		new page takes the position of the previous page.
+		The reverse happens when closing the page.
+		
+		*/
         PageSlideRight: (function() {
 		
             var animationLoop = null;
@@ -8263,6 +8586,11 @@ mm = (function() {
                         mm.Pages.afterOpenPage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				Implements the IPageFlowController.openPage.
+				
+				Responsible for opening the page.
+				*/
                 openPage: function(pageFlowIn, previousPageIn, newPageIn) {
 
                     // SET THE NEW PAGE, UNDERNEATH THE CURRENT PAGE
@@ -8279,6 +8607,11 @@ mm = (function() {
                     // START ANIMATION
                     mm.PageSlideRight.animateRight();
                 },
+				/*
+				Implements the IPageFlowController.closePage.
+				
+				Responsible for closing the page.
+				*/
                 closePage: function(pageFlowIn, previousPageIn, currentPageIn) {
                     newPage = currentPageIn;
                     pageFlow = pageFlowIn;
@@ -8291,17 +8624,25 @@ mm = (function() {
             };
         })(),
         
+		/*
+		This module implements the IPageFlowController interface.
+		
+		This is used to transition from one page to another page within a page flow.
+		This handles the transition of both opening and closing the page.
+		
+		The page slide left, opens and closes the pages with a animation that slides both the previous page and the new page left.  The
+		new page takes the position of the previous page.
+		The reverse happens when closing the page.
+		
+		*/
         PageSlideLeft: (function() {
 		
-           
             var timeOutRunning = null;
             var animationTimeout = 2;
             var moveAmount = 20;
             var newPage = null;
             var pageFlow = null;
             var previousPage = null;
-
-            
               
             return {
                  setAnimationTimeout: function(animationTimeoutIn) {
@@ -8363,6 +8704,11 @@ mm = (function() {
                         mm.Pages.afterClosePage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				Implements the IPageFlowController.openPage.
+				
+				Responsible for opening the page.
+				*/
                 openPage: function(pageFlowIn, previousPageIn, newPageIn) {
                 
                      // SET THE NEW PAGE, UNDERNEATH THE CURRENT PAGE
@@ -8379,6 +8725,11 @@ mm = (function() {
                     // START ANIMATION
                     mm.PageSlideLeft.animateLeft();
                 },
+				/*
+				Implements the IPageFlowController.closePage.
+				
+				Responsible for closing the page.
+				*/
                 closePage: function(pageFlowIn, previousPageIn, currentPageIn) {
                     newPage = currentPageIn;
                     pageFlow = pageFlowIn;
@@ -8392,7 +8743,17 @@ mm = (function() {
         })(),
 
 
-        // TODO: FIX PAGE FADE IN/FADE OUT
+        /*
+		This module implements the IPageFlowController interface.
+		
+		This is used to transition from one page to another page within a page flow.
+		This handles the transition of both opening and closing the page.
+		
+		The page fade in, opens and closes the pages with a animation that fades the new page over the previous page using transparency. 
+		
+		The reverse happens when closing the page.
+		
+		*/
         PageFadeIn: (function() {
 		
            
@@ -8455,6 +8816,11 @@ mm = (function() {
                         //newPage.s.transparency = newPage.transparency;
                     }
                 },
+				/*
+				Implements the IPageFlowController.openPage.
+				
+				Responsible for opening the page.
+				*/
                 openPage: function(pageFlowIn, previousPageIn, newPageIn) {
                 
                     // SET THE NEW PAGE, UNDERNEATH THE CURRENT PAGE
@@ -8496,19 +8862,25 @@ mm = (function() {
         })(),
 
       
-      
+      /*
+        ++
+        This module contains all the functions for reading the xml files and converting them to the model.
+		
+		Generally used for internal use only.
+		
+		It handles the:
+		
+			- common.xml
+			- pages.xml
+			- messages.xml
+	  */
       XML: (function() {
 		
-            // TODO : XML CONFIG
             // READS THE WIDGETS.
             
-            // MWM NEW
             var commonWidgets = null;
             
             var pageFlowsXML = null;  // HASH TABLE [id, pageFlowXMLText] - STORES THE TEXT IF PRE-LOAD == null, THEN CAN BE AUTOMATICALLY CALLED ON page.init
-            
-            // List of all the widget styles
-            // MWM NEW var widgetStyles = new Array()
             
             // USED FOR PRE-LOAD IMAGES.  THIS IS IMPORTANT FOR iPHONE.
             var preLoadImages = null;  // PROPERTIES OF THE ACTUAL PRE-LOAD IMAGES.
@@ -8518,7 +8890,6 @@ mm = (function() {
             
               
             return {
-                // MWM NEW
                 initXML: function(xmlConfigFileIn, callback) {
                 
                     commonWidgets = new Array();
