@@ -633,8 +633,8 @@ mm = (function() {
             var self = {
                 m: widgetIn,
                 draw: drawIn, // function that is responsible for drawing the polygon. (Internal use only).
-                polygon: polygonIn,
-                polygonString: polygonStringIn,
+                polygon: polygonIn,  // Internal use.  Internal representation of the polygon in an array of point.x and point.y.
+                polygonString: polygonStringIn,  // This contains the co-ordinates of the polygon format example: "{10,10};{100,10},{100,100},{10,100}"
                 s: null, // Links to WidgetStyle that specifies the style of this polygon.
                 selectWidget: null,  // If this widget is not null, it allows the polygon to be selected instead on selecting the whole polygon.  When this is selected, this widget is not returned but the polygon.
                 clickAction: null,  // Links to WidgetClick, this is called when the polygon is clicked/tapped.
@@ -798,7 +798,7 @@ mm = (function() {
         PageFlow: function(widgetIn, drawIn) {
             var self = {
                 m: widgetIn,
-                draw: drawIn,
+                draw: drawIn,  // Function responsible for drawing the page flow to the screen.
                 currentShownPage: null,  // This is the page that is currently being shown to the user.  On top of the stack.
                 pageFlow: null,  // Array of Page widget.  
                 pageFlowController: null  // This stores the IPageFlowController, if it is not stored at page level.  
@@ -1426,6 +1426,14 @@ mm = (function() {
                 
                     return pageFlow;
                 },
+				 /*
+                ++
+                This saves the current screen state of the widgets.  Then clears all the widgets from the screen.
+				
+                Input:
+                    idIn:String: This will be the id that can be used to restore the state.
+                 
+                */
                 saveStateAndClear: function(idIn) {
                     mm.App.saveState(idIn);
                     
@@ -1435,10 +1443,26 @@ mm = (function() {
                     }
                     mm.FW.removeAllWidgets();
                 },
+				 /*
+                ++
+                This saves the current screen state of the widgets.  
+				
+                Input:
+                    idIn:String: This will be the id that can be used to restore the state.
+                 
+                */
                 saveState: function(idIn) {
                     var saveState = new mm.SavedState(idIn, mm.FW.getScreen().m.widgets);
                     savedStates.push(saveState);
                 },
+				/*
+                ++
+                TODO 
+				
+                Input:
+                    idIn:String: This will be the id of the state.
+                 
+                */
                 clearScreen: function(idIn) {
                     var found = false;
                     var eachState = 0;
@@ -1453,6 +1477,14 @@ mm = (function() {
                         eachState = eachState + 1;
                     }
                 },
+				/*
+                ++
+                This gets screen state.  
+				
+                Input:
+                    idIn:String: This will be the id saved state.
+                 
+                */
                 getSavedState: function(idIn) {
                     var savedState = null;
                     var eachState = 0;
@@ -1464,6 +1496,15 @@ mm = (function() {
                     }
                     return savedState;
                 },
+				
+				/*
+                ++
+                This reloads a screen state.  
+				
+                Input:
+                    idIn:String: This will be the id saved state.
+                 
+                */
                 reloadState: function(idIn) {
                     var found = false;
                     var eachState = 0;
@@ -1571,7 +1612,6 @@ mm = (function() {
             var globalAlpha = -1;
             
             var onHoldCalled = false;
-            
             
             // Stores a list of standard classes used in the API, these are the current standard widgets that are available.
             // It is possible to create new widget classes in the commons.xml file, but these must inherit from these standard widget classes.
@@ -1785,9 +1825,17 @@ mm = (function() {
                     }
                     
                  },
+				 /*
+				 ++
+				 Sets the settingDrawOrder. The settingDrawOrder specifies if the drawOrder for each widget is currently being calculated when set to true.
+				 */
                  setSettingDrawOrder: function(settingDrawOrderIn) {
                     settingDrawOrder = settingDrawOrderIn;
                  },
+				 /*
+				 ++
+				 Returns the settingDrawOrder. The settingDrawOrder specifies if the drawOrder for each widget is currently being calculated when set to true.
+				 */
                  getSettingDrawOrder: function() {
                     return settingDrawOrder;
                  },
@@ -1838,7 +1886,7 @@ mm = (function() {
               
                     if (widgetIn.m.alignIn == true) {
                 
-                            // CALCULATE Vertical POSITION
+                            // CALCULATE VERTICAL POSITION
                             if (widgetIn.m.alignVert != null) {
                                 if (widgetIn.m.alignVert == mm.TOP()) {
                                     widgetIn.m.y = widgetIn.m.alignSpacingVert;
@@ -1970,7 +2018,6 @@ mm = (function() {
 					
                     // CHECK IF THE WIDGET IS HIDDEN
                     // DO NOT DRAW IF THE WIDGET IS COMPLETELY OUTSIDE AREA OF THE CANVAS
-					
                     var drawThisWidget = true;
               
                     if (widgetIn.m.hidden == true) {
@@ -2081,7 +2128,7 @@ mm = (function() {
                                 var found = false;
                                 var foundComp = null;
                                 // CALL ACTION
-                                // NEW CODE ONLY GET FIRST CLICKABLE, IGNORE THE REST IF propogate click = false
+                                // ONLY GET FIRST CLICKABLE, IGNORE THE REST IF propogate click = false
                                 // TO CHECK for (var eachWidget=0;eachWidget<widgetsOverList.length;eachWidget++) {
                                 var eachWidget = 0;
                                 var propogateClick = true;
@@ -2126,7 +2173,7 @@ mm = (function() {
                                     	mm.App.repaintWidget(foundComp);
                                 	}
                                 }
-                                } // A13 ++
+                                } 
                             }
                         } else {
               
@@ -2283,8 +2330,6 @@ mm = (function() {
                     
                     ksPreviousPoints = null;
                     ksPreviousTimes = null;
-              
-                    
                     // END KINETIC SCROLLING
                 },
                 /*
@@ -2358,6 +2403,9 @@ mm = (function() {
                     }
              
                 },
+				/*
+				Method that is called to un hold held widgets.
+				*/
                 unHoldHeldWidgets: function(xIn, yIn) {
               
                     var redrawPartial = true;
@@ -2400,8 +2448,7 @@ mm = (function() {
                                 }
 										
                             }
-                            
-                            
+							
                             // SET beingHold to false
                             heldWidgets[eachWidget].m.beingHeld = false;
                         }
@@ -2457,7 +2504,7 @@ mm = (function() {
                     ksPreviousPoints.push(new mm.KSPoint(xIn, yIn));
                     ksPreviousTimes.push(lastDownTime);
               
-                    // LETS PUT A HOLD ON, SO KNOW WHEN BEING HOLD DOWN ACTION
+                    // LETS PUT A HOLD ON, SO WE KNOW WHEN BEING HOLD DOWN ACTION
                     // IF xIn, yIn over playing animation zone, then disiable on hold.  On hold not possible in
                     // animation zone.
                     if (mm.Animations.isMouseOverPlayingAnimation(xIn, yIn, offsetX, offsetY) == false) {
@@ -2465,7 +2512,10 @@ mm = (function() {
                         onDownTimer = setTimeout("mm.FW.onHold(" + xIn + "," + yIn + ")", LIMIT_MILISECONDS_FOR_CLICK+1);
                     }
                 },
-                setOnHoldMoveRedraw: function() {  // CALL THIS IF ON THIS ON MOVE HOLD OPERATION YOU DO NOT WANT A REDRAW
+				/*
+				Call this method on move hold operation if you do not want a full redraw.
+				*/
+                setOnHoldMoveRedraw: function() {  
                     onHoldMoveRedraw = false;
                 },
                 /*
@@ -2508,7 +2558,6 @@ mm = (function() {
                     }
                     // END KINETIC SCROLLING
               
-					
                    if (heldWidgets.length > 0) {
                         for (var eachWidget=0;eachWidget<heldWidgets.length;eachWidget++) {
                      
@@ -2580,6 +2629,9 @@ mm = (function() {
                         }
                     }
                 },
+				/*
+				Called when on hold is triggered.
+				*/
                 onHold: function(xIn, yIn) {
               
                     onHoldCalled = true;
@@ -2751,9 +2803,15 @@ mm = (function() {
                 setCtx: function(ctxIn) {
                     ctx = ctxIn;
                 },
+				/*
+				Returns the last touch x position.
+				*/
                 getLastTouchX: function() {
                     return lastTouchX;
                 },
+				/*
+				Returns the last touch y position.
+				*/
                 getLastTouchY: function() {
                     return lastTouchY;
                 }
@@ -2808,8 +2866,10 @@ mm = (function() {
 					
                     return exists;
                 },
+				/*
+				This clears all the moving targets.
+				*/
                 clearMovingTargets: function(ctx, xIn, yIn, movingWidgetIn) {
-                    // CLEAR ALL MOVE TARGETS - WILL THIS CAUSE A PERFORMANCE PROBLEM - RESET
                     for (var eachWidget=0;eachWidget<onMoveTargets.length;eachWidget++) {
                         if (onMoveTargets[eachWidget].m.moveOver != null) {
                             for (var eachMoveOver=0; eachMoveOver < onMoveTargets[eachWidget].m.moveOver.length; eachMoveOver++) {
@@ -2834,8 +2894,12 @@ mm = (function() {
 						
                     onMoveTargets = new Array();
                 },
+				/*
+				This removes a list of widgets under x and y position.
+				It will remove the moving target from the list.
+				*/
                 widgetsUnder: function(xIn, yIn, movingWidgetIn) {
-                    var widgetsUnder = mm.FW.widgetsUnder(xIn, yIn);  // HAVE TO EXCLUDE MOVING WIDGET
+                    var widgetsUnder = mm.FW.widgetsUnder(xIn, yIn);  // TO EXCLUDE MOVING WIDGET
 					
                     if (widgetsUnder != null) {
                         var eachWidget = 0;
@@ -2866,6 +2930,9 @@ mm = (function() {
 					
                     return widgetsUnder;
                 },
+				/*
+				Called when a moving target is being moved.
+				*/
                 onMove: function(ctx, xIn, yIn, movingWidgetIn) {
                 
                     mm.MovingTargets.clearMovingTargets(ctx, xIn, yIn, movingWidgetIn);
@@ -2902,6 +2969,9 @@ mm = (function() {
                     }
 				
                 },
+				/*
+				Called when an on up is triggered for a moving target.
+				*/
                 onUp: function(ctx, xIn, yIn, movingWidgetIn) {
                 
                     mm.MovingTargets.clearMovingTargets(ctx, xIn, yIn, movingWidgetIn);
@@ -2932,7 +3002,7 @@ mm = (function() {
                                             mm.App.add(widgetsUnder[eachWidget], movingWidgetIn);
                                         } else if (widgetsUnder[eachWidget].m.moveOver[eachMoveOver].movementType == mm.COPY()) {
                                             m = movingWidgetIn.copy();  // PERFORM A DEEP COPY....
-                                            // NEED TO ADD A NEW ID?? RANDOMLY ?? WILL THIS WORK
+                                            // CREATE A NEW ID RANDOMLY
                                             m.m.id  = m.m.id + "_" + mm.FW.getNextId(); 
                                         } else if (widgetsUnder[eachWidget].m.moveOver[eachMoveOver].movementType == mm.STICK()) {
                                             // STICK ONLY WORKS IF PARENT IS THE SAME AS WIDGETS UNDER???
@@ -3108,7 +3178,6 @@ mm = (function() {
                 /*
                 ++
                 Set all widgets belonging to the container, and the container to the enabled flag passed in.
-                TODO: SEE IF THIS IS STILL NECESSARY.
                 */
                 setEnabled: function(containerIn, enabledIn) {
                     // SETS THIS WIDGET AND ALL OF THE COMPOSITES WITHIN COMPOSITES TO enabledIn
@@ -3141,6 +3210,9 @@ mm = (function() {
                         }
                     }
                 },
+				/*
+				Set the widget and its children to the value of the shownIn boolean value.
+				*/
                 setIsShown: function(widgetIn, shownIn) {
                 
                     widgetIn.m.shown = shownIn;
@@ -3208,6 +3280,9 @@ mm = (function() {
 				
                     return m;  // RETURN THE NEWLY CREATED WIDGET M.
                 },
+				/*
+				Converts a widget class to its widgets then adds the widgets to it.
+				*/
                 addC: function(classIn, widgetsIn) {
                 
                     var widget = null;
@@ -3497,13 +3572,18 @@ mm = (function() {
 							
                     return text;  // RETURN THE NEWLY CREATED TEXT TO THE DEVELOPER.
                 },
+				/*
+                ++
+                Draws all of the widgets in its container.
+                */
                 drawInWidget: function(xIn, yIn, widgetIn) {
                 
                     mm.FW.drawWidgetsInContainer(widgetIn, widgetIn.m.texts, xIn, yIn);
                 },
                 /*
                 ++
-                Draws the actual text on the screen.
+				
+                Draws the actual text on the screen the HTML5 Canvas.
                 */
                 draw: function(ctx, xIn, yIn) {
                 
@@ -3745,6 +3825,11 @@ mm = (function() {
                         mm.Inputs.calculateTextArray(inputIn, inputIn.text);
                     }
                 },
+				/*
+				This method allows the text to be edited.  An HTML5 input tag is placed
+				over the HTML5 canvas to allow for normal HTML5 text editing.
+				This is called when the user selects an input widget to be edited.
+				*/
                 editInput: function(inputIn, xIn, yIn) {
                 
                   // ONLY OPEN KEYBOARD IF TEXT IS EDITABLE
@@ -3884,6 +3969,10 @@ mm = (function() {
                     }
                  
                 },
+				/*
+				Obtains the value that the user entered on the HTML5 input field, and
+				places it on to this widget.
+				*/
                 setValueFromHTMLInput: function(inputIn) {
                         var valueTemp = mm.Inputs.getTextValueFromHTMLInput(inputIn);
                  
@@ -3903,6 +3992,9 @@ mm = (function() {
                         mm.Inputs.calculateTextArray(inputIn, inputIn.text);
                 
                 },
+				/*
+				Called when user performs an on enter or done on the HTML5 input field.
+				*/
                 onEnter: function(inputHTMLIdIn) {
                 
                     var input = editingInputs[inputHTMLIdIn];
@@ -3921,11 +4013,15 @@ mm = (function() {
 					
                     }
                     
-                    // HAVE TO FORCE A REDRAW OF ALL SCREEN !
+                    // HAVE TO FORCE A REDRAW OF ALL SCREEN
                     mm.App.repaint();
                 
                     // TODO EDIT/VALIDATION AND ON ENTER onEnterCallback(ctx, valueTemp);
                 },
+				/*
+				This closes the HTML5 input field, so the keyboard is closed and the input widget
+				cannot be edited.
+				*/
                 closeInput: function(inputIn) {
                 
                     mm.Inputs.setValueFromHTMLInput(inputIn);
@@ -3945,6 +4041,10 @@ mm = (function() {
                     }
                     inputIn.editMode = false;
                 },
+				/*
+				Calculates the text array.  The text array stores each line for
+				a multiline input.
+				*/
                 calculateTextArray: function(inputIn, textIn) {
                 
                     var ctx = mm.FW.getCtx();
@@ -4036,6 +4136,9 @@ mm = (function() {
                     }
                  
                 },
+				/*
+				Sets the text string to be displayed in an input widget.
+				*/
                 setText: function(inputIn, textIn) {
                     inputIn.text.text = textIn;
                     if (!isNull(inputIn.text.text)) {
@@ -4046,7 +4149,7 @@ mm = (function() {
                 },
                 /*
                 ++
-                This draws the actual input widget.
+                This draws the actual input widget to the HTML5 canvas.
                 */
                 draw: function(ctx, xIn, yIn) {  // THIS X AN Y IS CALCULATED BY OTHER CONTROLLER DRAW
                 
@@ -4065,10 +4168,8 @@ mm = (function() {
                             }
                         }
                  
-                        // DRAW THE BOX
-                        // DRAW THE BOX FIRST, BACKGROUND FIRST.
+                        // DRAW THE RECTANGLE FIRST, BACKGROUND FIRST.
                         mm.Shapes.drawRect(ctx, xIn, yIn, this.m.w, this.m.h, this.s);
-                 
                  
                         // DRAW THE TEXT
                         if (!isNull(this.text.text)) {
@@ -4093,10 +4194,10 @@ mm = (function() {
                                     i = i + 1;
                                 }
                             }
-                        } else {  // NEW FUNCTIONALITY FOR LABEL
+                        } else {  // FUNCTIONALITY FOR LABEL
                             if (!isNull(this.label) && !isNull(this.label.text)) {
-                                if (!isNull(this.textArray)) {   // WILL NOT GO OVER WIDTH!!!!!!!!
-                                    // IF MULTI-LINE FIRST  (SEE IF OUTSIDE OF BOX, IF OUTSIDE DO NOT DRAW)
+                                if (!isNull(this.textArray)) {   // WILL NOT GO OVER WIDTH.
+                                    // IF MULTI-LINE FIRST  (SEE IF OUTSIDE OF RECTANGLE, IF OUTSIDE DO NOT DRAW)
                                     var gap = 2;
                                     var y = gap;
                     
@@ -4125,6 +4226,9 @@ mm = (function() {
                     }
               		
                 },
+				/*
+				Gets the text value entered into the HTLM5 input field.
+				*/
                 getTextValueFromHTMLInput: function(inputIn) {
                     if (inputIn.multiline == true) {
                         var value = $('textarea#textareaEditNote' + inputIn.m.id).val();
@@ -4155,7 +4259,7 @@ mm = (function() {
                 splitPhrase: function(phrase, maxPxLength, textStyle) {
                     var ctx = mm.FW.getCtx();
                  
-                    var wa = phrase.split(" ");
+                    var wordArray = phrase.split(" ");
                     var phraseArray=[];
                     var lastPhrase="";
                     var l=maxPxLength;
@@ -4163,28 +4267,28 @@ mm = (function() {
                  
                     ctx.font = textStyle;
                  
-                    for (var i=0;i<wa.length;i++) {
-                        var w=wa[i];
-                        var swa = w.split("\n");
+                    for (var i=0;i<wordArray.length;i++) {
+                        var word=wordArray[i];
+                        var sWordArray = word.split("\n");
 						
-                        for (var swaI=0;swaI<swa.length;swaI++) {
-                            measure=ctx.measureText(lastPhrase+swa[swaI]).width;
-                            if (swaI > 0) {
+                        for (var sWordArrayI=0;sWordArrayI<sWordArray.length;sWordArrayI++) {
+                            measure=ctx.measureText(lastPhrase+sWordArray[sWordArrayI]).width;
+                            if (sWordArrayI > 0) {
                                 phraseArray.push(lastPhrase);
                                 lastPhrase = "";
                             }
                             if (measure<l) {
                                 if (lastPhrase == "") {
-                                    lastPhrase = swa[swaI];
+                                    lastPhrase = sWordArray[sWordArrayI];
                                 } else {
-                                    lastPhrase+=(" "+swa[swaI]);
+                                    lastPhrase+=(" "+sWordArray[sWordArrayI]);
                                 }
                             } else {
 						
                                 phraseArray.push(lastPhrase);
-                                lastPhrase=swa[swaI];
+                                lastPhrase=sWordArray[sWordArrayI];
                             }
-                            if (i===wa.length-1) {
+                            if (i===wordArray.length-1) {
 						
                                 phraseArray.push(lastPhrase);
                                 break;
@@ -4207,7 +4311,6 @@ mm = (function() {
             // This is a list of animations that are currently playing
             var playingAnimations = new Array();
             
-            //var collisions = new Array();  // Collisions between 2 objects.
 			
             return {
                 /*
@@ -4298,6 +4401,9 @@ mm = (function() {
                     
                     return animation;  // RETURN THE NEWLY CREATED ANIMATION TO THE DEVELOPER.
                 },
+				/*
+				Adds collision detection to the animation.
+				*/
                 addCollisionDetectionX: function(animationIn, collisionDetectionIn) {
                 
                     if (animationIn.collisions == null) {
@@ -4321,6 +4427,10 @@ mm = (function() {
                 
                 
                 },
+				/*
+				Returns a collision type by its idIn, within the list
+				of collisionTypesIn.
+				*/
                 findCollisionType: function(collisionTypesIn, idIn) {
                     var collisionType = null;
                     
@@ -4366,8 +4476,8 @@ mm = (function() {
                         }
                      
                     
-                        // CHECK FOR COLLISIONS HERE AUTOMATIC!!!
-                        // PERFORMANCE NEEDS TO BE IMPROVED HERE...
+                        // CHECK FOR COLLISIONS HERE AUTOMATIC.
+                        // TODO: PERFORMANCE NEEDS TO BE IMPROVED HERE...
                         if (!isNull(animation.collisions)) {
                             for(var iCol=0;iCol<animation.collisions.length;iCol++) {
                                 var collision = animation.collisions[iCol];
@@ -4398,8 +4508,6 @@ mm = (function() {
                             mm.App.repaintWidget(animation);
                         }
                      
-					
-					
                         if (animation.playAnimation == true && recursive == true) {
                             animation.timeOutRunning = setTimeout("mm.Animations.animationLoop('" + animation.m.id + "')", animation.animationTimeout);
                         }
@@ -4615,7 +4723,9 @@ mm = (function() {
                     return found;
                 },
                 /*
-                Returns a list of all the widgets under the x an y position for this animation.
+                Returns a list of all the widgets under the x and y position.
+				
+				This will return the animation widget and the animation widget children that are under the x and y position.
                 */
                 under: function(xIn, yIn, offsetXIn, offsetYIn, animationIn) {
                 
@@ -4651,7 +4761,7 @@ mm = (function() {
                     return widgetsUnderPointerList;
                 },
                 /* 
-                Responsible for drawing the animation widget.
+                Responsible for drawing the animation widget to the HTML5 canvas.
                 */
                 draw: function(ctx, xIn, yIn) {  // THIS X AN Y IS CALCULATED BY OTHER CONTROLLER DRAW
                 
@@ -4728,18 +4838,33 @@ mm = (function() {
 
                     return (cornerDistanceSq <= (Math.pow(circR, 2)));
                 },
+				/*
+				Returns a collision type for a circle collision.
+				*/
                 addCirclesCollisionType: function(typeIn, collisionZonesIn) {
                     return new mm.CollisionType(typeIn, "CIRCLE", collisionZonesIn);
                 },
+				/*
+				Returns a collision type for a rectangular collision.
+				*/
                 addRectanglesCollisionType: function(typeIn, collisionZonesIn) {
                     return new mm.CollisionType(typeIn, "RECTANGLE", collisionZonesIn);
                 },
+				/*
+				Returns a collision circle zone.
+				*/
                 addCollisionCircleZone: function(xIn, yIn, radiusIn) {
                     return new mm.CollisionCircleZone(xIn, yIn, radiusIn);
                 },
+				/*
+				Returns a collision rectangle zone.
+				*/
                 addCollisionRectangleZone: function(xIn, yIn, widthIn, heightIn) {
                     return new mm.CollisionRectangleZone(xIn, yIn, widthIn, heightIn);
                 },
+				/*
+				Adds a collision between two sprites to the animation.
+				*/
                 addCollision: function(animationIn, collisionTypeAIn, collisionTypeBIn, collisionActionIn) {
                     var collision = new mm.Collision(collisionTypeAIn, collisionTypeBIn, collisionActionIn);
                     if (animationIn.collisions == null) {
@@ -4862,6 +4987,11 @@ mm = (function() {
 					
                     return widget;
                 },
+				/*
+                Returns a list of all the widgets under the x and y position.
+				
+				This will return the fragment widget and the fragment widget children that are under the x and y position.
+                */
                 under: function(xIn, yIn, offsetXIn, offsetYIn, widgetIn) {
                 
                     // LOOP THROUGH ALL OF THE OTHER WIDGETS INSIDE OF THIS ONE AND SEE IF THEY WERE SELECTED FIRST
@@ -4912,6 +5042,9 @@ mm = (function() {
                 
                     return widgetsUnderPointerList;
                 },
+				/*
+				Responsible for drawing the fragment to the HTML5 canvas.
+				*/
                 draw: function(ctx, xIn, yIn) {  // THIS X AN Y IS CALCULATED BY OTHER CONTROLLER DRAW
                 
                     // IF IS CURRENTLY MOVING DRAW FROM SELCET WIDGET
@@ -5003,7 +5136,6 @@ mm = (function() {
                 */
                 add: function(idIn, typeNameIn, xIn, yIn, radiusIn, layerIn, movableIn, actionIn, widgetsIn, selectableWidgetIn, styleIn) {
 				
-                    // RADIUS COULD BE A PERCENTAGE ????  LOOK AT CODE TO SEE WHAT NEEDS TO BE DONE.
                     var width = "0";
                     // NEEDS TO BE CALCULATED (IN CIRCLES THE WIDTH IS THE SAME AS THE HEIGHT
                     if (radiusIn.indexOf("%") != -1) {
@@ -5059,6 +5191,11 @@ mm = (function() {
                 
                     return circle;  // RETURN THE NEWLY CREATED CIRCLE BOX TO THE DEVELOPER.
                 },
+				/*
+                Returns a list of all the widgets under the x and y position.
+				
+				This will return the circle widget and the circle widget children that are under the x and y position.
+                */
                 under: function(xIn, yIn, offsetXIn, offsetYIn, widgetIn) {
                 
                 
@@ -5110,6 +5247,9 @@ mm = (function() {
                     }
 
                 },
+				/*
+				Responsible for drawing the circle to the HTML5 canvas.
+				*/
                 draw: function(ctx, xIn, yIn) {  // THIS X AN Y IS CALCULATED BY OTHER CONTROLLER DRAW
                
                     // IF IS CURRENTLY MOVING DRAW FROM SELCET WIDGET
@@ -5194,7 +5334,7 @@ mm = (function() {
                 Input:
                     idIn: String: The id for the text widget.  If this is null it will be automatically generated.
                     typeNameIn: String: The m.type attribute.
-                    polygonIn: String: TODO
+                    polygonIn: String: This contains the co-ordinates of the polygon format example: "{10,10};{100,10},{100,100},{10,100}"
 					layerIn: Int: This is layer for the widget.
                     movableIn: Boolean: If this is true then the widget can be moved.
 					actionIn: function: This is the click action when the user presses this widget.
@@ -5294,6 +5434,9 @@ mm = (function() {
                    
                     return polygon; 
                 },
+				/*
+				Responsible for drawing the polygon to the HTML5 canvas.
+				*/
                 draw: function(ctx, xIn, yIn) {  // THIS X AN Y IS CALCULATED BY OTHER CONTROLLER DRAW
                 
                     // IF IS CURRENTLY MOVING DRAW FROM SELCET WIDGET
@@ -5333,6 +5476,11 @@ mm = (function() {
                     }
                    
                 },
+				/*
+                Returns a list of all the widgets under the x and y position.
+				
+				This will return the polygon widget and the polygon widget children that are under the x and y position.
+                */
                 under: function(xIn, yIn, offsetXIn, offsetYIn, widgetIn) {
                 
                     // LOOP THROUGH ALL OF THE OTHER WIDGETS INSIDE OF THIS ONE AND SEE IF THEY WERE SELECTED FIRST
@@ -5532,15 +5680,15 @@ mm = (function() {
                 },
                 addExternalMovableTypeToList: function(listIn, sourceTypeIn, movementTypeIn) {
 			   
-                    // MOVEMENT TYPE CAN ONLY BE COPY OR MOVE (NEED TO CHECK VALIDATION ????)
+                    // MOVEMENT TYPE CAN ONLY BE COPY OR MOVE (NEED TO CHECK VALIDATION)
                     mm.MovingTargets.addMovingTarget(sourceTypeIn, listIn, mm.Lists.moveDropAction, null, null, movementTypeIn);
                 },
                 addConfigurableMovableTypeToList: function(listIn, sourceTypeIn, movementTypeIn, moveDropActionIn) {
-                    // THE MOVE DROP TO WORK MUST 
+                    // FOR THE MOVE DROP TO WORK 
                     // The moveDropActionIn must include this at the end otherwise will not work:-
                     //		mm.Lists.moveDropAction(ctx, xIn, yIn, movingWidgetIn, listIn, movementTypeIn)
 			   
-                    // MOVEMENT TYPE CAN ONLY BE COPY OR MOVE (NEED TO CHECK VALIDATION ????)
+                    // MOVEMENT TYPE CAN ONLY BE COPY OR MOVE (NEED TO CHECK VALIDATION)
                     mm.MovingTargets.addMovingTarget(sourceTypeIn, listIn, moveDropActionIn, null, null, movementTypeIn);
                 },
                 moveOverGapGetPosition: function(xIn, yIn, listIn) {  // IF THE POSITION IS -2 then nothing found, if not gap found under mouse.
@@ -5712,6 +5860,11 @@ mm = (function() {
                         }
                     }
                 },
+				/*
+                Returns a list of all the widgets under the x and y position.
+				
+				This will return the list widget and the list widget children that are under the x and y position.
+                */
                 under: function(xIn, yIn, offsetXIn, offsetYIn, listIn) {
                 
                     var widgetsUnderPointerList = new Array();
@@ -5789,6 +5942,9 @@ mm = (function() {
                         }
                     }
                 },
+				/*
+				Responsible for drawing the list to the HTML5 canvas.
+				*/
                 draw: function(ctx, xIn, yIn) {  // THIS X AN Y IS CALCULATED BY OTHER CONTROLLER DRAW
                
                     // DRAW LIST BACKGROUND
@@ -5966,6 +6122,9 @@ mm = (function() {
                
                     mm.Lists.drawMarkerPos(ctx, xIn, yIn, this);
                 },
+				/*
+				Called when the list is being held.
+				*/
                 holdAction: function(xIn, yIn, listIn) {
 			   
                     if (mm.FW.areAnyWidgetsBeingMoved() == false) {
@@ -5982,9 +6141,11 @@ mm = (function() {
                         
                     }
                 },
+				/*
+				This calculates the size of all the widgets + the gaps.
+				*/
                 setWidgetsSize: function(listIn) {
                 
-                     // WORK OUT SIZE OF THE WIDGETS + GAPS
                         listIn.widgetsize = 0;
                         var gapSize = 0;
                         if (listIn.gapSize != null) {
@@ -6008,6 +6169,9 @@ mm = (function() {
                             }
                         }
                 },
+				/*
+				This is called when the list is un hold.
+				*/
                 unholdAction: function(xIn, yIn, listIn) {
                 
                     // ONLY MOVE LIST IF NO WIDGET INSIDE THE LIST ARE MOVING
@@ -6029,6 +6193,9 @@ mm = (function() {
                 
                     
                 },
+				/*
+				This stops the widgets from running off the edge of the screen.
+				*/
                 stopWidgetsRunningOffEdge: function(listIn) {
                 
                         // STOPS THE WIDGETS RUNNING OFF THE EDGE RIGHT/BOTTOM (OTHERWISE LOOKS BAD FOR USER)
@@ -6061,6 +6228,9 @@ mm = (function() {
                         }
 
                 },
+				/*
+				Could when the hold is moving.
+				*/
                 holdMovingAction: function(xIn, yIn, listIn) {
                 
                     // ONLY MOVE LIST IF NO WIDGETS INSIDE THE LIST ARE MOVING
@@ -6138,6 +6308,9 @@ mm = (function() {
         Shapes: (function() {
 		
             return {
+				/*
+				This method draws a rectangle with rounded corners to the HTML5 canvas.
+				*/
                  roundRect: function(ctx, x, y, width, height, radius, fillIn, style, lineWidthIn, gradientIn, transparentIn) {
                 
                     if (isNull(transparentIn)) {
@@ -6197,6 +6370,9 @@ mm = (function() {
                         ctx.restore();
                     }
                 },
+				/*
+				This method draws a rectangle to the HTML5 canvas.
+				*/
                 rect: function(ctx, x, y, width, height, fillIn, style, lineWidthIn, gradientIn, transparentIn) {
                
                     if (isNull(transparentIn)) {
@@ -6249,6 +6425,9 @@ mm = (function() {
                     }
                  
                 },
+				/*
+				This method draws a rectangle to the HTML5 canvas as specified by the style.
+				*/
                 drawRect: function(ctx, xIn, yIn, wIn, hIn, styleIn) {
                 
                     if (styleIn != null) {
@@ -6271,6 +6450,9 @@ mm = (function() {
                     
                     }
                 },
+				/*
+				This method draws a circle to the HTML5 canvas.
+				*/
                 drawCircle: function(ctx, xIn, yIn, radiusIn, colourIn, fillIn, lineWidthIn, transparentIn, gradientIn) {
                 
                     if (isNull(transparentIn)) {
@@ -6325,7 +6507,10 @@ mm = (function() {
                     }
                 
                 },
-                drawPolygon: function(ctx, polyIn, offsetXIn, offsetYIn, styleIn, fillIn, lineWidthIn, transparentIn, gradientIn) {  // POLYGON_BUG_2
+				/*
+				This method draws a polygon to the HTML5 canvas.
+				*/
+                drawPolygon: function(ctx, polyIn, offsetXIn, offsetYIn, styleIn, fillIn, lineWidthIn, transparentIn, gradientIn) {  
                 
                     if (isNull(transparentIn)) {
                         transparentIn = -1;
@@ -6385,6 +6570,9 @@ mm = (function() {
                     }
                  
                 },
+				/*
+				This method converts a polygon string of "{10,10};{100,100}" to an array of point[x], point[y].
+				*/
                 convertPolygonStringToArray: function(polygonIn, xOffsetIn, yOffsetIn) {
                     var pointsS = polygonIn.split(";");
                     var points = new Array();
@@ -6401,6 +6589,9 @@ mm = (function() {
                     }
                     return points;
                 },
+				/*
+				This converts an hex colour value to an rgb transparent equivalent.
+				*/
                 convertHexToRGBTransparent: function(hexIn) {
                     var cutHex = (hexIn.charAt(0)=="#") ? hexIn.substring(1,7):hexIn;
                     var r = parseInt(cutHex.substring(0,2),16);
@@ -6408,6 +6599,9 @@ mm = (function() {
                     var b = parseInt(cutHex.substring(4,6),16);
                     return "rgba(" + r + "," + g + "," + b + ",0.5)";
                 },
+				/*
+				Converts a transparent value to its global alpha value..
+				*/
                 convertTransparentValueToGlobalAlpha: function(transparentIn) {
                     if (transparentIn == -1) {
                         return -1;
@@ -6418,7 +6612,9 @@ mm = (function() {
                         // IN HTML5 Canvas globalAlpha 0 = fully transparent, 1 = no transparency.
                     }
                 },
-                // Returns true if this xIn, yIn is in the area defined.
+                /*
+				Returns true if this xIn, yIn is in the area defined.
+				*/
                 isInArea: function(xIn, yIn, xObjIn, yObjIn, objWidthIn, objHeightIn) {
 				
                     var yBottom = yObjIn + objHeightIn;
@@ -6431,11 +6627,17 @@ mm = (function() {
                     }
 				
                 },
+				/*
+				Returns true if this xIn and yIn are in this circle.
+				*/
                 isInCircle: function(xIn, yIn, cxIn, cyIn, radiusIn) {
                     var dx = xIn - cxIn;
                     var dy = yIn - cyIn;
                     return dx*dx+dy*dy <= radiusIn*radiusIn;
                 },
+				/*
+				Retruns true if this xIn and yIn are in the polygon defined.
+				*/
                 isPointInPolygon: function(polyIn, xIn, yIn, offsetXIn, offsetYIn) {
                     var pt = {
                         x: xIn, 
@@ -6561,6 +6763,9 @@ mm = (function() {
                  
                     return img;  // RETURN THE NEWLY CREATED IMAGE TO THE DEVELOPER.
                 },
+				/*
+				Responsible for drawing the image to the HTML5 canvas.
+				*/
                 draw: function(ctx, xIn, yIn) {  // THIS X AN Y IS CALCULATED BY OTHER CONTROLLER DRAW
                  
                     if (this.m.invisible == false) {
@@ -6577,6 +6782,9 @@ mm = (function() {
                  
                     }
                 },
+				/*
+				Performs a deep copy and creates a new image from this image.
+				*/
                 copyImage: function(idIn, imageIn) {
                     var m = mm.FW.copyWidget(idIn, imageIn.m);
 					
@@ -6588,6 +6796,9 @@ mm = (function() {
 			   
                     return newImage;
                 },
+				/*
+				Draws the image to the scale specified.
+				*/
                 drawImageScale: function(ctx, xIn, yIn, imageIn, imageSrcIn, widthIn, heightIn) {
                 
                      // Draw Image
@@ -6637,6 +6848,9 @@ mm = (function() {
                  
                     return imageIn;
                 },
+				/*
+				Draws the image to HTML5 canvas with the scale specified.  When completed the callback is called.
+				*/
                 drawImageScaleCallback: function(ctx, xIn, yIn, imageIn, imageSrcIn, widthIn, heightIn, callbackIn) {
                  
                     // Draw Image
@@ -6646,7 +6860,6 @@ mm = (function() {
                     }
 					
                     // Display Image
-                    //alert(ctx + " : " + xIn);
                     if (imageIn.complete) {
                         if (mm.FW.getGlobalAlpha() != -1) {
                             var trans = mm.FW.getGlobalAlpha();
@@ -6690,9 +6903,10 @@ mm = (function() {
                  
                     return imageIn;
                 },
+				/*
+				Draws the image to the HTML5 canvas.
+				*/
                 drawImage: function(ctx, xIn, yIn, imageIn, imageSrcIn) {
-                
-                 
                 
                     // Draw Image
                     if (imageIn == null) {
@@ -6740,9 +6954,15 @@ mm = (function() {
                  
                     return imageIn;
                 },
+				/*
+				Returns trus of the image has been completely loaded into memory.
+				*/
                 isImageComplete: function(imageIn) {
                     return !(imageIn.complete == false || imageIn.complete == null || imageIn.complete == "null" || imageIn.complete == undefined || imageIn.complete == "undefined");
                 },
+				/*
+				Preloads all the images into memory from the widget classes.  This is important for iOS.  Not an issue with Android.
+				*/
                 preLoadImagesFromWidgetClasses: function(imagesIn, callbackIn) {
                 
                     var numberImagesToPreLoad = 0;
@@ -6792,6 +7012,9 @@ mm = (function() {
                     }
                  
                 },
+				/*
+				Preloads all the images into memory.  This is important for iOS.  Not an issue with Android.
+				*/
                 preloadImages: function(imagesIn, callbackIn) {
                 
                     var numberImagesToPreLoad = 0;
@@ -6951,6 +7174,9 @@ mm = (function() {
                 
                     return page;
                 },
+				/*
+				Responsible for drawing the page to the HTML5 canvas.
+				*/
                 drawPage: function(ctx, xIn, yIn) {
                 
                     if (this.s != null) {
@@ -7065,6 +7291,9 @@ mm = (function() {
 
                     return pageFlow;  // RETURN THE NEWLY CREATED BOX TO THE DEVELOPER.
                 },
+				/*
+				Responsible for drawing the page flow to the HTML5 canvas.
+				*/
                 drawPageFlow: function(ctx, xIn, yIn) {  // THIS X AN Y IS CALCULATED BY OTHER CONTROLLER DRAW
                 
                     // NOW DRAW THE WIDGETS BASED ON THE X and Y in.
@@ -7085,6 +7314,9 @@ mm = (function() {
                 
                 
                 },
+				/*
+				Performs the page navigation based on a click action.
+				*/
                 navigatePageByClickAction: function(widgetIn, clickActionIn) {
                     var navigation = clickActionIn.navigation;
                     var closePage = clickActionIn.closePage;
@@ -7122,6 +7354,9 @@ mm = (function() {
                     }
                 
                 },
+				/*
+				Returns a page that is stored in the page flow by its id.
+				*/
                 getPageInPageFlow: function(pageFlowIn, pageIdIn) {
                     var page = null;
                     // SEARCH FOR THE PAGE, IN THE PAGE FLOW WIDGETS
@@ -7136,6 +7371,9 @@ mm = (function() {
                     }
                     return page;
                 },
+				/*
+				Opens a page that belong to the page flow by its page id.
+				*/
                 openPageByPageId: function(pageFlowIn, pageIdIn, argsIn) {
                 
                     var page = mm.Pages.getPageInPageFlow(pageFlowIn, pageIdIn);
@@ -7167,10 +7405,13 @@ mm = (function() {
                     }
                 
                 },
+				/*
+				Calls the m.stages.openPage method when a page is opened.
+				*/
                 callOpenPageFunction: function(widgetIn) {
                     // THIS IS ONLY CURRENTLY FOR PAGE
                     // IF THIS WAS DONE FOR ALL WIDGETS ON THE PAGE
-                    // IT COULD CREATE PERFORMANCE PROBLEMS ???? to test
+                    // IT COULD CREATE PERFORMANCE PROBLEMS.
                 
                     // CALL SHOW IF IT EXISTS
                     if (widgetIn.m.stages != null && widgetIn.m.stages.openPage != null) {
@@ -7182,10 +7423,13 @@ mm = (function() {
                         }
                     }
                 },
+				/*
+				Calls the m.stages.afterMethod method after a page is opened.
+				*/
                 callAfterOpenPageFunction: function(widgetIn) {
                     // THIS IS ONLY CURRENTLY FOR PAGE
                     // IF THIS WAS DONE FOR ALL WIDGETS ON THE PAGE
-                    // IT COULD CREATE PERFORMANCE PROBLEMS ???? to test
+                    // IT COULD CREATE PERFORMANCE PROBLEMS.
                 
                     // CALL SHOW IF IT EXISTS
                     if (widgetIn.m.stages != null && widgetIn.m.stages.afterOpen != null) {
@@ -7198,6 +7442,9 @@ mm = (function() {
                     }
                 
                 },
+				/*
+				Calls the m.stages.close method when a page is closed.
+				*/
                 callClosePageFunction: function(widgetIn) {
                     // THIS IS ONLY CURRENTLY FOR PAGE
                     // IF THIS WAS DONE FOR ALL WIDGETS ON THE PAGE
@@ -7215,6 +7462,9 @@ mm = (function() {
                     }
                 
                 },
+				/*
+				Calls the m.stages.afterClose method after a page is closed.
+				*/
                 callAfterClosePageFunction: function(widgetIn) {
                     // THIS IS ONLY CURRENTLY FOR PAGE
                     // IF THIS WAS DONE FOR ALL WIDGETS ON THE PAGE
@@ -7231,6 +7481,9 @@ mm = (function() {
                     }
                 
                 },
+				/*
+				Opens the newPageIn.
+				*/
                 openPage: function(newPageIn, pageFlowControllerIn, argsIn) {
                 
                     newPageIn.pageFlowController = pageFlowControllerIn;
@@ -7275,11 +7528,12 @@ mm = (function() {
                     pageFlowControllerIn.openPage(pageFlowIn, newPageIn.previousPage, newPageIn);
               
                 },
+				/*
+				Called after the page is fully open.
+				*/
                 afterOpenPage: function(pageFlowIn, previousPage, newPageIn) {
 
                     if (previousPage != null) {
-                        // TODO : CALCULATE
-                        // TODO ADD HIDDEN
                         if (mm.Pages.isPageFullyUnderOther(previousPage)) {
                             previousPage.m.enabled = false;
                             previousPage.m.hidden = true;
@@ -7295,6 +7549,9 @@ mm = (function() {
                     
                     mm.App.repaint();
                 },
+				/*
+				Closes the currentPageIn and shows the previous page in the page flow.
+				*/
                 closePage: function(currentPageIn, pageFlowControllerIn) {
                 
                 
@@ -7348,6 +7605,9 @@ mm = (function() {
                 
                 
                 },
+				/*
+				Called after the page is closed.
+				*/
                 afterClosePage: function(pageFlowIn, previousPageIn, currentPageIn) {
 
                     if (previousPageIn != null) {
@@ -7390,14 +7650,17 @@ mm = (function() {
                 
                 
                 },
-                widgetsUnderPointerPage: function(xIn, yIn, offsetXIn, offsetYIn, boxIn) {
+				/*
+				Returns a list of widgets that are under the xIn and yIn position.
+				*/
+                widgetsUnderPointerPage: function(xIn, yIn, offsetXIn, offsetYIn, pageIn) {
        
                     // LOOP THROUGH ALL OF THE OTHER WIDGETS INSIDE OF THIS ONE AND SEE IF THEY WERE SELECTED FIRST
                    var widgetsUnderPointerList = new Array();
-                    if (boxIn.m.widgets != null) {
-                        for (var i=0; i < boxIn.m.widgets.length; i++) {
-                            var eachWidget = boxIn.m.widgets[i];
-                            var tempWidgets = eachWidget.m.widgetsUnder(xIn, yIn, boxIn.m.x + offsetXIn, boxIn.m.y + offsetYIn, eachWidget);
+                    if (pageIn.m.widgets != null) {
+                        for (var i=0; i < pageIn.m.widgets.length; i++) {
+                            var eachWidget = pageIn.m.widgets[i];
+                            var tempWidgets = eachWidget.m.widgetsUnder(xIn, yIn, pageIn.m.x + offsetXIn, pageIn.m.y + offsetYIn, eachWidget);
                             if (tempWidgets != null) {
                                 for (var x=0; x < tempWidgets.length; x++) {
                 
@@ -7411,7 +7674,7 @@ mm = (function() {
                         }
                     }
 
-                    var tempWidgetsUnderPointerList = mm.FW.standardWidgetsUnder(xIn, yIn, offsetXIn, offsetYIn, boxIn);
+                    var tempWidgetsUnderPointerList = mm.FW.standardWidgetsUnder(xIn, yIn, offsetXIn, offsetYIn, pageIn);
 
                     if (tempWidgetsUnderPointerList != null) {
                         for (var i = 0; i < tempWidgetsUnderPointerList.length; i++) {
@@ -7421,6 +7684,9 @@ mm = (function() {
 
                     return widgetsUnderPointerList;
                 },
+				/*
+				Returns a list of widgets that are under the xIn and yIn position.
+				*/
                 widgetsUnderPointerPageFlow: function(xIn, yIn, offsetXIn, offsetYIn, widgetIn) {
                 
                     // LOOP THROUGH ALL OF THE OTHER WIDGETS INSIDE OF THIS ONE AND SEE IF THEY WERE SELECTED FIRST
@@ -7451,7 +7717,10 @@ mm = (function() {
                
                     return widgetsUnderPointerList;
                 },
-                // HIDE PREVIOUS PAGE, SLIDE UP ETC.
+                /*
+				TODO : check if this works.
+				returns true if page is fully under another page.
+				*/
                 isPageFullyUnderOther: function(pageIn) {
 
                     // FIRST CHECK IF OUTSIDE OF PAGE FLOW
@@ -7520,6 +7789,9 @@ mm = (function() {
 
                 return outsideBox;
             },
+			/*
+			Opens a page partially.
+			*/
             openShowPartial: function(newPageIn, pageFlowControllerIn, partialShownXIn, partialShownYIn, argsIn) {
 
                 newPageIn.pageFlowController = pageFlowControllerIn;
@@ -7570,6 +7842,9 @@ mm = (function() {
 
                 pageFlowControllerIn.openPage(pageFlowIn, previousPage, newPageIn);
             },
+			/*
+			Closes a page that is partially open.
+			*/
             closePartial: function(currentPageIn, pageFlowControllerIn) {
             
                 if (isNull(pageFlowControllerIn)) {
@@ -7600,6 +7875,9 @@ mm = (function() {
                 pageFlowControllerIn.closePage(pageFlowIn, previousPage, currentPageIn);
 
              },
+			 /*
+			 Returns the page flow controller by its name.
+			 */
              getPageFlowController: function(nameIn, timeoutIn, amountIn) {
                 if (nameIn == "PAGE_FLOW_UP") {
                     return mm.Pages.initPageFlowUp(timeoutIn, amountIn);
@@ -7625,6 +7903,9 @@ mm = (function() {
                 
                 return mm.Pages.initPageFlowJump();
              },
+			 /*
+			 Initialises the page flow up transition controller.
+			 */
              initPageFlowUp: function(animationTimeoutIn, moveAmountIn) {
              
              
@@ -7638,6 +7919,9 @@ mm = (function() {
                 
                 return pageFlowUp;
              },
+			 /*
+			 Initialises the page flow down transition controller.
+			 */
              initPageFlowDown: function(animationTimeoutIn, moveAmountIn) {
              
                 if (!isNull(animationTimeoutIn)) {
@@ -7651,6 +7935,9 @@ mm = (function() {
                 
                 return pageFlowDown;
              },
+			 /*
+			 Initialises the page flow right transition controller.
+			 */
              initPageFlowRight: function(animationTimeoutIn, moveAmountIn) {
              
                 if (!isNull(animationTimeoutIn)) {
@@ -7664,6 +7951,9 @@ mm = (function() {
                 
                 return pageFlowRight;
              },
+			 /*
+			 Initialises the page flow left transition controller.
+			 */
              initPageFlowLeft: function(animationTimeoutIn, moveAmountIn) {
              
                 if (!isNull(animationTimeoutIn)) {
@@ -7677,6 +7967,9 @@ mm = (function() {
                 
                 return pageFlowLeft;
              },
+			 /*
+			 Initialises the page flow jump transition controller.
+			 */
              initPageFlowJump: function() {
              
                 var pageFlowJump = new mm.IPageFlowController(mm.PageFlowJump.openPage, mm.PageFlowJump.closePage);
@@ -7684,6 +7977,9 @@ mm = (function() {
                 
                 return pageFlowJump;
              },
+			 /*
+			 Initialises the page slide up transition controller.
+			 */
              initPageSlideUp: function(animationTimeoutIn, moveAmountIn) {
              
                 if (!isNull(animationTimeoutIn)) {
@@ -7696,6 +7992,9 @@ mm = (function() {
                 
                 return pageSlideUp;
              },
+			 /*
+			 Initialises the page slide down transition controller.
+			 */
              initPageSlideDown: function(animationTimeoutIn, moveAmountIn) {
              
                 if (!isNull(animationTimeoutIn)) {
@@ -7708,6 +8007,9 @@ mm = (function() {
                 
                 return pageSlideDown;
              },
+			 /*
+			 Initialises the page slide right transition controller.
+			 */
              initPageSlideRight: function(animationTimeoutIn, moveAmountIn) {
              
                 if (!isNull(animationTimeoutIn)) {
@@ -7720,6 +8022,9 @@ mm = (function() {
                 
                 return pageSlideRight;
              },
+			 /*
+			 Initialises the page slide left transition controller.
+			 */
              initPageSlideLeft: function(animationTimeoutIn, moveAmountIn) {
              
                 if (!isNull(animationTimeoutIn)) {
@@ -7732,6 +8037,9 @@ mm = (function() {
                 
                 return pageSlideLeft;
              },
+			 /*
+			 Initialises the page fade in transition controller.
+			 */
              initPageFadeIn: function(animationTimeoutIn, fadeAmountIn) {
              
                 if (!isNull(animationTimeoutIn)) {
@@ -7744,18 +8052,33 @@ mm = (function() {
                 
                 return pageFadeIn;
              },
+			 /*
+			 Called when a swipe right is detected.
+			 */
              swipeRight: function(pageIn) {
                 mm.Pages.swipe(pageIn, pageIn.swipeRightAction);
              },
+			 /*
+			 Called when a swipe left is detected.
+			 */
              swipeLeft: function(pageIn) {
                 mm.Pages.swipe(pageIn, pageIn.swipeLeftAction);
              },
+			 /*
+			 Called when a swipe up is detected.
+			 */
              swipeUp: function(pageIn) {
                 mm.Pages.swipe(pageIn, pageIn.swipeUpAction);
              },
+			 /*
+			 Called when a swipe down is detected.
+			 */
              swipeDown: function(pageIn) {
                 mm.Pages.swipe(pageIn, pageIn.swipeDownAction);
              },
+			 /*
+			 Calls the swipe action, when a swipe is detected.
+			 */
              swipe: function(pageIn, swipeActionIn) {
              
                 if (swipeActionIn != null) {
@@ -7948,12 +8271,13 @@ mm = (function() {
                  setMoveAmount: function(moveAmountIn) {
                     moveAmount = moveAmountIn;
                  },
+				 /*
+				 Called to animate the page up on each animation loop.
+				 */
                  animateUp: function() {
-		
 		
                     timeOutRunning = null;
 		
-        
                     var animateAgain = true;
                     newPage.m.y = newPage.m.y - moveAmount;
 
@@ -7969,8 +8293,6 @@ mm = (function() {
                         }
                     }
 		
-
-		
                     mm.App.repaint();  // REDRAW ALL
 
                     if (animateAgain == true) {
@@ -7979,6 +8301,9 @@ mm = (function() {
                         mm.Pages.afterClosePage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				 Called to animate the page down on each animation loop.
+				 */
                 animateDown: function() {
                 
                     timeOutRunning = null;
@@ -8055,8 +8380,6 @@ mm = (function() {
             var pageFlow = null;
             var previousPage = null;
 
-            
-              
             return {
                  setAnimationTimeout: function(animationTimeoutIn) {
                     animationTimeout = animationTimeoutIn;
@@ -8064,8 +8387,10 @@ mm = (function() {
                  setMoveAmount: function(moveAmountIn) {
                     moveAmount = moveAmountIn;
                  },
+				 /*
+				 Called to animate the page left on each animation loop.
+				 */
                  animateLeft: function() {
-		
 		
                     timeOutRunning = null;
 
@@ -8085,6 +8410,9 @@ mm = (function() {
                         mm.Pages.afterOpenPage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				 Called to animate the page right on each animation loop.
+				 */
                 animateRight: function() {
 		
                     timeOutRunning = null;
@@ -8176,8 +8504,10 @@ mm = (function() {
                  setMoveAmount: function(moveAmountIn) {
                     moveAmount = moveAmountIn;
                  },
+				 /*
+				 Called to animate the page left on each animation loop.
+				 */
                  animateLeft: function() {
-		
 		
                     timeOutRunning = null;
 		
@@ -8204,6 +8534,9 @@ mm = (function() {
                         mm.Pages.afterClosePage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				 Called to animate the page right on each animation loop.
+				*/
                 animateRight: function() {
 		
                     timeOutRunning = null;
@@ -8288,17 +8621,17 @@ mm = (function() {
                  setMoveAmount: function(moveAmountIn) {
                     moveAmount = moveAmountIn;
                  },
+				 /*
+				 Called to animate the page up on each animation loop.
+				 */
                  animateUp: function() {
-		
 		
                     timeOutRunning = null;
 		
-        
                     var animateAgain = true;
                     newPage.m.y = newPage.m.y - moveAmount;
                     previousPage.m.y = previousPage.m.y - moveAmount;
 
-		
                     if (newPage.m.y < newPage.shownY) {
                         animateAgain = false;
                         newPage.m.y = newPage.shownY;
@@ -8313,6 +8646,9 @@ mm = (function() {
                         mm.Pages.afterOpenPage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				 Called to animate the page down on each animation loop.
+				 */
                 animateDown: function() {
 		
                     timeOutRunning = null;
@@ -8400,8 +8736,6 @@ mm = (function() {
             var pageFlow = null;
             var previousPage = null;
 
-            
-              
             return {
                  setAnimationTimeout: function(animationTimeoutIn) {
                     animationTimeout = animationTimeoutIn;
@@ -8409,12 +8743,13 @@ mm = (function() {
                  setMoveAmount: function(moveAmountIn) {
                     moveAmount = moveAmountIn;
                  },
+				 /*
+				 Called to animate the page up on each animation loop.
+				 */
                  animateUp: function() {
-		
 		
                     timeOutRunning = null;
 		
-        
                     var animateAgain = true;
                     newPage.m.y = newPage.m.y - moveAmount;
                     previousPage.m.y = previousPage.m.y - moveAmount;
@@ -8441,6 +8776,9 @@ mm = (function() {
                         mm.Pages.afterClosePage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				 Called to animate the page down on each animation loop.
+				 */
                 animateDown: function() {
 		
                     timeOutRunning = null;
@@ -8521,8 +8859,6 @@ mm = (function() {
             var pageFlow = null;
             var previousPage = null;
 
-            
-              
             return {
                  setAnimationTimeout: function(animationTimeoutIn) {
                     animationTimeout = animationTimeoutIn;
@@ -8530,8 +8866,10 @@ mm = (function() {
                  setMoveAmount: function(moveAmountIn) {
                     moveAmount = moveAmountIn;
                  },
+				 /*
+				 Called to animate the page left on each animation loop.
+				 */
                  animateLeft: function() {
-		
 		
                     timeOutRunning = null;
 
@@ -8561,6 +8899,9 @@ mm = (function() {
                         mm.Pages.afterClosePage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				 Called to animate the page right on each animation loop.
+				 */
                 animateRight: function() {
 		
                     timeOutRunning = null;
@@ -8651,6 +8992,9 @@ mm = (function() {
                  setMoveAmount: function(moveAmountIn) {
                     moveAmount = moveAmountIn;
                  },
+				 /*
+				 Called to animate the page left on each animation loop.
+				 */
                  animateLeft: function() {
 		
                     timeOutRunning = null;
@@ -8673,6 +9017,9 @@ mm = (function() {
                         mm.Pages.afterOpenPage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				 Called to animate the page right on each animation loop.
+				 */
                 animateRight: function() {
 		
                     timeOutRunning = null;
@@ -8694,7 +9041,6 @@ mm = (function() {
                             previousPage.m.x = previousPage.shownX;
                         }
                     }
-
 
                     mm.App.repaint();  // REDRAW ALL
 
@@ -8773,6 +9119,9 @@ mm = (function() {
                  setFadeAmount: function(fadeAmountIn) {
                     fadeAmount = fadeAmountIn;
                  },
+				 /*
+				 Called to animate the page fade in on each animation loop.
+				 */
                  fadeIn: function() {
                     timeOutRunning = null;
 		
@@ -8792,6 +9141,9 @@ mm = (function() {
                         mm.Pages.afterOpenPage(pageFlow, previousPage, newPage);
                     }
                 },
+				/*
+				 Called to animate the page fade out on each animation loop.
+				 */
                 fadeOut: function() {
 		
                     timeOutRunning = null;
@@ -8876,8 +9228,6 @@ mm = (function() {
 	  */
       XML: (function() {
 		
-            // READS THE WIDGETS.
-            
             var commonWidgets = null;
             
             var pageFlowsXML = null;  // HASH TABLE [id, pageFlowXMLText] - STORES THE TEXT IF PRE-LOAD == null, THEN CAN BE AUTOMATICALLY CALLED ON page.init
@@ -8890,6 +9240,9 @@ mm = (function() {
             
               
             return {
+				/*
+				This reads and loads the common xml file.  When completed the callback is called.
+				*/
                 initXML: function(xmlConfigFileIn, callback) {
                 
                     commonWidgets = new Array();
@@ -8899,6 +9252,9 @@ mm = (function() {
                     });
                 
                 },
+				/*
+				This reads and loads the common xml file.  When completed the callback is called.
+				*/
                 loadCommonXML: function(xmlConfigFileIn, callback) {
                     
                     $.ajax({
@@ -8912,11 +9268,17 @@ mm = (function() {
                         }
                     });
                 },
+				/*
+				Reads the common widgets.
+				*/
                 readCommonWidgets: function(xmlIn) {
                     $(xmlIn).find("CommonWidgets").find("WidgetSection").each(function() {
                         mm.XML.readCommonWidgets(this);
                     });
                 },
+				/*
+				Reads the common widgets in the "WidgetSection"
+				*/
                 readCommonWidgets: function(xmlIn) {
                     var preLoad = $(xmlIn).find("PreLoad").first().text();
                     
@@ -8924,16 +9286,25 @@ mm = (function() {
                         mm.XML.readAllWidgets(xmlIn, commonWidgets);
                     }
                 },
+				/*
+				Reads all the widgets in the "SectionWidgets"
+				*/
                 readAllWidgets: function(xmlIn, widgetsIn) {
                     $(xmlIn).find("SectionWidgets").each(function() {
                         mm.XML.readEachWidget(this, widgetsIn);
                     });
                 },
+				/*
+				Reads each widget.
+				*/
                 readEachWidget: function(xmlIn, widgetsIn) {
                     $(xmlIn).children().each(function() {
                         mm.XML.readWidget(this, widgetsIn);
                     });
                 },
+				/*
+				Initialises the widget class.
+				*/
                 initWidgetClass: function(idIn, classIn, widgetsIn) {
                     var widget = null;
               
@@ -8962,6 +9333,9 @@ mm = (function() {
                     }
                     return widget;
                 },
+				/*
+				Creates a deep copy of the widget class.
+				*/
                 deepCopyWidgetClass: function(idIn, commonWidgetClass) {
               
                     var widget = new mm.WidgetClass(idIn);
@@ -9010,6 +9384,9 @@ mm = (function() {
                     return widget;
               
                 },
+				/*
+				Returns a common widget class, but its id.
+				*/
                 findCommonWidgetClass: function(classIn) {
             
                     for (var i=0;i<commonWidgets.length;i++) {
@@ -9021,8 +9398,10 @@ mm = (function() {
                     console.log("ERROR: Type not found " + classIn);
                     return null;
                 },
+				/*
+				Main method for reading a widget.
+				*/
                 readWidget: function(widgetIn, widgetsIn) {
-            
             
                     var include = $(widgetIn).children("Include").first().text();
                     if (!isNull(include) && include.length > 0) {
@@ -9162,6 +9541,9 @@ mm = (function() {
               
                     }
                 },
+				/*
+				Reads the widget style.
+				*/
                 readStyle: function(xmlIn, style) {
                     
                     $(xmlIn).children().each(function() {
@@ -9187,7 +9569,7 @@ mm = (function() {
                     return true;
                 },
                 /*
-                USED TO READ ANIMATION COLLISIONS
+				Reads animation collisions.
                 */
                 readCollisionDetection: function(xmlIn) {
             
@@ -9209,6 +9591,9 @@ mm = (function() {
             
             
                 },
+				/*
+				Read collision types.
+				*/
                 readCollisionTypes: function(xmlIn) {
             
                     var collisionTypes = new Array();
@@ -9228,6 +9613,9 @@ mm = (function() {
                     return collisionTypes;
             
                 },
+				/*
+				Read collision rectangle type.
+				*/
                 readCollisionRectangleType: function(xmlIn) {
             
                     var collisionType = mm.CollisionType(null, "RECTANGLE", new Array());
@@ -9251,6 +9639,9 @@ mm = (function() {
                     return collisionType;
             
                 },
+				/*
+				Reads the collision rectangle zone.
+				*/
                 readCollisionRectangleZone: function(xmlIn) {
             
                     var zone = mm.CollisionRectangleZone(null, null, null, null);
@@ -9274,6 +9665,9 @@ mm = (function() {
                     return zone;
             
                 },
+				/*
+				Reads the collision circle type.
+				*/
                 readCollisionCircleType: function(xmlIn) {
             
                     var collisionType = mm.CollisionType(null, "CIRCLE", new Array());
@@ -9296,6 +9690,9 @@ mm = (function() {
             
                     return collisionType;
                 },
+				/*
+				Reads collision circle zone.
+				*/
                 readCollisionCircleZone: function(xmlIn) {
             
                     var zone = mm.CollisionCircleZone(null, null, null);
@@ -9317,6 +9714,9 @@ mm = (function() {
                     return zone;
             
                 },
+				/*
+				Read the collisions.
+				*/
                 readCollisions: function(xmlIn) {
                     var collisions = new Array();
             
@@ -9348,7 +9748,7 @@ mm = (function() {
                 */
                 /*
                 ++
-                USED TO READ GRADIENT TAB
+                Reads the gradiant that is part of the style widget.
                 */
                 readGradient: function(xmlIn) {
               
@@ -9376,7 +9776,7 @@ mm = (function() {
                 },
                 /*
                 ++
-                USED TO READ THE GRADIENT COLOURS TAB
+				Reads the gradient colours as used in the style widget.
                 */
                 readGradientColours: function(xmlIn) {
               
@@ -9400,6 +9800,9 @@ mm = (function() {
                     
                     return gradientColours;
                 },
+				/*
+				Returns a new copy of the style.
+				*/
                 copyStyle: function(styleIn) {
                     var style = new mm.WidgetStyle();
                     style.colour = styleIn.colour;
@@ -9410,6 +9813,9 @@ mm = (function() {
                     style.gradient = mm.XML.copyGradient(styleIn.gradient);
                     return style;
                 },
+				/*
+				Returns a new copy of the gradient.
+				*/
                 copyGradient: function(gradientIn) {
               
                     var gradient = null;
@@ -9427,6 +9833,9 @@ mm = (function() {
               
                     return gradient;
                 },
+				/*
+				Returns a copy of the gradient colours.
+				*/
                 copyGradientColours: function(coloursIn) {
               
                     var gradientColours = new Array();
@@ -9445,6 +9854,9 @@ mm = (function() {
                     
                     return gradientColours;
                 },
+				/*
+				Reads the stages.
+				*/
                 readStages: function(xmlIn, stage) {
             
                     $(xmlIn).children().each(function() {
@@ -9469,6 +9881,9 @@ mm = (function() {
                     
                     return true;
                 },
+				/*
+				Returns a new copy of the stage.
+				*/
                 copyStages: function(stageIn) {
                     var stage = new mm.WidgetStages();
                     if (stageIn.init != null) {
@@ -9491,6 +9906,9 @@ mm = (function() {
                     }
                     return stage;
                 },
+				/*
+				Reads a click action.
+				*/
                 readClick: function(xmlIn, click) {
               
                     $(xmlIn).children().each(function() {
@@ -9513,6 +9931,9 @@ mm = (function() {
                     
                     return true;
                 },
+				/*
+				Reads movable.
+				*/
                 readMovable: function(xmlIn, movable) {
               
                     $(xmlIn).children().each(function() {
@@ -9539,6 +9960,9 @@ mm = (function() {
                     
                     return true;
                 },
+				/*
+				Reads move over array.
+				*/
                 readMoveOverArray: function(xmlIn, moveOverArray) {
             
                     $(xmlIn).children().each(function() {
@@ -9552,6 +9976,9 @@ mm = (function() {
                     
                     return true;
                 },
+				/*
+				Reads move over.
+				*/
                 readMoveOver: function(xmlIn, moveOver) {
               
                     $(xmlIn).children().each(function() {
@@ -9573,6 +10000,9 @@ mm = (function() {
                     
                     return true;
                 },
+				/*
+				Returns a copy of the move over array.
+				*/
                 copyMoveOverArray: function(moveOverArrayIn) {
             
                     moveOverArray = new Array();
@@ -9595,6 +10025,9 @@ mm = (function() {
               
                     return moveOverArray;
                 },
+				/*
+				Returns a copy of movable.
+				*/
                 copyMovable: function(widIn) {
                     var wid = new mm.Movable();
                     wid.movable = widIn.movable;
@@ -9606,6 +10039,9 @@ mm = (function() {
                     wid.maxY = widIn.maxY;
                     return wid;
                 },
+				/*
+				Returns a copy of the click action.
+				*/
                 copyClick: function(clickIn) {
                     var click = new mm.WidgetClick();
                     if (clickIn.action != null) {
@@ -9698,7 +10134,9 @@ mm = (function() {
                     }
                     return image;
                 },
-                // NEW JUST FOR THE PAGE FLOWS XML
+                /*
+				Reads and creates page flow widget from the page flow xml file.
+				*/
                 initPageFlowXML: function(pageFlowFileIn, callback) {
             
                     pageFlowsXML = {};  // HERE WE STORE ALL THE pageFlowsXML TEXT for reuse later.
@@ -9729,12 +10167,18 @@ mm = (function() {
                     
               
                 },
+				/*
+				Reads all the page flows.
+				*/
                 readPageFlows: function(xmlIn, pageFlowsIn, callback) {
                     mm.XML.readPF(xmlIn, 0, pageFlowsIn, function() {
                         callback();
                     });
             
                 },
+				/*
+				Reads each page flow.
+				*/
                 readPF: function(xmlIn, iIn, pageFlowsIn, callback) {
                     if (iIn < $(xmlIn).find("PageFlows").children("PageFlow").size()) {
                         mm.XML.readPageFlow($(xmlIn).find("PageFlows").children("PageFlow").get(iIn), pageFlowsIn, function() {
@@ -9744,6 +10188,9 @@ mm = (function() {
                         callback();
                     }
                 },
+				/*
+				Read the page flow.
+				*/
                 readPageFlow: function(xmlIn, pageFlowsIn, callback) {
             
                     var pageFlowId = $(xmlIn).find('Id').first().text();
@@ -9763,6 +10210,9 @@ mm = (function() {
                     });
             
                 },
+				/*
+				Merge includes for each page.
+				*/
                 mergeIncludes: function(pageFlowIn, callback) {
             
                     // LOOP THROUGH AND GET THE OTHER TAGS
@@ -9818,6 +10268,9 @@ mm = (function() {
             
             
                 },
+				/*
+				Returns a page by page id in page flow.
+				*/
                 getPage: function(pageFlowIdIn, pageIdIn) {
                     var pageFlowXML = pageFlowsXML[pageFlowIdIn];
               
@@ -9832,6 +10285,9 @@ mm = (function() {
               
                     return page;
                 },
+				/*
+				Gets a page from an xml file.
+				*/
                 getPageFromXML: function(pageFlowIn, pageIdIn) {
                     var id = $(pageFlowIn).find('Id').first().text();
                     var className = $(pageFlowIn).find('Class').first().text();
@@ -9874,7 +10330,9 @@ mm = (function() {
                 
                 },
                 // END PAGE FLOW XML
-                // XML FOR READING THE MESSAGES
+                /*
+				Loads the messages.xml file and loads it into memory.  When complete callback is called.
+				*/
                 loadMessageXML: function(xmlNameIn, messageSection, callback) {
             
                     $.ajax({
@@ -9888,12 +10346,18 @@ mm = (function() {
                     });
 
                 },
+				/*
+				Reads each message in the "MessageSection"
+				*/
                 readMessages: function(xmlIn, messageSection) {
               
                     $(xmlIn).find("Message").find("MessageSection").each(function() {
                         mm.XML.readMessageSection(this, messageSection);
                     });
                 },
+				/*
+				Reads the message section.
+				*/
                 readMessageSection: function(xmlIn, messageSectionIn) {
                     var messageSectionId = $(xmlIn).find("Id").first().text();
                     if (messageSectionId == messageSectionIn) {
@@ -9902,11 +10366,17 @@ mm = (function() {
                         });
                     }
                 },
+				/*
+				Read all of the messages.
+				*/
                 readAllMessages: function(xmlIn) {
                     $(xmlIn).find("M").each(function() {
                         messages[$(this).attr('id')] = $(this).text();
                     });
                 },
+				/*
+				Gets the message by its id.
+				*/
                 getMessage: function(idIn) {
                     return messages[idIn];
                 }
