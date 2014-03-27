@@ -61,7 +61,6 @@ $(document).ready(function() {
         xIn = xIn + mm.App.getRealScreenPosX();
         yIn = yIn + mm.App.getRealScreenPosY();
     
-        //d("on main down");
         //if (keyboardActive == false) {  // IF KEYBOARD ACTIVE WHOLE SCREEN LOCKED
             mm.FW.onDown(xIn, yIn);
         //}

@@ -68,7 +68,6 @@ $(document).ready(function() {
         if (keyboardActive == false) {  // IF KEYBOARD ACTIVE WHOLE SCREEN LOCKED
             mm.FW.onUp(xIn, yIn);
         }
-    //d("after on up xin" + xIn + "yIn " + yIn);
     }
 		
     // ON MOVE TOUCH OR MOUSE
@@ -79,7 +78,6 @@ $(document).ready(function() {
         xIn = xIn + mm.App.getRealScreenPosX();
         yIn = yIn + mm.App.getRealScreenPosY(); 
         
-        //d("on main move");
         if (keyboardActive == false) {  // IF KEYBOARD ACTIVE WHOLE SCREEN LOCKED
             mm.FW.onMove(xIn, yIn);
         }
@@ -94,7 +92,6 @@ $(document).ready(function() {
         xIn = xIn + mm.App.getRealScreenPosX();
         yIn = yIn + mm.App.getRealScreenPosY();
     
-        //d("on main down");
         if (keyboardActive == false) {  // IF KEYBOARD ACTIVE WHOLE SCREEN LOCKED
             mm.FW.onDown(xIn, yIn);
         }
