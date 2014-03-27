@@ -1,4 +1,17 @@
 //**************************************************************
+//* FLAX - Main API
+//*
+//* Developed by Marcus Mascord
+//* Contact: mmascord2@csc.com or mmascord@hotmail.com
+//*
+//* This is currently being considered as a new open source
+//* project for CSC.  Please do not use this without contacting me first.
+//* If it gets CSC open source approval then it will be free to use
+//* under the license terms.
+//*
+//**************************************************************
+
+//**************************************************************
 //* GLOBAL CONSTANTS AND VARIABLES
 //**************************************************************
      
@@ -24,7 +37,7 @@ var keyboardActiveList = new Array();  // Array of KeyboardPos class.
 //**************************************************************
 
 // Array Remove - OVERIDE
-// USED IN A FEW PLACES, CAN PROBABLY ADD THIS TO mm.FW module TODO
+// Very useful functions that adds remove to arrays, so it is possible to remove elements
 Array.prototype.remove = function(fromIn, toIn) {
     var rest = this.slice((toIn || fromIn) + 1 || this.length);
     if (fromIn < 0) {
