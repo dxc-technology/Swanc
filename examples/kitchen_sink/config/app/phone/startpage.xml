@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget> <!-- AT THIS LEVEL MUST BE WIDGET -->
+    <Id>StartPage</Id>
+    <Class>StandardPage</Class>
+    <PreLoad>True</PreLoad>  <!-- THIS PAGE IS PRELOADED WHEN PAGE FLOW PRELOADED -->
+    <Widgets>
+        <!-- HEADER -->
+        <Widget>
+            <Class>StandardHeader</Class>
+            <Widgets>
+                <Widget>
+                    <Class>StandardHeaderText</Class>
+                    <Text>Flax Kitchen Sink</Text>
+                </Widget>
+            </Widgets>
+        </Widget>
+        <!-- BUTTONS -->
+        <Widget>
+            <Class>PageButtonList</Class>
+            <Widgets>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Base Widgets</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>BaseWidgetsPage</Navigation>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Positioning Examples</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>PositionsMenuPage</Navigation>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Drag and Drop</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>DragAndDropMenuPage</Navigation>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Pages</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>PagesMainMenuPage</Navigation>
+                    </Click>
+                </Widget>
+            </Widgets>
+        </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#00C8FA</Colour>
+    </Style>
+</Widget>
+            

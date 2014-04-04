@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget>
+    <Id>ListsPage</Id>
+    <Class>StandardPage</Class>
+    <PreLoad>True</PreLoad>
+    <Widgets>
+        <!-- HEADER -->
+        <Widget>
+            <Class>StandardHeader</Class>
+            <Widgets>
+                <Widget>
+                    <Class>BackButton</Class>
+                </Widget>
+                <Widget>
+                    <Class>StandardHeaderText</Class>
+                    <Text>List</Text>
+                </Widget>
+            </Widgets>
+        </Widget>
+        <!-- BUTTONS -->
+        <Widget>
+            <Class>PageButtonList</Class>
+            <Widgets>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Simple Vertical List</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>SimpleVerticalListPage</Navigation>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Simple Horizontal List</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>SimpleHorizontalListPage</Navigation>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>List of Different Widgets</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>DifferentWidgetsListPage</Navigation>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Lists in List</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>ListInListPage</Navigation>
+                    </Click>
+                </Widget>
+            </Widgets>
+        </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#00C8FA</Colour>
+    </Style>
+    <TransformationName>PAGE_FLOW_RIGHT</TransformationName>
+</Widget>
+            

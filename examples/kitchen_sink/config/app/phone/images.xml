@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget>
+    <Id>ImagesPage</Id>
+    <Class>StandardPage</Class>
+    <PreLoad>True</PreLoad>
+    <Widgets>
+        <!-- HEADER -->
+        <Widget>
+            <Class>StandardHeader</Class>
+            <Widgets>
+                <Widget>
+                    <Class>BackButton</Class>
+                </Widget>
+                <Widget>
+                    <Class>StandardHeaderText</Class>
+                    <Text>Image</Text>
+                </Widget>
+            </Widgets>
+        </Widget>
+        <!-- SIMPLE IMAGE -->
+        <Widget>
+            <Class>Image</Class>
+            <PreLoadImage>True</PreLoadImage>
+            <Y>60</Y>
+            <AlignHoz>CENTER</AlignHoz>
+            <W>32</W>
+            <H>32</H>
+            <L>100</L>
+            <Src>img/images/6_social_group.png</Src>
+            <Texts>
+                <Widget>
+                    <Class>Text</Class>
+                    <Style>
+                        <Colour>#FFFFFF</Colour>
+                    </Style>
+                    <Font>Arial</Font>
+                    <FontSize>14</FontSize>
+                    <Text>Simple Image</Text>
+                    <AlignHoz>CENTER</AlignHoz>
+                    <AlignVert>BOTTOM</AlignVert>
+                    <AlignIn>False</AlignIn>
+                </Widget>
+            </Texts>
+        </Widget>
+        <!-- SWITCH Good/Bad IMAGE -->
+        <Widget>
+            <Id>ImageGood</Id>
+            <Class>Image</Class>
+            <PreLoadImage>True</PreLoadImage>
+            <Y>160</Y>
+            <AlignHoz>CENTER</AlignHoz>
+            <W>32</W>
+            <H>32</H>
+            <L>100</L>
+            <Src>img/images/3-rating-good.png</Src>
+            <Click>
+                <Action>IMAGES_CHANGE_TO_BAD_RATING</Action>
+            </Click>
+        </Widget>
+        <Widget>
+            <Id>ImageBad</Id>
+            <Class>Image</Class>
+            <PreLoadImage>True</PreLoadImage>
+            <Y>160</Y>
+            <AlignHoz>CENTER</AlignHoz>
+            <W>32</W>
+            <H>32</H>
+            <L>100</L>
+            <Src>img/images/3-rating-bad.png</Src>
+            <Hidden>True</Hidden>
+            <Click>
+                <Action>IMAGES_CHANGE_TO_GOOD_RATING</Action>
+            </Click>
+        </Widget>
+        <Widget>
+            <Class>Text</Class>
+            <Style>
+                <Colour>#FFFFFF</Colour>
+            </Style>
+            <Font>Arial</Font>
+            <FontSize>14</FontSize>
+            <Text>Tap to Change Image</Text>
+            <AlignHoz>CENTER</AlignHoz>
+            <Y>190</Y>
+        </Widget>
+        <!-- CLOSE PAGE IMAGE -->
+        <Widget>
+            <Class>Image</Class>
+            <PreLoadImage>True</PreLoadImage>
+            <Y>260</Y>
+            <AlignHoz>CENTER</AlignHoz>
+            <W>32</W>
+            <H>32</H>
+            <L>100</L>
+            <Src>img/images/1-navigation-cancel.png</Src>
+            <Texts>
+                <Widget>
+                    <Class>Text</Class>
+                    <Style>
+                        <Colour>#FFFFFF</Colour>
+                    </Style>
+                    <Font>Arial</Font>
+                    <FontSize>14</FontSize>
+                    <Text>Tap to Close Page</Text>
+                    <AlignHoz>CENTER</AlignHoz>
+                    <AlignVert>BOTTOM</AlignVert>
+                    <AlignIn>False</AlignIn>
+                </Widget>
+            </Texts>
+            <Click>
+                <ClosePage>True</ClosePage>
+            </Click>
+        </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#00C8FA</Colour>
+    </Style>
+    <TransformationName>PAGE_FLOW_RIGHT</TransformationName>
+</Widget>
+            

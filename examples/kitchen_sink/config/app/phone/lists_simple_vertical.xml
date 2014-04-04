@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget>
+    <Id>SimpleVerticalListPage</Id>
+    <Class>StandardPage</Class>
+    <PreLoad>True</PreLoad>
+    <Widgets>
+        <!-- HEADER -->
+        <Widget>
+            <Class>StandardHeader</Class>
+            <Widgets>
+                <Widget>
+                    <Class>BackButton</Class>
+                </Widget>
+                <Widget>
+                    <Class>StandardHeaderText</Class>
+                    <Text>Simple Vertical List</Text>
+                </Widget>
+            </Widgets>
+        </Widget>
+        <!-- LIST HEADER WITH SWITCH -->
+        <Widget>
+            <Id>SimpleVerticalListHeader</Id>
+            <Class>Fragment</Class>
+            <Y>50</Y>
+            <H>50</H>
+            <W>100%</W>
+            <L>1000</L>
+            <Widgets>
+                <Widget>
+                    <Class>Text</Class>
+                    <L>100</L>
+                    <Style>
+                        <Colour>#000000</Colour>
+                    </Style>
+                    <Font>Arial</Font>
+                    <FontSize>16</FontSize>
+                    <AlignHoz>RIGHT</AlignHoz>
+                    <AlignVert>CENTER</AlignVert>
+                    <AlignSpacingHoz>110</AlignSpacingHoz>
+                    <Text>Show Items Out of List Area</Text>
+                </Widget>
+                <Widget>
+                    <Id>ListOnSwitchImage</Id>
+                    <Class>Image</Class>
+                    <PreLoadImage>True</PreLoadImage>
+                    <AlignHoz>RIGHT</AlignHoz>
+                    <AlignVert>CENTER</AlignVert>
+                    <AlignSpacingHoz>5</AlignSpacingHoz>
+                    <W>100</W>
+                    <H>32</H>
+                    <L>27</L>
+                    <Src>img/lists/on_switch.png</Src>
+                    <Click>
+                        <Action>LIST_SIMPLE_VERTICAL_ON_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Id>ListOffSwitchImage</Id>
+                    <Class>Image</Class>
+                    <PreLoadImage>True</PreLoadImage>
+                    <AlignHoz>RIGHT</AlignHoz>
+                    <AlignVert>CENTER</AlignVert>
+                    <AlignSpacingHoz>5</AlignSpacingHoz>
+                    <W>100</W>
+                    <H>32</H>
+                    <L>27</L>
+                    <Src>img/lists/off_switch.png</Src>
+                    <Hidden>True</Hidden>
+                    <Click>
+                        <Action>LIST_SIMPLE_VERTICAL_OFF_ACTION</Action>
+                    </Click>
+                </Widget>
+            </Widgets>
+            <Style>
+                <Colour>#C5C5C5</Colour>
+            </Style>
+        </Widget>
+        <!-- SIMPLE VERTICAL LIST -->
+       <Widget>
+            <Id>SimpleVerticalList</Id>
+            <Class>List</Class>
+            <X>0</X>
+            <Y>100</Y>
+            <W>100%</W>
+            <H>70%</H>
+            <L>1</L>
+            <GapSize>0</GapSize>
+            <WidgetsCanBeMoved>False</WidgetsCanBeMoved>
+            <Vertical>True</Vertical>
+            <ShowOutOfArea>True</ShowOutOfArea>
+            <Widgets>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 1</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 2</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 3</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 4</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 5</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 6</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 7</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 8</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 9</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 10</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 11</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 12</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 13</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 14</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 15</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+                <Widget>
+                    <Class>SimpleVerticalListFragment</Class>
+                    <Widgets>
+                        <Widget>
+                            <Id>SimpleVerticalListFragmentText</Id>
+                            <Text>List Item 16</Text>
+                        </Widget>
+                    </Widgets>
+                </Widget>
+            </Widgets>
+        </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#FFFFFF</Colour>
+    </Style>
+    <TransformationName>PAGE_FLOW_RIGHT</TransformationName>
+    <Stages>
+        <OpenPage>LISTS_SIMPLE_VERTICAL_PAGE_OPEN</OpenPage>
+    </Stages>
+</Widget>
+            

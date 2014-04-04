@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget>
+    <Id>FragmentActionPage</Id>
+    <Class>StandardPage</Class>
+    <PreLoad>True</PreLoad>
+    <Widgets>
+        <!-- HEADER -->
+        <Widget>
+            <Class>StandardHeader</Class>
+            <Widgets>
+                <Widget>
+                    <Class>BackButton</Class>
+                </Widget>
+                <Widget>
+                    <Class>StandardHeaderText</Class>
+                    <Text>Fragment Action</Text>
+                </Widget>
+            </Widgets>
+        </Widget>
+        <!-- Fragment -->
+        <Widget>
+            <Class>Fragment</Class>
+            <Y>60</Y>
+            <H>100</H>
+            <W>80%</W>
+            <L>100</L>
+            <AlignHoz>CENTER</AlignHoz>
+            <Widgets>
+                <Widget>
+                    <Class>Text</Class>
+                    <Style>
+                        <Colour>#FFFFFF</Colour>
+                    </Style>
+                    <Font>Arial</Font>
+                    <FontSize>14</FontSize>
+                    <Text>Tap to Change Colour</Text>
+                    <AlignHoz>CENTER</AlignHoz>
+                    <AlignVert>CENTER</AlignVert>
+                </Widget>
+            </Widgets>
+            <Style>
+                <Colour>#000000</Colour>
+                <BorderColour>#FFFFFF</BorderColour>
+                <BorderW>2</BorderW>
+            </Style>
+            <Click>
+                <Action>FRAGMENT_CHANGE_COLOUR</Action>
+            </Click>
+        </Widget>
+        <Widget>
+            <Class>Fragment</Class>
+            <Y>180</Y>
+            <H>80</H>
+            <W>80%</W>
+            <L>100</L>
+            <AlignHoz>CENTER</AlignHoz>
+            <Widgets>
+                <Widget>
+                    <Class>Text</Class>
+                    <Style>
+                        <Colour>#FFFFFF</Colour>
+                    </Style>
+                    <Font>Arial</Font>
+                    <FontSize>14</FontSize>
+                    <Text>Tap to Close Page</Text>
+                    <AlignHoz>CENTER</AlignHoz>
+                    <AlignVert>CENTER</AlignVert>
+                </Widget>
+            </Widgets>
+            <Style>
+                <Colour>#000000</Colour>
+                <Rounded>True</Rounded>
+                <Transparency>100</Transparency>
+            </Style>
+            <Click>
+                <ClosePage>True</ClosePage>
+            </Click>
+        </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#00C8FA</Colour>
+    </Style>
+    <TransformationName>PAGE_SLIDE_RIGHT</TransformationName>
+</Widget>
+            

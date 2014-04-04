@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget>
+    <Id>FragmentsPage</Id>
+    <Class>StandardPage</Class>
+    <PreLoad>True</PreLoad>
+    <Widgets>
+        <!-- HEADER -->
+        <Widget>
+            <Class>StandardHeader</Class>
+            <Widgets>
+                <Widget>
+                    <Class>BackButton</Class>
+                </Widget>
+                <Widget>
+                    <Class>StandardHeaderText</Class>
+                    <Text>Fragments</Text>
+                </Widget>
+            </Widgets>
+        </Widget>
+        <!-- BUTTONS -->
+        <Widget>
+            <Class>PageButtonList</Class>
+            <Widgets>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Simple Fragment</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>SimpleFragmentPage</Navigation>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Fragment Action</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>FragmentActionPage</Navigation>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Fragment As a Button</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>FragmentAsButtonPage</Navigation>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Other Fragment Uses</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>FragmentOtherPage</Navigation>
+                    </Click>
+                </Widget>
+            </Widgets>
+        </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#00C8FA</Colour>
+    </Style>
+    <TransformationName>PAGE_FLOW_RIGHT</TransformationName>
+</Widget>
+            

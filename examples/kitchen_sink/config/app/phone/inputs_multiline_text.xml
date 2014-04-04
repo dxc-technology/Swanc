@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget>
+    <Id>InputMultilinePage</Id>
+    <Class>StandardPage</Class>
+    <PreLoad>True</PreLoad>
+    <Widgets>
+        <!-- HEADER -->
+        <Widget>
+            <Class>StandardHeader</Class>
+            <Widgets>
+                <Widget>
+                    <Class>BackButton</Class>
+                </Widget>
+                <Widget>
+                    <Class>StandardHeaderText</Class>
+                    <Text>Multiline Text</Text>
+                </Widget>
+            </Widgets>
+        </Widget>
+        <Widget>
+            <Y>60</Y>
+            <Class>Text</Class>
+            <Style>
+                <Colour>#000000</Colour>
+            </Style>
+            <Font>Arial</Font>
+            <FontType>bold</FontType>
+            <FontSize>18</FontSize>
+            <Text>LORUM IPSUM</Text>
+            <AlignHoz>CENTER</AlignHoz>
+        </Widget>
+        <!-- INPUT MULTILINE, NOT EDITABLE - NO SCROLL-->
+        <Widget>
+            <Class>Input</Class>
+            <Y>90</Y>
+            <H>80%</H>
+            <W>95%</W>
+            <L>100</L>
+            <Div>main</Div>
+            <AlignHoz>CENTER</AlignHoz>
+            <InputText>
+                <Widget>
+                    <Class>Text</Class>
+                    <Style>
+                        <Colour>#FFFFFF</Colour>
+                    </Style>
+                    <Font>Arial</Font>
+                    <FontSize>14</FontSize>
+                    <Message>MSG_LOREM_IPSUM</Message>
+                </Widget>
+            </InputText>
+            <Style>
+                <Colour>#000000</Colour>
+                <BorderColour>#FFFFFF</BorderColour>
+                <BorderW>2</BorderW>
+            </Style>
+            <Editable>False</Editable>
+            <MultiLine>True</MultiLine>
+            <CalculateHeightAuto>True</CalculateHeightAuto>
+            <ScrollUpDown>False</ScrollUpDown>
+            <Texts>
+                <Widget>
+                    <Class>Text</Class>
+                    <Style>
+                        <Colour>#000000</Colour>
+                    </Style>
+                    <Font>Arial</Font>
+                    <FontType>bold</FontType>
+                    <FontSize>12</FontSize>
+                    <Text>No Up/Down Scrolling (HeightAuto)</Text>
+                    <AlignHoz>CENTER</AlignHoz>
+                    <AlignVert>BOTTOM</AlignVert>
+                    <AlignIn>False</AlignIn>
+                </Widget>
+            </Texts>
+        </Widget>
+        <!-- INPUT MULTILINE, NOT EDITABLE - NO SCROLL-->
+        <Widget>
+            <Class>Input</Class>
+            <H>150</H>
+            <W>95%</W>
+            <L>100</L>
+            <Div>main</Div>
+            <AlignHoz>CENTER</AlignHoz>
+            <AlignVert>BOTTOM</AlignVert>
+            <AlignSpacingVert>40</AlignSpacingVert>
+            <InputText>
+                <Widget>
+                    <Class>Text</Class>
+                    <Style>
+                        <Colour>#000000</Colour>
+                    </Style>
+                    <Font>Arial</Font>
+                    <FontSize>14</FontSize>
+                    <Message>MSG_LOREM_IPSUM</Message>
+                </Widget>
+            </InputText>
+            <Style>
+                <Colour>#FFFFFF</Colour>
+                <BorderColour>#000000</BorderColour>
+                <BorderW>2</BorderW>
+            </Style>
+            <Editable>False</Editable>
+            <MultiLine>True</MultiLine>
+            <Texts>
+                <Widget>
+                    <Class>Text</Class>
+                    <Style>
+                        <Colour>#000000</Colour>
+                    </Style>
+                    <Font>Arial</Font>
+                    <FontType>bold</FontType>
+                    <FontSize>12</FontSize>
+                    <Text>Up/Down Scrolling (Fixed Height)</Text>
+                    <AlignHoz>CENTER</AlignHoz>
+                    <AlignVert>BOTTOM</AlignVert>
+                    <AlignIn>False</AlignIn>
+                </Widget>
+            </Texts>
+        </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#00C8FA</Colour>
+    </Style>
+    <TransformationName>PAGE_FLOW_RIGHT</TransformationName>
+</Widget>
+            

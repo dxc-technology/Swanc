@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget> <!-- AT THIS LEVEL MUST BE WIDGET -->
+    <Id>SidePage</Id>
+    <Class>Page</Class>
+    <X>0</X>
+    <Y>0</Y>
+    <W>20%</W>
+    <H>100%</H>
+    <L>1</L>
+    <PreLoad>True</PreLoad>
+    <Widgets>
+            <Widget>
+                <Class>Fragment</Class>
+                <H>50</H>
+                <W>100%</W>
+                <AlignHoz>LEFT</AlignHoz>
+                <AlignVert>CENTER</AlignVert>
+                <L>1000</L>
+                <Widgets>
+                <Widget>
+                    <Class>Text</Class>  <!-- THIS IS THE TYPE, CAN BE LINKED TO ABOVE TYPE -->
+                    <L>100</L>
+                    <Style>
+                        <Colour>#000000</Colour>  <!-- BACK GROUND COLOUR -->
+                    </Style>
+                    <Font>Arial</Font>
+                    <FontSize>14</FontSize>
+                    <AlignHoz>CENTER</AlignHoz>
+                    <AlignVert>CENTER</AlignVert>
+                    <AlignSpacingHoz>5</AlignSpacingHoz>
+                    <Text>X</Text>
+                </Widget>
+                </Widgets>
+                <Click>
+                    <ClosePage>True</ClosePage>
+                </Click>
+            </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#FFFFFF</Colour>
+    </Style>
+    <TransformationName>PAGE_SLIDE_RIGHT</TransformationName>
+</Widget>
+            

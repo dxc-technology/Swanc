@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget> <!-- AT THIS LEVEL MUST BE WIDGET -->
+    <Id>PagesPartialMenuPage</Id>
+    <Class>StandardPage</Class>
+    <PreLoad>True</PreLoad>
+    <Widgets>
+        <!-- HEADER -->
+        <Widget>
+            <Class>StandardHeader</Class>
+            <Widgets>
+                <Widget>
+                    <Class>BackButton</Class>
+                </Widget>
+                <Widget>
+                    <Class>StandardHeaderText</Class>
+                    <Text>Partial Page</Text>
+                </Widget>
+            </Widgets>
+        </Widget>
+        <!-- BUTTONS -->
+        <Widget>
+            <Class>PageButtonList</Class>
+            <Widgets>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Flow Menu From Left</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PARTIAL_PAGE_FLOW_RIGHT_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Flow Menu From Right</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PARTIAL_PAGE_FLOW_LEFT_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Flow Menu From Bottom</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PARTIAL_PAGE_FLOW_UP_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Flow Menu From Top</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PARTIAL_PAGE_FLOW_DOWN_ACTION</Action>
+                    </Click>
+                </Widget>
+                <!-- SLIDE -->
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Slide Menu From Left</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PARTIAL_PAGE_SLIDE_RIGHT_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Slide Menu From Right</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PARTIAL_PAGE_SLIDE_LEFT_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Slide Menu From Bottom</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PARTIAL_PAGE_SLIDE_UP_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Slide Menu From Top</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PARTIAL_PAGE_SLIDE_DOWN_ACTION</Action>
+                    </Click>
+                </Widget>
+            </Widgets>
+        </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#00C8FA</Colour>
+    </Style>
+    <TransformationName>PAGE_FLOW_RIGHT</TransformationName>
+</Widget>
+            

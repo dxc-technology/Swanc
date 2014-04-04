@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget> <!-- AT THIS LEVEL MUST BE WIDGET -->
+    <Id>SimpleDragAndDropPage</Id>
+    <Class>StandardPage</Class>
+    <PreLoad>True</PreLoad>
+    <Widgets>
+        <!-- HEADER -->
+        <Widget>
+            <Class>StandardHeader</Class>
+            <Widgets>
+                <Widget>
+                    <Class>BackButton</Class>
+                </Widget>
+                <Widget>
+                    <Class>StandardHeaderText</Class>
+                    <Text>Drag and Drop</Text>
+                </Widget>
+            </Widgets>
+        </Widget>
+            <Widget>
+                <Id>EmailImage</Id>
+                <Type>Email</Type>
+                <Class>Image</Class>
+                <PreLoadImage>True</PreLoadImage>
+                <AlignHoz>CENTER</AlignHoz>
+                <Y>100</Y>
+                <W>48</W>
+                <H>48</H>
+                <L>100</L>
+                <Src>img/5-content-email.png</Src>
+                <Movable>
+                    <Movable>True</Movable>
+                </Movable>
+            </Widget>
+            <Widget>
+                <Id>BinImage</Id>
+                <Type>Bin</Type>
+                <Class>Image</Class>
+                <PreLoadImage>True</PreLoadImage>
+                <AlignHoz>CENTER</AlignHoz>
+                <AlignVert>BOTTOM</AlignVert>
+                <AlignSpacingVert>60</AlignSpacingVert>
+                <W>92</W>
+                <H>92</H>
+                <L>100</L>
+                <Src>img/5_content_discard.png</Src>
+                <MoveOver>
+                    <MoveOver>
+                        <SourceType>Email</SourceType>
+                        <MovementType>NOTHING</MovementType>
+                        <MoveDropAction>DROP_EMAIL_ON_BIN</MoveDropAction>
+                    </MoveOver>
+                </MoveOver>
+                <Texts>
+                    <Widget>
+                        <Class>PageButtonText</Class>
+                        <Text>Tap Bin To Empty</Text>
+                        <AlignHoz>CENTER</AlignHoz>
+                        <AlignVert>BOTTOM</AlignVert>
+                        <AlignIn>False</AlignIn>
+                    </Widget>
+                </Texts>
+                <Click>
+                    <Action>EMPTY_BIN_ACTION</Action>
+                </Click>
+            </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#00C8FA</Colour>
+    </Style>
+    <TransformationName>PAGE_FLOW_RIGHT</TransformationName>
+</Widget>
+            

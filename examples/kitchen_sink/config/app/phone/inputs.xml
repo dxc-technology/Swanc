@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget>
+    <Id>InputsPage</Id>
+    <Class>StandardPage</Class>
+    <PreLoad>True</PreLoad>
+    <Widgets>
+        <!-- HEADER -->
+        <Widget>
+            <Class>StandardHeader</Class>
+            <Widgets>
+                <Widget>
+                    <Class>BackButton</Class>
+                </Widget>
+                <Widget>
+                    <Class>StandardHeaderText</Class>
+                    <Text>Inputs</Text>
+                </Widget>
+            </Widgets>
+        </Widget>
+        <!-- BUTTONS -->
+        <Widget>
+            <Class>PageButtonList</Class>
+            <Widgets>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Simple Input</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>SimpleInputPage</Navigation>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Multiline Text</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Navigation>InputMultilinePage</Navigation>
+                    </Click>
+                </Widget>
+            </Widgets>
+        </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#00C8FA</Colour>
+    </Style>
+    <TransformationName>PAGE_FLOW_RIGHT</TransformationName>
+</Widget>
+            

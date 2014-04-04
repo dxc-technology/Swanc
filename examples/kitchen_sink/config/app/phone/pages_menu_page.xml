@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget> <!-- AT THIS LEVEL MUST BE WIDGET -->
+    <Id>PagesMenuPage</Id>
+    <Class>StandardPage</Class>
+    <PreLoad>True</PreLoad>
+    <Widgets>
+        <!-- HEADER -->
+        <Widget>
+            <Class>StandardHeader</Class>
+            <Widgets>
+                <Widget>
+                    <Class>BackButton</Class>
+                </Widget>
+                <Widget>
+                    <Class>StandardHeaderText</Class>
+                    <Text>Page Transformation</Text>
+                </Widget>
+            </Widgets>
+        </Widget>
+        <!-- BUTTONS -->
+        <Widget>
+            <Class>PageButtonList</Class>
+            <Widgets>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Flow Up</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PAGE_FLOW_UP_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Flow Down</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PAGE_FLOW_DOWN_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Flow Left</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PAGE_FLOW_LEFT_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Flow Right</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PAGE_FLOW_RIGHT_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Slide Up</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PAGE_SLIDE_UP_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Slide Down</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PAGE_SLIDE_DOWN_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Slide Left</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PAGE_SLIDE_LEFT_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Slide Right</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PAGE_SLIDE_RIGHT_ACTION</Action>
+                    </Click>
+                </Widget>
+                <Widget>
+                    <Class>PageButton</Class>
+                    <Texts>
+                        <Widget>
+                            <Class>PageButtonText</Class>
+                            <Text>Fade In</Text>
+                        </Widget>
+                    </Texts>
+                    <Click>
+                        <Action>PAGE_FADE_IN_ACTION</Action>
+                    </Click>
+                </Widget>
+            </Widgets>
+        </Widget>
+    </Widgets>
+    <Style>
+        <Colour>#00C8FA</Colour>
+    </Style>
+    <TransformationName>PAGE_FLOW_RIGHT</TransformationName>
+</Widget>
+            
