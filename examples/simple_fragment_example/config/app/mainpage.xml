@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget> <!-- AT THIS LEVEL MUST BE WIDGET -->
+    <Id>MainPage</Id>
+    <Class>FlaxPage</Class>
+    <PreLoad>True</PreLoad>  <!-- THIS PAGE IS PRELOADED WHEN PAGE FLOW PRELOADED -->
+    <Widgets>
+		<!-- FRAGMENT BEING USED AS A HEADER -->
+        <Widget>
+			<Class>Header</Class>
+            <Widgets>
+                <Widget>
+                    <Id>HeaderText</Id>
+					<Message>MSG_FLAX_HEADER</Message>
+                </Widget>
+            </Widgets>
+        </Widget>
+		<!-- FRAGMENT BEING USED AS A DIALOG -->
+		<Widget>
+			<Class>Fragment</Class>
+			<AlignVert>CENTER</AlignVert>
+			<AlignHoz>CENTER</AlignHoz>
+			<W>80%</W>
+			<H>30%</H>
+			<Style>
+                <Colour>#000000</Colour>
+                <Transparency>100</Transparency>
+                <Gradient>
+                    <Colours>
+                        <Colour pos="0">#DF01D7</Colour>
+                        <Colour pos="1">#F7FE2E</Colour>
+                    </Colours>
+                    <StartX>2</StartX>
+                    <StartY>2</StartY>
+                    <EndX>200</EndX>
+                    <EndY>200</EndY>
+                </Gradient>
+            </Style>
+			<Widgets>
+				<!-- YES BUTTON FRAGMENT -->
+				<Widget>
+					<Class>Button</Class>
+					<AlignVert>BOTTOM</AlignVert>
+					<AlignHoz>RIGHT</AlignHoz>
+					<Texts>
+						<Widget>
+							<Id>ButtonText</Id>
+							<Message>MSG_YES</Message>
+						</Widget>
+					</Texts>
+				</Widget>
+				<!-- NO BUTTON FRAGMENT -->
+				<Widget>
+					<Class>Button</Class>
+					<AlignVert>BOTTOM</AlignVert>
+					<AlignHoz>LEFT</AlignHoz>
+					<Texts>
+						<Widget>
+							<Id>ButtonText</Id>
+							<Message>MSG_NO</Message>
+						</Widget>
+					</Texts>
+					<Style>
+						<Colour>#EAEEF2</Colour>
+					</Style>
+				</Widget>
+			</Widgets>
+			<!-- SHOW A MESSAGE IN THE CENTER OF THE FRAGMENT -->
+			<Texts>
+                <Widget>
+					<Class>Text</Class>
+                    <Style>
+						<Colour>#FFFFFF</Colour>
+                    </Style>
+                    <Font>Arial</Font>
+                    <FontSize>16</FontSize>
+                    <AlignHoz>CENTER</AlignHoz>
+                    <AlignVert>CENTER</AlignVert>
+					<Message>MSG_DO_YOU_LIKE_THIS_COLOUR</Message>
+				</Widget>
+			</Texts>
+		</Widget>
+    </Widgets>
+</Widget>
+            
