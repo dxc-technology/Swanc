@@ -24,7 +24,7 @@ main = (function() {
                 
                 },
 				initButtonAction: function() {
-					// ADD PRESS ME BUTTON ACTION
+					// ADD BUTTON ACTION
 					mm.App.addFunction("BUTTON_ACTION", function(buttonIn, xIn, yIn) {
 						// SHOW ID OF BUTTON
 						alert(buttonIn.m.id);

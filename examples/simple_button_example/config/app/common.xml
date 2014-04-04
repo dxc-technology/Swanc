@@ -24,11 +24,6 @@
                 <Style>
                     <Colour>#FFFFFF</Colour>  
                 </Style>
-                <Font>Arial</Font>
-                <FontSize>14</FontSize>
-                <AlignHoz>CENTER</AlignHoz>
-                <AlignVert>CENTER</AlignVert>
-                <Message>FLAX</Message>
             </Widget>
 			<!-- BUTTON WIDGET - WITH TEXT CENTERED -->
 			<Widget>
