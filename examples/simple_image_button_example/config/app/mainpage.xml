@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget> <!-- AT THIS LEVEL MUST BE WIDGET -->
+    <Id>MainPage</Id>
+    <Class>FlaxPage</Class>
+    <PreLoad>True</PreLoad>  <!-- THIS PAGE IS PRELOADED WHEN PAGE FLOW PRELOADED -->
+    <Widgets>
+        <Widget>
+			<Class>Image</Class>
+            <PreLoadImage>True</PreLoadImage>
+            <Y>60</Y>
+            <AlignHoz>CENTER</AlignHoz>
+            <W>130</W>
+            <H>80</H>
+            <L>100</L>
+            <Src>images/cloud.png</Src>
+            <Texts>
+                <Widget>
+                    <Class>Text</Class>
+                    <Style>
+                        <Colour>#000000</Colour>
+                    </Style>
+                    <Font>Arial</Font>
+                    <FontSize>14</FontSize>
+                    <Message>MSG_PRESS_ME</Message>
+                    <AlignHoz>CENTER</AlignHoz>
+                    <AlignVert>BOTTOM</AlignVert>
+                    <AlignIn>False</AlignIn>
+                </Widget>
+            </Texts>
+
+			<Click>
+                <Action>PRESS_ME_BUTTON_ACTION</Action>
+            </Click>
+        </Widget>
+    </Widgets>
+</Widget>
+            
