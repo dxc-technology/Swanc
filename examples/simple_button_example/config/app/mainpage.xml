@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Widget> <!-- AT THIS LEVEL MUST BE WIDGET -->
+    <Id>MainPage</Id>
+    <Class>FlaxPage</Class>
+    <PreLoad>True</PreLoad>  <!-- THIS PAGE IS PRELOADED WHEN PAGE FLOW PRELOADED -->
+    <Widgets>
+        <Widget>
+			<Class>Button</Class> 
+            <L>1</L>
+            <AlignHoz>CENTER</AlignHoz>
+			<AlignVert>CENTER</AlignVert>
+			<Texts>
+				<Widget>
+					<Id>ButtonText</Id>
+					<Message>MSG_PRESS_ME</Message>
+				</Widget>
+			</Texts>
+			<Click>
+                <Action>PRESS_ME_BUTTON_ACTION</Action>
+            </Click>
+        </Widget>
+    </Widgets>
+</Widget>
+            

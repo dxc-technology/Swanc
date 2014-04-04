@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Message>
+    <MessageSection>
+        <Id>Main</Id>
+        <Messages>
+            <M id="MSG_HELLO_WORLD">Hello World!</M>
+        </Messages>
+    </MessageSection>
+</Message>
