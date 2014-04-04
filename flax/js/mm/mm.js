@@ -2790,7 +2790,7 @@ mm = (function() {
                     mNew.selectableArea = widgetIn.selectableArea;
                     mNew.container = widgetIn.container;
                     mNew.center = widgetIn.center;
-                    mNew.getWidgetsUnderPointer = widgetIn.getWidgetsUnderPointer;
+                    mNew.widgetsUnder = widgetIn.widgetsUnder;
                     mNew.hidden = widgetIn.hidden;
                     mNew.copy = widgetIn.copy;
                     mNew.moveOver = widgetIn.moveOver; 
@@ -5237,7 +5237,7 @@ mm = (function() {
 			   
                     // SEE IF WE HAVE A SELECTABLE WIDGET
                     if (widgetIn.selectWidget != null) {
-                        var tempWidgets = widgetIn.selectWidget.m.getWidgetsUnderPointer(xIn, yIn, widgetIn.m.x + offsetXIn, widgetIn.m.y + offsetYIn, widgetIn.selectWidget);
+                        var tempWidgets = widgetIn.selectWidget.m.widgetsUnder(xIn, yIn, widgetIn.m.x + offsetXIn, widgetIn.m.y + offsetYIn, widgetIn.selectWidget);
                         if (tempWidgets != null && tempWidgets.length > 0) {
                             var tempBoxWidget = new Array();
                             tempBoxWidget.push(widgetIn);
@@ -5500,7 +5500,7 @@ mm = (function() {
                     var widgetsUnderPointerList = new Array();
                     if (widgetIn.m.widgets != null) {
                         for(var eachWidget = 0; eachWidget< widgetIn.m.widgets.length; eachWidget++) {
-                            var tempWidgets = widgetIn.m.widgets[eachWidget].m.getWidgetsUnderPointer(xIn, yIn, widgetIn.m.x + offsetXIn, widgetIn.m.y + offsetYIn, widgetIn.m.widgets[eachWidget]);
+                            var tempWidgets = widgetIn.m.widgets[eachWidget].m.widgetsUnder(xIn, yIn, widgetIn.m.x + offsetXIn, widgetIn.m.y + offsetYIn, widgetIn.m.widgets[eachWidget]);
                             if (tempWidgets != null) {
                                 for(var i = 0; i< tempWidgets.length; i++) {
 								
@@ -5521,7 +5521,7 @@ mm = (function() {
 			   
                     // SEE IF WE HAVE A SELECTABLE WIDGET
                     if (widgetIn.selectWidget != null) {
-                        var tempWidgets = widgetIn.selectWidget.m.getWidgetsUnderPointer(xIn, yIn, widgetIn.m.x + offsetXIn, widgetIn.m.y + offsetYIn, widgetIn.selectWidget);
+                        var tempWidgets = widgetIn.selectWidget.m.widgetsUnder(xIn, yIn, widgetIn.m.x + offsetXIn, widgetIn.m.y + offsetYIn, widgetIn.selectWidget);
                         if (tempWidgets != null && tempWidgets.length > 0) {
                             var tempBoxWidget = new Array();
                             tempBoxWidget.push(widgetIn);

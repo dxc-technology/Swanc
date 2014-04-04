@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Message>
+    <MessageSection>
+        <Id>Main</Id>
+        <Messages>
+            <M id="MSG_FLAX_HEADER">Flax Fragment</M>
+			<M id="MSG_YES">Yes</M>
+			<M id="MSG_NO">No</M>
+			<M id="MSG_DO_YOU_LIKE_THIS_COLOUR">Do you like this colour?</M>
+        </Messages>
+    </MessageSection>
+</Message>

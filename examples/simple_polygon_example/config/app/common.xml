@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CommonWidgets>
+    <WidgetSection>
+        <Id>Main</Id>  
+        <PreLoad>True</PreLoad>  
+        <SectionWidgets>
+			<!-- FLAX PAGE FLOW -->
+			<Widget>
+				<Id>FlaxPageFlow</Id>
+				<Class>PageFlow</Class>
+				<X>0</X>
+				<Y>0</Y>
+				<H>100%</H>
+				<W>100%</W>
+			</Widget>
+            <!-- FLAX PAGE -->
+			<Widget>
+                <Id>FlaxPage</Id>
+                <Class>Page</Class>
+                <X>0</X>
+				<Y>0</Y>
+				<H>100%</H>
+				<W>100%</W>
+                <Style>
+                    <Colour>#FFFFFF</Colour>  
+                </Style>
+            </Widget>
+			<!-- BUTTON WIDGET - WITH TEXT CENTERED -->
+			<Widget>
+				<Id>Button</Id>
+				<Class>Polygon</Class>
+				<Polygon>{100,0;200,200;0,200}</Polygon>
+				<L>1</L>
+				<Style>
+					<Colour>#99CCFF</Colour>
+				</Style>
+				<Texts>
+                    <Widget>
+						<Id>ButtonText</Id>
+                        <Class>Text</Class>
+                        <Style>
+                            <Colour>#000000</Colour>
+                        </Style>
+                        <Font>Arial</Font>
+                        <FontSize>14</FontSize>
+                        <AlignHoz>CENTER</AlignHoz>
+                        <AlignVert>CENTER</AlignVert>
+                    </Widget>
+				</Texts>
+				<Click>
+					<Action>BUTTON_ACTION</Action>
+				</Click>
+			</Widget>
+        </SectionWidgets>
+    </WidgetSection>
+</CommonWidgets>
