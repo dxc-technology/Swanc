@@ -19,3 +19,5 @@ Windows Phone 8
 Blackberry BB10
 Firefox OS
 Flax applications will also run on any modern web browser that supports the HTML5 canvas element.
+
+Please check the wiki for more information.
