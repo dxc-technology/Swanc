@@ -2,7 +2,7 @@
 <PageFlows>
     <PageFlow>
         <PreLoad>True</PreLoad>
-        <Class>FlaxPageFlow</Class>
+        <Class>SwancPageFlow</Class>
         <StartPage>MainPage</StartPage>
         <Widgets>
             <Widget>

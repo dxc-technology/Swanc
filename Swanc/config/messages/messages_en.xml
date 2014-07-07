@@ -3,7 +3,7 @@
     <MessageSection>
         <Id>Main</Id>
         <Messages>
-            <M id="FLAX">Flax is working!</M>
+            <M id="SWANC">Swanc is working!</M>
         </Messages>
     </MessageSection>
 </Message>

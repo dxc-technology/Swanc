@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Widget> <!-- AT THIS LEVEL MUST BE WIDGET -->
     <Id>MainPage</Id>
-    <Class>FlaxPage</Class>
+    <Class>SwancPage</Class>
     <PreLoad>True</PreLoad>  <!-- THIS PAGE IS PRELOADED WHEN PAGE FLOW PRELOADED -->
     <Widgets>
 		<!-- FRAGMENT BEING USED AS A HEADER -->
@@ -10,7 +10,7 @@
             <Widgets>
                 <Widget>
                     <Id>HeaderText</Id>
-					<Message>MSG_FLAX_HEADER</Message>
+					<Message>MSG_SWANC_HEADER</Message>
                 </Widget>
             </Widgets>
         </Widget>
@@ -38,6 +38,7 @@
 			<Widgets>
 				<!-- YES BUTTON FRAGMENT -->
 				<Widget>
+					<Id>Yes</Id>
 					<Class>Button</Class>
 					<AlignVert>BOTTOM</AlignVert>
 					<AlignHoz>RIGHT</AlignHoz>
@@ -50,6 +51,7 @@
 				</Widget>
 				<!-- NO BUTTON FRAGMENT -->
 				<Widget>
+					<Id>No</Id>
 					<Class>Button</Class>
 					<AlignVert>BOTTOM</AlignVert>
 					<AlignHoz>LEFT</AlignHoz>

@@ -4,18 +4,18 @@
         <Id>Main</Id>  
         <PreLoad>True</PreLoad>  
         <SectionWidgets>
-			<!-- FLAX PAGE FLOW -->
+			<!-- SWANC PAGE FLOW -->
 			<Widget>
-				<Id>FlaxPageFlow</Id>
+				<Id>SwancPageFlow</Id>
 				<Class>PageFlow</Class>
 				<X>0</X>
 				<Y>0</Y>
 				<H>100%</H>
 				<W>100%</W>
 			</Widget>
-            <!-- FLAX PAGE -->
+            <!-- SWANC PAGE -->
 			<Widget>
-                <Id>FlaxPage</Id>
+                <Id>SwancPage</Id>
                 <Class>Page</Class>
                 <X>0</X>
 				<Y>0</Y>
@@ -78,6 +78,9 @@
                         <AlignVert>CENTER</AlignVert>
                     </Widget>
 				</Texts>
+				<Click>
+					<Action>BUTTON_ACTION</Action>
+				</Click>
 			</Widget>
         </SectionWidgets>
     </WidgetSection>

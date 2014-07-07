@@ -11,7 +11,7 @@ main = (function() {
                 
                     mm.App.initMessages("config/messages/messages_en.xml", "Main", function() {
                 
-                        mm.App.initCanvasXML("canvasFlax", "config/app/common.xml", "config/app/pageflow.xml", function() {
+                        mm.App.initCanvasXML("canvasSwanc", "config/app/common.xml", "config/app/pageflow.xml", function() {
                 
 							main.App.initPressMeButtonAction();
 				

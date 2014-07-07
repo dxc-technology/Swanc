@@ -18,7 +18,7 @@ main = (function() {
                 
                     mm.App.initMessages("config/messages/messages_en.xml", "Main", function() {
                 
-                        mm.App.initCanvasXML("canvasFlax", "config/app/phone/common.xml", "config/app/phone/pageflow.xml", function() {
+                        mm.App.initCanvasXML("canvasSwanc", "config/app/phone/common.xml", "config/app/phone/pageflow.xml", function() {
                 
                             main.MainApp.initFunctions();
                             

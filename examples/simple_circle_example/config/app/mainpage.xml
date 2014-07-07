@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Widget> <!-- AT THIS LEVEL MUST BE WIDGET -->
     <Id>MainPage</Id>
-    <Class>FlaxPage</Class>
+    <Class>SwancPage</Class>
     <PreLoad>True</PreLoad>  <!-- THIS PAGE IS PRELOADED WHEN PAGE FLOW PRELOADED -->
     <Widgets>
 		<!-- CIRCLE BEING USED AS A DIALOG -->

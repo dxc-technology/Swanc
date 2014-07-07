@@ -1,5 +1,5 @@
 //**************************************************************
-//* FLAX - Main API
+//* SWANC - Main API
 //*
 //* Developed by Marcus Mascord
 //* Contact: mmascord2@csc.com or mmascord@hotmail.com
@@ -63,7 +63,7 @@ function isNull(testIn) {
 //**************************************************************
 
 //**************************************************************
-//* mm is the main package for Flax
+//* mm is the main package for Swanc
 //**************************************************************
 mm = (function() {
 
@@ -882,9 +882,9 @@ mm = (function() {
         This module contains the main app functions that will be used by the developer.
         These functions have been grouped together in the module app, because they are commonly called
         by the application developer.
-        This is the main interface to the   Flax APIs.
+        This is the main interface to the   Swanc APIs.
         This module is aimed at external use.
-        This can be considered the Facade to Flax.
+        This can be considered the Facade to Swanc.
         */
         App: (function() {
             
@@ -3879,8 +3879,8 @@ mm = (function() {
                  
                      // FIREFOX FIX
                     if (mm.App.getDeviceType() == DEVICE_FIREFOX) {
-                        var canvasTopPos = $("#FlaxBody").css('margin-top');  // TODO: HARDCODED TO FIX
-                        var canvasLeftPos = $("#FlaxBody").css('margin-left'); // TODO: HARDCODED TO FIX
+                        var canvasTopPos = $("#SwancBody").css('margin-top');  // TODO: HARDCODED TO FIX
+                        var canvasLeftPos = $("#SwancBody").css('margin-left'); // TODO: HARDCODED TO FIX
                         canvasTopPos = canvasTopPos.replace("px", "");
                         canvasLeftPos = canvasLeftPos.replace("px", "");
                         y = y - parseInt(canvasTopPos);
@@ -10408,5 +10408,5 @@ mm = (function() {
         
 })();
 //**************************************************************
-//* END mm is the main package for Flax
+//* END mm is the main package for Swanc
 //**************************************************************
