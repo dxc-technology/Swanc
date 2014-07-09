@@ -1,6 +1,5 @@
 # Project Swanc
 
-
 ## Introduction
 
 Swanc allows for the creation of interactive mobile applications using HTML5, in particular the HTML5 canvas element. Swanc is a HTML5 canvas framework.
@@ -22,3 +21,29 @@ Blackberry BB10
 Firefox OS
 Swanc applications will also run on any modern web browser that supports the HTML5 canvas element.
 
+## Getting Started
+
+Swanc is very easy to learn and it is possible to create cross platform mobile applications quickly.
+
+Follow the wiki documentation and start with the [My First Example](https://github.com/csc/Swanc/wiki/My-First-Example)
+In the same wiki other training documents are available [@Home](https://github.com/csc/swanc/wiki)
+
+## Project Committers
+
+This is the official list of users with "committer" rights to the
+Swanc project.  
+
+* [Marcus Mascord](https://github.com/mmascord)
+
+If you can't figure out who to contact,
+[Marcus Mascord](https://github.com/mmascord) is the best first point of
+contact for the project.  (Find me at Marcus Mascord <mmascord@hotmail.com>)
+
+This is a hand-maintained list, thanks to the limits of technology.
+Please let [Marcus Mascord](https://github.com/mmascord) know if you run
+into any errors or omissions in that list.
+
+## License
+
+Project Hanlon is distributed under the Apache 2.0 license.
+See [the LICENSE file][license] for full details.
