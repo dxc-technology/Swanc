@@ -26,7 +26,7 @@ Swanc applications will also run on any modern web browser that supports the HTM
 Swanc is very easy to learn and it is possible to create cross platform mobile applications quickly.
 
 Follow the wiki documentation and start with the [My First Example](https://github.com/csc/Swanc/wiki/My-First-Example)
-In the same wiki other training documents are available [@Home](https://github.com/csc/swanc/wiki)
+all training documents are available [Here].  (https://github.com/csc/swanc/wiki)
 
 ## Project Committers
 
@@ -45,5 +45,5 @@ into any errors or omissions in that list.
 
 ## License
 
-Project Hanlon is distributed under the Apache 2.0 license.
+Project Swanc is distributed under the Apache 2.0 license.
 See [the LICENSE file][license] for full details.
