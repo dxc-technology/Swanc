@@ -26,7 +26,7 @@ Swanc applications will also run on any modern web browser that supports the HTM
 Swanc is very easy to learn and it is possible to create cross platform mobile applications quickly.
 
 Follow the wiki documentation and start with the [My First Example](https://github.com/csc/Swanc/wiki/My-First-Example)
-all training documents are available [Here].  (https://github.com/csc/swanc/wiki)
+all training documents are available [Here](https://github.com/csc/swanc/wiki).
 
 ## Project Committers
 
