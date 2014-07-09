@@ -46,4 +46,4 @@ into any errors or omissions in that list.
 ## License
 
 Project Swanc is distributed under the Apache 2.0 license.
-See [the LICENSE file](https://github.com/csc/Swanc/LICENSE)
+See [the LICENSE file](https://github.com/csc/Swanc/blob/master/LICENSE)
