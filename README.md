@@ -14,12 +14,12 @@ Applications developed with Swanc have been deployed to both the Apple App Store
 
 Applications using Swanc have been developed on the following platforms:
 
-Apple iOS
-Android
-Windows Phone 8
-Blackberry BB10
-Firefox OS
-Swanc applications will also run on any modern web browser that supports the HTML5 canvas element.
+* Apple iOS
+* Android
+* Windows Phone 8
+* Blackberry BB10
+* Firefox OS
+* Swanc applications will also run on any modern web browser that supports the HTML5 canvas element.
 
 ## Getting Started
 
