@@ -28,6 +28,9 @@ Swanc is very easy to learn and it is possible to create cross platform mobile a
 Follow the wiki documentation and start with the [My First Example](https://github.com/csc/Swanc/wiki/My-First-Example)
 all training documents are available [Here](https://github.com/csc/swanc/wiki).
 
+## How to Get Help
+
+
 ## Project Committers
 
 This is the official list of users with "committer" rights to the
