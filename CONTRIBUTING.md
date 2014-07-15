@@ -33,14 +33,14 @@ speed quickly.
 
 You can always reach out and ask for help:
 
-* by email or through the web on the TODO
+* by email or through the web on the [Swanc](https://groups.google.com/forum/#!forum/swanc)
   mailing list (membership is required to post).
 
 ## Discuss Your Change
 
 You should start by discussing your change in public:
 * for small but clear changes, [open an issue describing the bug or feature][bugs].
-* for larger changes, send an email to mmascord@hotmail.com  (TODO MAILING LIST) or
+* for larger changes, send an email to swanc@googlegroups.com or
   post through the web before creating the issue.
 
 Once an issue exists for a bug or feature, all discussion should take place in
