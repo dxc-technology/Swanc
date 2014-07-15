@@ -21,7 +21,7 @@ of things.
 * Glance at the [Git Best Practices][best-practice] document, even if you
   don't read it all yet.
 * If this is a new feature, make sure you discuss it on the
-  TODO mailing list before getting started on code.
+  [Swanc](https://groups.google.com/forum/#!forum/swanc) mailing list before getting started on code.
 
 
 ## How to Get Help
