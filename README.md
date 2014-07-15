@@ -30,6 +30,13 @@ all training documents are available [Here](https://github.com/csc/swanc/wiki).
 
 ## How to Get Help
 
+We really want Swanc to be simple to contribute to, and to ensure that you can get started quickly. A big part of that is being available to help you figure out the right way to solve a problem, and to make sure you get up to speed quickly.
+
+You can always reach out and ask for help by email or through the web on the swanc@googlegroups.com mailing list. (membership is required to post.)
+
+If you want to help improve Swanc directly we have a fairly detailed CONTRIBUTING guide in the repository that you can use to understand how develop mobile applications with Swanc and how the project runs, and how to make changes yourself.
+
+We welcome contributions at all levels, including working strictly on our documentation, tests, or code contributions. We also welcome, and value, input about your experiences with Project Swanc.
 
 ## Project Committers
 
