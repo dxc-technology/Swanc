@@ -543,9 +543,9 @@ mm = (function() {
                 onActionRedrawPartial: false, // When set to true on action only draws this widget, if set to false will redraw all
                 beingHeld: false, // If set to true then this widget is being held.  Even not holdable widgets can flag as being held.  Used for menu lists.
                 drawOrder: 0,  // Integer draw order, as an integer value.  The lowest value is drawn first.  The highest value is drawn last.
-                propogateClick: false,  // If propogate click is true, then the click will be sent to widgets that are under this widget on the screen.  If set to false only the top click is accepted, others below are ignored.
-                propogateHold: true, // If propogate hold is true, then the hold under this widget is propogated.
-                propogateOnDrop: true,  // IF propgate on drop is true, then the drop will propogate down
+                propagateClick: false,  // If propagate click is true, then the click will be sent to widgets that are under this widget on the screen.  If set to false only the top click is accepted, others below are ignored.
+                propagateHold: true, // If propagate hold is true, then the hold under this widget is propagated.
+                propagateOnDrop: true,  // IF propgate on drop is true, then the drop will propagate down
                 isKineticScrolling: false, // Sets true/false if this is a kinetic scrolling widget
                 invisible: false,  // This makes the widget invisible but it still is 100% functional.  At the moment only used for buttons but could work across different widgets.
                 shown: false, // Currently only used by ListWidget (If true this is being shown on the screen)
@@ -2152,16 +2152,16 @@ mm = (function() {
                                 var found = false;
                                 var foundComp = null;
                                 // CALL ACTION
-                                // ONLY GET FIRST CLICKABLE, IGNORE THE REST IF propogate click = false
+                                // ONLY GET FIRST CLICKABLE, IGNORE THE REST IF propagate click = false
                                 // TO CHECK for (var eachWidget=0;eachWidget<widgetsOverList.length;eachWidget++) {
                                 var eachWidget = 0;
-                                var propogateClick = true;
+                                var propagateClick = true;
               
-                                while (eachWidget<widgetsOverList.length && propogateClick == true) {
-                                    propogateClick = widgetsOverList[eachWidget].m.propogateClick;
+                                while (eachWidget<widgetsOverList.length && propagateClick == true) {
+                                    propagateClick = widgetsOverList[eachWidget].m.propagateClick;
              
                                     if (widgetsOverList[eachWidget].m.hidden == true) {
-                                        propogateClick = true;
+                                        propagateClick = true;
                                     }
                      
                                     if (widgetsOverList[eachWidget].m.clickable == true) {
@@ -2673,10 +2673,10 @@ mm = (function() {
                         if (widgetsOverList != null) {
                             // CALL ACTION
                             var eachWidget = 0;
-                            var propogateHold = true;
-                            while (eachWidget<widgetsOverList.length && propogateHold == true) {
+                            var propagateHold = true;
+                            while (eachWidget<widgetsOverList.length && propagateHold == true) {
                      
-                                propogateHold = widgetsOverList[eachWidget].m.propogateHold;
+                                propagateHold = widgetsOverList[eachWidget].m.propagateHold;
                      
                                 if (widgetsOverList[eachWidget].m.holdable == true && widgetsOverList[eachWidget].m.enabled == true ) {
                                     // CALL THE ACTION
@@ -3004,10 +3004,10 @@ mm = (function() {
                      
                     if (widgetsUnder != null) {
                         // LOOP THROUGH ALL OF THE WIDGETS
-                        var propogateOnDrop = true;
+                        var propagateOnDrop = true;
                         var eachWidget = 0;
-                        while (eachWidget<widgetsUnder.length  && propogateOnDrop == true) {
-                             propogateOnDrop = widgetsUnder[eachWidget].m.propogateOnDrop;
+                        while (eachWidget<widgetsUnder.length  && propagateOnDrop == true) {
+                             propagateOnDrop = widgetsUnder[eachWidget].m.propagateOnDrop;
                              if (widgetsUnder[eachWidget].m.moveOver != null) {
                         
                                 for (var eachMoveOver=0; eachMoveOver < widgetsUnder[eachWidget].m.moveOver.length; eachMoveOver++) {
@@ -3412,15 +3412,15 @@ mm = (function() {
                 */
                 updateWidgetXML: function(widgetClassIn, widgetIn) {
                     // THIS FUNCTION IS USED TO GET M attributes from the XML
-                    // for enabled/hidden/propogateClick/propogateHold
+                    // for enabled/hidden/propagateClick/propagateHold
                     // so it is not necessary to use JavaScript on add.
                     var enabled = mm.XML.getBoolean(widgetClassIn, "Enabled");
                     var hidden = mm.XML.getBoolean(widgetClassIn, "Hidden");
-                    var propogateClick = mm.XML.getBoolean(widgetClassIn, "PropogateClick");
-                    var propogateHold = mm.XML.getBoolean(widgetClassIn, "PropogateHold");
+                    var propagateClick = mm.XML.getBoolean(widgetClassIn, "PropagateClick");
+                    var propagateHold = mm.XML.getBoolean(widgetClassIn, "PropagateHold");
                     var onHoldMovingRedrawPartial = mm.XML.getBoolean(widgetClassIn, "OnHoldMovingRedrawPartial");
                     var onActionRedrawPartial = mm.XML.getBoolean(widgetClassIn, "OnActionRedrawPartial");
-                    var propogateOnDrop = mm.XML.getBoolean(widgetClassIn, "PropogateOnDrop");
+                    var propagateOnDrop = mm.XML.getBoolean(widgetClassIn, "PropagateOnDrop");
                     var stages = mm.XML.getClass(widgetClassIn, "Stages");
                   
                     var invisible = mm.XML.getBoolean(widgetClassIn, "Invisible");
@@ -3436,12 +3436,12 @@ mm = (function() {
                         widgetIn.m.hidden = hidden;
                     }
                     
-                    if (!isNull(propogateClick)) {
-                        widgetIn.m.propogateClick = propogateClick;
+                    if (!isNull(propagateClick)) {
+                        widgetIn.m.propagateClick = propagateClick;
                     }
                     
-                    if (!isNull(propogateHold)) {
-                        widgetIn.m.propogateHold = propogateHold;
+                    if (!isNull(propagateHold)) {
+                        widgetIn.m.propagateHold = propagateHold;
                     }
                     
                     if (!isNull(onHoldMovingRedrawPartial)) {
@@ -3452,8 +3452,8 @@ mm = (function() {
                         widgetIn.m.onActionRedrawPartial = onActionRedrawPartial;
                     }
                     
-                    if (!isNull(propogateOnDrop)) {
-                        widgetIn.m.propogateOnDrop = propogateOnDrop;
+                    if (!isNull(propagateOnDrop)) {
+                        widgetIn.m.propagateOnDrop = propagateOnDrop;
                     }
                   
                     if (!isNull(stages)) {
@@ -5687,7 +5687,7 @@ mm = (function() {
                                 }
                                 
                                 // MUST SET THE WIDGETS TO PROPOGATE HOLD, OTHERWISE UNPREDICTED BEHAVIOUR
-                                widgetList.m.widgets[eachWidget].m.propogateHold = false;
+                                widgetList.m.widgets[eachWidget].m.propagateHold = false;
                             }
 							
                             // ADD STANDARD MOVE OVER PARAMETERS
@@ -7193,8 +7193,8 @@ mm = (function() {
 
                     m.movable = false;
 
-                    m.propogateClick = false;
-                    m.propogateHold = false;
+                    m.propagateClick = false;
+                    m.propagateHold = false;
                 
                     return page;
                 },
@@ -7310,8 +7310,8 @@ mm = (function() {
                     m.clickable = false;
                     m.movable = false;
 
-                    m.propogateClick = true;
-                    m.propogateHold = true;
+                    m.propagateClick = true;
+                    m.propagateHold = true;
 
                     return pageFlow;  // RETURN THE NEWLY CREATED BOX TO THE DEVELOPER.
                 },
